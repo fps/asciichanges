@@ -58,3 +58,91 @@ Comments start with a <code>#</code>, can start anywhere on a line and extend to
 
 
 <pre>| Cm7 | F7 | Bbmaj7 |    |</pre>
+
+# Chords
+
+Chord symbols form an independent language themself (independent in the sense that you can use the library to parse chord symbols without having to parse a complete song).
+
+## Examples
+
+### Triads
+
+A C major triad:
+
+<pre>C</pre>
+
+A Db minor triad
+
+<pre>Dbm</pre>
+
+Alternative notation for minor triads:
+
+<pre>Dbmin</pre>
+
+Diminished triads:
+
+<pre>Cdim</pre>
+
+Augmented triads:
+
+<pre>Daug</pre>
+
+Alternative roots ("slash" chords):
+
+<pre>Cm/Bb</pre>
+
+Suspended triads:
+
+<pre>Csus2</pre>
+
+<pre>Bsus4</pre>
+
+<code>sus</code> is shorthand for <code>sus4</code>:
+
+<pre>Gsus</pre>
+
+Praise this chord! ;)
+
+### Seventh Chords
+
+Seventh chords:
+
+<pre>Eb7</pre>
+<pre>Gmaj7</pre>
+<pre>Ebmajor7</pre>
+
+### Higher Extensions
+
+Ninth chords:
+
+<pre>E9</pre>
+
+For sharp and flat ninth you need to disambiguify the notation. For <code>Eb9</pre> it is not clear if an <code>E</code> major triad with a <code>b9</code> extension is meant or a <code>Eb</code> with a <code>9</code> extension. You can use brackets <code>(</code><code>)</code> on either the extension or the chord symbol:
+
+<pre>Eb(9)</pre>
+
+or 
+
+<pre>(Eb)9</pre>
+
+Extensions can be one of the set <code>9</code>, <code>11</code>, <code>13</code>, and their sharp and flat variants (except for the <code>b11</code> and <code>#13</code>):
+
+<pre>Eb7#11</pre>
+
+<pre>A7b9#9</pre>
+
+If that is too cluttered for your taste you can use commata:
+
+<pre>D7,9,#11</pre>
+
+Or brackets:
+
+<pre>C7(b9#9)</pre>
+
+Or both:
+
+<pre>Eb7(9,#11)</pre>
+
+Note that between extensions no extra whitespace is allowed. This is illegal:
+
+<pre>F#maj7 9</pre>
