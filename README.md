@@ -2,9 +2,10 @@
 Table of Contents
 =================
 
-  * [ASCIICHANGES](#asciichanges)
-  * [Introductory Example and General Structure](#introductory-example-and-general-structure)
-  * [General Structure](#general-structure)
+  * [ASCIIChanges](#asciichanges)
+  * [Introductory Example](#introductory-example)
+  * [Scope and Motivation](#scope-and-motivation)
+  * [Structure](#structure)
     * [Whitespace](#whitespace)
     * [Comments](#comments)
     * [Key/Value pairs](#keyvalue-pairs)
@@ -15,11 +16,11 @@ Table of Contents
         * [Higher Extensions](#higher-extensions)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
-# ASCIICHANGES
+# ASCIIChanges
 
 A simple language describing chord progressions (changes) for tunes in ASCII text
 
-# Introductory Example and General Structure
+# Introductory Example
 
 This is an introductory example showcasing some of the features:
 
@@ -43,7 +44,15 @@ Signature: 4/4
 | (+) Gdim | Gmin(maj7,9) |
 </pre>
 
-# General Structure
+# Scope and Motivation
+
+Over the years the author has written several (terrible) ad-hoc parsers in different languages to parse subsets of ASCIIChanges for various experiments in algorithmic composition. He has also corresponded over EMail with other musicians discussing harmonic content of jazz standard tunes. 
+
+Formalizing this language might facilitate his own and others' future experiments in algorithmic compositions.
+
+This package aims to provide a (more or less) formal grammar of ASCIIChanges and a C++ library implemented using Boost-Spirit that creates a hopefully useful data structure representing the song from parsing valid ASCIIChanges files.
+
+# Structure
 
 A legal song file consists of three types of lines:
 
