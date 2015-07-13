@@ -9,6 +9,9 @@ This is an introductory example showcasing some of the features:
 <pre>
 # Autumn Leaves
 
+Tempo: 120bpm
+Signature: 4/4
+
 # A:
 |: Cm7     | F7       |    Bbmaj7   | Ebmaj7    |
 |  Am7b5   | D7b9     | 1. Gm       | G7b9     :|
