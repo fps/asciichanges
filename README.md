@@ -23,7 +23,9 @@ Signature: 4/4
 | Am7b5    | D7b9     | Gm          | G7b9      |
 | Cm7      | F7       | Bbmaj7      | Ebmaj7    |
 | Am7b5    | D7b9     | Gm  Gm/Gb   | Gm/F Gm/E |
-| Am7b5    | D7b9     | Gm          | (G7b9)    |
+| Am7b5    | D7b9     | (c) Gm      | (G7b9)    |
+
+(c) | Gmmaj79 |          |
 </pre>
 
 ## Bars/Measures
