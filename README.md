@@ -4,7 +4,7 @@ A simple language describing chord progressions (changes) for tunes in ASCII tex
 
 # Examples
 
-## Introductory Example
+## Introductory Example and General Structure
 
 This is an introductory example showcasing some of the features:
 
@@ -28,6 +28,17 @@ Signature: 4/4
 | c: Gmmaj79 |          |
 </pre>
 
+## General Structure
+
+A legal song file consists of four types of lines:
+
+* Bars/Measures
+* Whitespace
+* Comments
+* Key/Value pairs
+
+These can be freely intermixed. 
+
 ## Bars/Measures
 
 The simplest well formed program is
@@ -41,6 +52,39 @@ That is an empty bar. Whitespace is not important. This is equivalent to the pre
 As is this one:
 
 <pre>    |   |   </pre>
+
+Measures can contain 
+
+* Chord symbols
+* Beat indicators
+* Key/Value pairs
+* Repetition markers
+* Coda signs
+
+Here are some examples for each of these:
+
+<pre>|  Cm7  | Gm7     |</pre>
+
+Repetition indicators:
+
+<pre>|: Cm7  | Gm7    :|</pre>
+<pre>|: Cm7  | 1. Gm7 :| 3. Ab7 G7 |</pre>
+
+Key/Value pairs:
+
+<pre>| Tempo: 120 Cm7  | Tempo: 130 Gm7 |</pre>
+
+Beat indicators:
+
+<pre>| Cm7 / / F7 | Bbmaj7  |</pre>
+<pre>| Cm7 . . . . . F7 . . |</pre>
+
+Coda signs:
+
+<pre>
+| Cm7     | 0 F7 |
+|0 Cmmaj7 |
+</pre>
 
 ## Whitespace
 
