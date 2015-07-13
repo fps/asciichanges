@@ -25,7 +25,7 @@ Signature: 4/4
 | Am7b5    | D7b9     | Gm  Gm/Gb   | Gm/F Gm/E |
 | Ebmaj7   | D7b9     | (+) Gm      | (G7b9)    |
 
-| (+) Gdim | Gmin(maj7,9) |          |
+| (+) Gdim | Gmin(maj7,9) |
 </pre>
 
 ## General Structure
