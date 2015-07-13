@@ -77,6 +77,10 @@ Alternative notation for minor triads:
 
 <pre>Dbmin</pre>
 
+Alternative roots ("slash" chords):
+
+<pre>Cm/Bb</pre>
+
 Suspended triads:
 
 <pre>Csus2</pre>
@@ -93,4 +97,14 @@ Seventh chords:
 <pre>Gmaj7</pre>
 <pre>Ebmajor7</pre>
 
+Ninth chords:
 
+<pre>E9</pre>
+
+For sharp and flat ninth you need to disambiguify the notation. For <code>Eb9</pre> it is not clear if an <code>E</code> major triad with a <code>b9</code> extension is meant or a <code>Eb</code> with a <code>9</code> extension. You can use brackets <code>(</code><code>)</code> on either the extension or the chord symbol:
+
+<pre>Eb(9)</pre>
+
+or 
+
+<pre>(Eb)9</pre>
