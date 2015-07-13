@@ -4,6 +4,25 @@ A simple language describing chord progressions (changes) for tunes in ASCII tex
 
 # Examples
 
+This is an introductory example showcasing some of the features:
+
+<pre>
+# Autumn Leaves
+
+# A:
+|: Cm7     | F7       |    Bbmaj7   | Ebmaj7    |
+|  Am7b5   | D7b9     | 1. Gm       | G7b9     :|
+                      | 2. Gm       |           |
+
+B:
+| Am7b5    | D7b9     | Gm          | G7b9      |
+| Cm7      | F7       | Bbmaj7      | Ebmaj7    |
+| Am7b5    | D7b9     | Gm  Gm/Gb   | Gm/F Gm/E |
+| Am7b5    | D7b9     | Gm          | (G7b9)    |
+</pre>
+
+
+
 The simplest well formed program is
 
 <pre>| |</pre>
