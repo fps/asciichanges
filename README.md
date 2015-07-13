@@ -20,7 +20,7 @@ Lines consisting of just whitespace are ignored:
 
 <pre>    </pre>
 
-Comments start with a <pre>#</pre>, can start anywhere on a line and extend to the end of that line:
+Comments start with a <code>#</code>, can start anywhere on a line and extend to the end of that line:
 
 </pre># This is a comment</pre>
 
