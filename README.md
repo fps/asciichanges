@@ -166,6 +166,9 @@ Seventh chords:
 <pre>Eb7</pre>
 <pre>Gmaj7</pre>
 <pre>Ebmajor7</pre>
+<pre>Gbmmaj7</pre>
+<pre>Dminmaj7</pre>
+<pre>Emin7</pre>
 
 ### Higher Extensions
 
@@ -173,13 +176,17 @@ Ninth chords:
 
 <pre>E9</pre>
 
-For sharp and flat ninth you need to disambiguify the notation. For <code>Eb9</pre> it is not clear if an <code>E</code> major triad with a <code>b9</code> extension is meant or a <code>Eb</code> with a <code>9</code> extension. You can use brackets <code>(</code><code>)</code> on either the extension or the chord symbol:
+For <code>Eb9</pre> it is not immediately clear if an <code>E</code> major triad with a <code>b9</code> extension is meant or a <code>Eb</code> with a <code>9</code> extension. You can use brackets <code>(</code><code>)</code> on either the extension or the chord symbol:
 
 <pre>Eb(9)</pre>
 
 or 
 
 <pre>(Eb)9</pre>
+
+But the rule is that a b (#) directly following a root note letter are interpreted to lower (sharpen) the root, not modify the extension. So the above brackets are not needed. Only in the (uncommon) case of a major triad with a <code>b9</code> extension you need to use brackets:
+
+<pre>E(b9)</pre>
 
 Extensions can be one of the set <code>9</code>, <code>11</code>, <code>13</code>, and their sharp and flat variants (except for the <code>b11</code> and <code>#13</code>):
 
