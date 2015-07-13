@@ -22,6 +22,6 @@ Lines consisting of just whitespace are ignored:
 
 Comments start with a <code>#</code>, can start anywhere on a line and extend to the end of that line:
 
-</pre># This is a comment</pre>
+<pre># This is a comment</pre>
 
 <pre>| Cm7 | F7 | Bbmaj7 |    |</pre>
