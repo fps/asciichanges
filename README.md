@@ -65,6 +65,8 @@ Chord symbols form an independent language themself (independent in the sense th
 
 ## Examples
 
+### Triads
+
 A C major triad:
 
 <pre>C</pre>
@@ -76,6 +78,14 @@ A Db minor triad
 Alternative notation for minor triads:
 
 <pre>Dbmin</pre>
+
+Diminished triads:
+
+<pre>Cdim</pre>
+
+Augmented triads:
+
+<pre>Daug</pre>
 
 Alternative roots ("slash" chords):
 
@@ -91,11 +101,15 @@ Suspended triads:
 
 <pre>Gsus</pre>
 
+### Seventh Chords
+
 Seventh chords:
 
 <pre>Eb7</pre>
 <pre>Gmaj7</pre>
 <pre>Ebmajor7</pre>
+
+### Higher Extensions
 
 Ninth chords:
 
@@ -108,3 +122,7 @@ For sharp and flat ninth you need to disambiguify the notation. For <code>Eb9</p
 or 
 
 <pre>(Eb)9</pre>
+
+Extensions can be one of the set <code>9</code>, <code>11</code>, <code>13</code>, and their sharp and flat variants:
+
+<pre>Eb711</pre>
