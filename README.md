@@ -58,3 +58,22 @@ Comments start with a <code>#</code>, can start anywhere on a line and extend to
 
 
 <pre>| Cm7 | F7 | Bbmaj7 |    |</pre>
+
+# Chords
+
+Chord symbols form an independent language themself (independent in the sense that you can use the library to parse chord symbols without having to parse a complete song).
+
+## Examples
+
+A C major triad:
+
+<pre>C</pre>
+
+A Db minor triad
+
+<pre>Dbm</pre>
+
+Alternative notation for minor triads:
+
+<pre>Dbmin</pre>
+
