@@ -77,3 +77,20 @@ Alternative notation for minor triads:
 
 <pre>Dbmin</pre>
 
+Suspended triads:
+
+<pre>Csus2</pre>
+
+<pre>Bsus4</pre>
+
+<code>sus</code> is shorthand for <code>sus4</code>:
+
+<pre>Gsus</pre>
+
+Seventh chords:
+
+<pre>Eb7</pre>
+<pre>Gmaj7</pre>
+<pre>Ebmajor7</pre>
+
+
