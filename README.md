@@ -4,6 +4,8 @@ A simple language describing chord progressions (changes) for tunes in ASCII tex
 
 # Examples
 
+## Introductory Example
+
 This is an introductory example showcasing some of the features:
 
 <pre>
@@ -24,7 +26,7 @@ Signature: 4/4
 | Am7b5    | D7b9     | Gm          | (G7b9)    |
 </pre>
 
-
+## Bars/Measures
 
 The simplest well formed program is
 
@@ -38,9 +40,13 @@ As is this one:
 
 <pre>    |   |   </pre>
 
+## Whitespace
+
 Lines consisting of just whitespace are ignored:
 
 <pre>    </pre>
+
+## Comments
 
 Comments start with a <code>#</code>, can start anywhere on a line and extend to the end of that line:
 
