@@ -16,5 +16,12 @@ As is this one:
 
 <pre>    |   |   </pre>
 
+Lines consisting of just whitespace are ignored:
+
+<pre>    </pre>
+
+Comments start with a <pre>#</pre>, can start anywhere on a line and extend to the end of that line:
+
+</pre># This is a comment</pre>
 
 <pre>| Cm7 | F7 | Bbmaj7 |    |</pre>
