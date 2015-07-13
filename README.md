@@ -134,3 +134,7 @@ Extensions can be one of the set <code>9</code>, <code>11</code>, <code>13</code
 If that is too cluttered for your taste you can use commata:
 
 <pre>D7,9,#11</pre>
+
+Or brackets:
+
+<pre>C7(b9,#9)</pre>
