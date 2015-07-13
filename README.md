@@ -23,21 +23,38 @@ Signature: 4/4
 | Am7b5    | D7b9     | Gm          | G7b9      |
 | Cm7      | F7       | Bbmaj7      | Ebmaj7    |
 | Am7b5    | D7b9     | Gm  Gm/Gb   | Gm/F Gm/E |
-| Ebmaj7   | D7b9     | c: Gm       | (G7b9)    |
+| Ebmaj7   | D7b9     | (+) Gm      | (G7b9)    |
 
-| c: Gmmaj79 |          |
+| (+) Gdim | Gmin(maj7,9) |          |
 </pre>
 
 ## General Structure
 
-A legal song file consists of four types of lines:
+A legal song file consists of three types of lines:
 
 * Bars/Measures
-* Whitespace
-* Comments
+* Whitespace lines
 * Key/Value pairs
 
-These can be freely intermixed. 
+These can be freely intermixed. You're also pretty free to use whitespace to format the text nicely.
+
+## Whitespace
+
+Lines consisting of just whitespace are ignored:
+
+<pre>    </pre>
+
+## Comments
+
+Comments start with a <code>#</code>, can start anywhere on a line and extend to the end of that line:
+
+<pre># This is a comment</pre>
+
+<pre>    # This, too</pre>
+
+<pre>| Cm7 | # Vamp over this chord to get a feel for it :) </pre>
+
+## Key/Value pairs
 
 ## Bars/Measures
 
@@ -52,6 +69,16 @@ That is an empty bar. Whitespace is not important. This is equivalent to the pre
 As is this one:
 
 <pre>    |   |   </pre>
+
+A line can consist of more than one measure:
+
+<pre>|   |   |</pre>
+
+<pre>|   |   |   |</pre>
+
+<pre>|   |   |   |   |</pre>
+
+etc.
 
 Measures can contain 
 
@@ -82,26 +109,11 @@ Beat indicators:
 Coda signs:
 
 <pre>
-| Cm7     | 0 F7 |
-|0 Cmmaj7 |
+| Cm7        | (+) F7 |
+
+# Coda:
+| (+) Cmmaj7 |
 </pre>
-
-## Whitespace
-
-Lines consisting of just whitespace are ignored:
-
-<pre>    </pre>
-
-## Comments
-
-Comments start with a <code>#</code>, can start anywhere on a line and extend to the end of that line:
-
-<pre># This is a comment</pre>
-
-<pre>| Cm7 | # Vamp over this chord to get a feel for it :) </pre>
-
-
-<pre>| Cm7 | F7 | Bbmaj7 |    |</pre>
 
 # Chords
 
