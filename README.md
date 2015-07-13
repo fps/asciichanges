@@ -137,4 +137,12 @@ If that is too cluttered for your taste you can use commata:
 
 Or brackets:
 
-<pre>C7(b9,#9)</pre>
+<pre>C7(b9#9)</pre>
+
+Or both:
+
+<pre>Eb7(9,#11)</pre>
+
+Note that between extensions no extra whitespace is allowed. This is illegal:
+
+<pre>F#maj7 9</pre>
