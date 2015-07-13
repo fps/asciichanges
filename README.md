@@ -101,6 +101,8 @@ Suspended triads:
 
 <pre>Gsus</pre>
 
+Praise this chord! ;)
+
 ### Seventh Chords
 
 Seventh chords:
@@ -123,6 +125,12 @@ or
 
 <pre>(Eb)9</pre>
 
-Extensions can be one of the set <code>9</code>, <code>11</code>, <code>13</code>, and their sharp and flat variants:
+Extensions can be one of the set <code>9</code>, <code>11</code>, <code>13</code>, and their sharp and flat variants (except for the <code>b11</code> and <code>#13</code>):
 
-<pre>Eb711</pre>
+<pre>Eb7#11</pre>
+
+<pre>A7b9#9</pre>
+
+If that is too cluttered for your taste you can use commata:
+
+<pre>D7,9,#11</pre>
