@@ -3,27 +3,23 @@ Table of Contents
 =================
 
   * [ASCIICHANGES](#asciichanges)
-  * [Examples](#examples)
-    * [Introductory Example and General Structure](#introductory-example-and-general-structure)
-    * [General Structure](#general-structure)
+  * [Introductory Example and General Structure](#introductory-example-and-general-structure)
+  * [General Structure](#general-structure)
     * [Whitespace](#whitespace)
     * [Comments](#comments)
     * [Key/Value pairs](#keyvalue-pairs)
     * [Bars/Measures](#barsmeasures)
-  * [Chords](#chords)
-    * [Examples](#examples-1)
-      * [Triads](#triads)
-      * [Seventh Chords](#seventh-chords)
-      * [Higher Extensions](#higher-extensions)
+      * [Chords](#chords)
+        * [Triads](#triads)
+        * [Seventh Chords](#seventh-chords)
+        * [Higher Extensions](#higher-extensions)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 # ASCIICHANGES
 
 A simple language describing chord progressions (changes) for tunes in ASCII text
 
-# Examples
-
-## Introductory Example and General Structure
+# Introductory Example and General Structure
 
 This is an introductory example showcasing some of the features:
 
@@ -47,7 +43,7 @@ Signature: 4/4
 | (+) Gdim | Gmin(maj7,9) |
 </pre>
 
-## General Structure
+# General Structure
 
 A legal song file consists of three types of lines:
 
@@ -134,13 +130,11 @@ Coda signs:
 | (+) Cmmaj7 |
 </pre>
 
-# Chords
+### Chords
 
 Chord symbols form an independent language themself (independent in the sense that you can use the library to parse chord symbols without having to parse a complete song).
 
-## Examples
-
-### Triads
+#### Triads
 
 A C major triad:
 
@@ -178,7 +172,7 @@ Suspended triads:
 
 Praise this chord! ;)
 
-### Seventh Chords
+#### Seventh Chords
 
 Seventh chords:
 
@@ -189,7 +183,7 @@ Seventh chords:
 <pre>Dminmaj7</pre>
 <pre>Emin7</pre>
 
-### Higher Extensions
+#### Higher Extensions
 
 Ninth chords:
 
