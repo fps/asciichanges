@@ -14,7 +14,7 @@ This is an introductory example showcasing some of the features:
 |  Am7b5   | D7b9     | 1. Gm       | G7b9     :|
                       | 2. Gm       |           |
 
-B:
+# B:
 | Am7b5    | D7b9     | Gm          | G7b9      |
 | Cm7      | F7       | Bbmaj7      | Ebmaj7    |
 | Am7b5    | D7b9     | Gm  Gm/Gb   | Gm/F Gm/E |
