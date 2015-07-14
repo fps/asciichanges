@@ -121,7 +121,7 @@ Here are some examples for each of these:
 ### Repetition Indicators
 
 <pre>|: Cm7  | Gm7    :|</pre>
-<pre>|: Cm7  | 1. Gm7 :| 3. Ab7 G7 |</pre>
+<pre>|: Cm7  | 1. Gm7 :| 2. Ab7 G7 |</pre>
 
 ### Key/Value Pairs
 
