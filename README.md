@@ -10,7 +10,7 @@ This is an introductory example showcasing some of the features:
 # Autumn Leaves
 
 Tempo: 120
-Signature: 4/4
+Time: 4/4
 
 # A:
 |: Cm7     | F7       |    Bbmaj7   | Ebmaj7          |
@@ -69,18 +69,18 @@ Key/Value pairs are used to describe properties of the song like the tempo, or t
 The following properties can be used:
 
 * <code>Tempo</code>: The tempo of the song in beats per minute (bpm).
-* <code>Signature</code>: The time signature.
+* <code>Time</code>: The time signature.
 * <code>Style</code>: A style hint. This is a free form text property (example: <code>Style: "Latin"</code>
 
 Keys are case insensitive. So an author is free to write <code>tempo</code> or <code>tEmPo</code>. 
 
 Key/value pairs can appear on lines (even several on a single line - whitespace separated):
 
-<pre>Tempo: 120 Signature: 4/4</pre>
+<pre>Tempo: 120 Time: 4/4</pre>
 
 Key/value pairs can also appear in bars/measures. There they must precede any other measure content:
 
-<pre>| Tempo: 110 Cm7 / / F7 | Bbmaj7 |</pre>
+<pre>| Tempo: 110 Time: 4/4  Cm7 / / F7 | Time: 3/4 Bbmaj7 |</pre>
 
 ## Bars/Measures
 
