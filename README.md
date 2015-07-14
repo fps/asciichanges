@@ -1,21 +1,3 @@
-
-Table of Contents
-=================
-
-  * [ASCIIChanges](#asciichanges)
-  * [Introductory Example](#introductory-example)
-  * [Scope and Motivation](#scope-and-motivation)
-  * [Structure](#structure)
-    * [Whitespace](#whitespace)
-    * [Comments](#comments)
-    * [Key/Value pairs](#keyvalue-pairs)
-    * [Bars/Measures](#barsmeasures)
-      * [Chords](#chords)
-        * [Triads](#triads)
-        * [Seventh Chords](#seventh-chords)
-        * [Higher Extensions](#higher-extensions)
-
-Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 # ASCIIChanges
 
 A simple language describing chord progressions (changes) for tunes in ASCII text
