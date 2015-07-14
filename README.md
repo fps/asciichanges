@@ -13,15 +13,15 @@ Tempo: 120
 Signature: 4/4
 
 # A:
-|: Cm7     | F7       |    Bbmaj7   | Ebmaj7    |
-|  Am7b5   | D7b9     | 1. Gm       | G7b9     :|
-                      | 2. Gm       |           |
+|: Cm7     | F7       |    Bbmaj7   | Ebmaj7          |
+|  Am7b5   | D7b9     | 1. Gm       | G7b9           :|
+                      | 2. Gm       |                 |
 
 # B:
-| Am7b5    | D7b9     | Gm          | G7b9      |
-| Cm7      | F7       | Bbmaj7      | Ebmaj7    |
-| Am7b5    | D7b9     | Gm  Gm/Gb   | Gm/F Gm/E |
-| Ebmaj7   | D7b9     | (+) Gm      | (G7b9)    |
+| Am7b5    | D7b9     | Gm            | G7b9          |
+| Cm7      | F7       | Bbmaj7        | Ebmaj7        |
+| Am7b5    | D7b9     | Gm / Gm/Gb /  | Gm/F / Gm/E / |
+| Ebmaj7   | D7b9     | (+) Gm        | (G7b9)        |
 
 | (+) Gdim | Gmin(maj7,9) |
 </pre>
@@ -80,7 +80,7 @@ Key/value pairs can appear on lines (even several on a single line - whitespace 
 
 ## Bars/Measures
 
-The simplest well formed program is
+The simplest line consisting of measures/bars is
 
 <pre>| |</pre>
 
