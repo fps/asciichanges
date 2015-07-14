@@ -78,6 +78,10 @@ Key/value pairs can appear on lines (even several on a single line - whitespace 
 
 <pre>Tempo: 120 Signature: 4/4</pre>
 
+Key/value pairs can also appear in bars/measures. There they must precede any other measure content:
+
+<pre>| Tempo: 110 Cm7 / / F7 | Bbmaj7 |</pre>
+
 ## Bars/Measures
 
 The simplest line consisting of measures/bars is
