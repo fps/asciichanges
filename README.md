@@ -9,7 +9,7 @@ This is an introductory example showcasing some of the features:
 <pre>
 # Autumn Leaves
 
-Tempo: 120bpm
+Tempo: 120
 Signature: 4/4
 
 # A:
@@ -61,6 +61,17 @@ Comments start with a <code>#</code>, can start anywhere on a line and extend to
 <pre>| Cm7 | # Vamp over this chord to get a feel for it :) </pre>
 
 ## Key/Value pairs
+
+Key/Value pairs are used to describe properties of the song like the tempo, or the time signature. Their general structure is
+
+</pre>Key: Value</pre>
+
+The following properties can be used:
+
+* <code>Tempo</code>: The tempo of the song in beats per minute (bpm).
+* <code>Signature</code>: The time signature.
+
+Keys are case insensitive. So an author is free to write <code>tempo</code> or <code>tEmPo</code>.
 
 ## Bars/Measures
 
