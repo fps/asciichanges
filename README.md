@@ -2,7 +2,7 @@
 
 A simple language describing chord progressions (changes) for tunes in ASCII text
 
-# Introductory Example
+# Introductory Examples
 
 This is an introductory example showcasing some of the features:
 
@@ -28,9 +28,9 @@ Signature: 4/4
 
 # Scope and Motivation
 
-Over the years the author has written several (terrible) ad-hoc parsers in different languages to parse subsets of ASCIIChanges for various experiments in algorithmic composition. He has also corresponded over EMail with other musicians discussing harmonic content of jazz standard tunes. 
+Over the years the author has written several (terrible) ad-hoc parsers in different languages to parse subsets of ASCIIChanges for various experiments in algorithmic composition. He has also corresponded over EMail with other musicians discussing harmonic content of jazz standard tunes. One faithful day he realized that there is an overlap between these two areas of use.
 
-Formalizing this language might facilitate his own and others' future experiments in algorithmic compositions.
+Formalizing this language might facilitate his own and others' future experiments in algorithmic compositions. Automatic backing track generation for practice and playing is a subset of algorithmic composition. ASCIIChanges might serve as a standardized interchange format for different backing track generators.
 
 This package aims to provide a (more or less) formal grammar of ASCIIChanges and a C++ library implemented using Boost-Spirit that creates a hopefully useful data structure representing the song from parsing valid ASCIIChanges files.
 
@@ -70,8 +70,13 @@ The following properties can be used:
 
 * <code>Tempo</code>: The tempo of the song in beats per minute (bpm).
 * <code>Signature</code>: The time signature.
+* <code>Style</code>: A style hint. This is a free form text property (example: <code>Style: "Latin"</pre>
 
-Keys are case insensitive. So an author is free to write <code>tempo</code> or <code>tEmPo</code>.
+Keys are case insensitive. So an author is free to write <code>tempo</code> or <code>tEmPo</code>. 
+
+Key/value pairs can appear on lines (even several on a single line - whitespace separated):
+
+<pre>Tempo: 120 Signature: 4/4</pre>
 
 ## Bars/Measures
 
