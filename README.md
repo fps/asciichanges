@@ -118,21 +118,21 @@ Here are some examples for each of these:
 
 <pre>|  Cm7  | Gm7     |</pre>
 
-Repetition indicators:
+### Repetition Indicators
 
 <pre>|: Cm7  | Gm7    :|</pre>
 <pre>|: Cm7  | 1. Gm7 :| 3. Ab7 G7 |</pre>
 
-Key/Value pairs:
+### Key/Value Pairs
 
 <pre>| Tempo: 120 Cm7  | Tempo: 130 Gm7 |</pre>
 
-Beat indicators:
+### Beat Indicators
 
 <pre>| Cm7 / / F7 | Bbmaj7  |</pre>
 <pre>| Cm7 . . . . . F7 . . |</pre>
 
-Coda signs:
+### Coda Signs
 
 <pre>
 | Cm7        | (+) F7 |
