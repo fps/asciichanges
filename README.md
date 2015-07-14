@@ -42,7 +42,7 @@ A legal song file consists of three types of lines:
 * Whitespace lines
 * Key/Value pairs
 
-These can be freely intermixed. You're also pretty free to use whitespace to format the text nicely.
+These can be freely intermixed. You're also pretty free to use whitespace to format the text nicely. Additionally comments can be started anywhere on a line with a <code>#</code>. Comments extend to the end of the line.
 
 ## Whitespace
 
