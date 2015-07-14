@@ -70,7 +70,7 @@ The following properties can be used:
 
 * <code>Tempo</code>: The tempo of the song in beats per minute (bpm).
 * <code>Signature</code>: The time signature.
-* <code>Style</code>: A style hint. This is a free form text property (example: <code>Style: "Latin"</pre>
+* <code>Style</code>: A style hint. This is a free form text property (example: <code>Style: "Latin"</code>
 
 Keys are case insensitive. So an author is free to write <code>tempo</code> or <code>tEmPo</code>. 
 
