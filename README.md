@@ -158,6 +158,7 @@ A Db minor triad
 Alternative notation for minor triads:
 
 <pre>Dbmin</pre>
+<pre>Dbminor</pre>
 
 Diminished triads:
 

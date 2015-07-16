@@ -1,4 +1,4 @@
-#include <asciichanges/asciichanges.h>
+#include <asciichanges/chords.h>
 #include <string>
 #include <iostream>
 
@@ -20,7 +20,7 @@ int main()
 
         bool r = boost::spirit::qi::phrase_parse(iter, end, note, boost::spirit::ascii::space);
 
-        std::cout << r << " " << (end - iter) << std::endl;
+        std::cout << r << " " << (end - iter) << " " << (r && (end - iter == 0)) << std::endl;
     }
     return 0;
 }
