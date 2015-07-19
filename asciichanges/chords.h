@@ -95,6 +95,20 @@ namespace asciichanges
         }
     } sixth;
 
+    template<typename Iterator>
+    struct chord_ : qi::grammar<Iterator>
+    {
+        accidentals_<Iterator> accidentals;
+
+        chord_() : 
+            chord_::base_type(start)
+        {
+            start = abcdefg >> -accidentals;
+        }
+
+        qi::rule<Iterator> start;
+    };
+
    
 }
 
