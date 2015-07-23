@@ -68,42 +68,64 @@ namespace asciichanges
         qi::rule<Iterator> start;
     };
 
-    struct triad_ : qi::symbols<char, unsigned>
+    template<typename Iterator>
+    struct minor_ : qi::grammar<Iterator>
     {
-        triad_()
+        minor_() : 
+            minor_::base_type(start)
         {
-            add
-                ("m", 60)
-                ("min", 60)
-                ("minor", 60)
-                ("sus", 65)
-                ("sus2", 67)
-                ("sus4", 69)
-                ("aug", 71)
-                ("dim", 71)
-            ;
+            start = qi::string("minor") | qi::string("min") | qi::string("m");
         }
-    } triad;
 
-    struct sixth_ : qi::symbols<char, unsigned>
+        qi::rule<Iterator> start;
+    };
+
+    template<typename Iterator>
+    struct suspended_ : qi::grammar<Iterator>
     {
-        sixth_()
+        suspended_() : 
+            suspended_::base_type(start)
         {
-            add
-                ("6", 60)
-            ;
+            start = qi::string("sus4") | qi::string("sus2") | qi::string("sus");
         }
-    } sixth;
+
+        qi::rule<Iterator> start;
+    };
+
+    template<typename Iterator>
+    struct extensions_ : qi::grammar<Iterator>
+    {
+        extensions_() : 
+            extensions_::base_type(start)
+        {
+            extensions = qi::string("b5") | qi::string("6") | qi::string("7") | qi::string("maj7") | qi::string("b9") | qi::string("9") | qi::string("#9") | qi::string("#11") | qi::string("11") | qi::string("b13") | qi::string("13");
+            //start = +(qi::string("b5") | qi::string("6") | qi::string("7") | qi::string("maj7"));
+		
+			comma_separated = extensions >> *(-qi::string(",") >> extensions);
+			bracketed = qi::string("(") >> comma_separated >> qi::string(")");
+			start = (comma_separated >> -bracketed) | bracketed;
+        }
+
+        qi::rule<Iterator> start;
+		qi::rule<Iterator> extensions;
+		qi::rule<Iterator> bracketed;
+		qi::rule<Iterator> comma_separated;
+    };
+
 
     template<typename Iterator>
     struct chord_ : qi::grammar<Iterator>
     {
-        accidentals_<Iterator> accidentals;
+
+        note_<Iterator> note;
+        minor_<Iterator> minor;
+        suspended_<Iterator> suspended;
+        extensions_<Iterator> extensions;
 
         chord_() : 
             chord_::base_type(start)
         {
-            start = abcdefg >> -accidentals;
+            start =  note >> -(extensions | ((minor | suspended) >> -extensions)) >> -('/' >> note);
         }
 
         qi::rule<Iterator> start;
