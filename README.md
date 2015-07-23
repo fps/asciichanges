@@ -13,9 +13,9 @@ Tempo: 120
 Time: 4/4
 
 # A:
-|: Cm7     | F7       |    Bbmaj7   | Ebmaj7          |
-|  Am7b5   | D7b9     | 1. Gm       | G7b9           :|
-                      | 2. Gm       |                 |
+|: Cm7     | F7       |    Bbmaj7     | Ebmaj7        |
+|  Am7b5   | D7b9     | 1. Gm         | G7b9         :|
+                      | 2. Gm         |               |
 
 # B:
 | Am7b5    | D7b9     | Gm            | G7b9          |
@@ -88,13 +88,9 @@ The simplest line consisting of measures/bars is
 
 <pre>| |</pre>
 
-That is an empty bar. Whitespace is not important. This is equivalent to the previous example:
+That is an empty bar. A bar must contain at least one character that's not a <code>|</code>. The following is not an empty bar, but rather a section start (or end) indicator:
 
 <pre>||</pre>
-
-As is this one:
-
-<pre>    |   |   </pre>
 
 A line can consist of more than one measure:
 
@@ -114,14 +110,26 @@ Measures can contain
 * Repetition markers
 * Coda signs
 
-Here are some examples for each of these:
+### A Word about Multiple Chords per Measure/Bar
 
-<pre>|  Cm7  | Gm7     |</pre>
+For simple cases it is possible to use multiple chords per measure/bar without resorting to using beat indicators (see below.) 
 
 ### Repetition Indicators
 
+To indicate repetitions we us
+
+Repeat once:
+
 <pre>|: Cm7  | Gm7    :|</pre>
+
+Repeat once, but use an alternative ending on the second time around:
+
 <pre>|: Cm7  | 1. Gm7 :| 2. Ab7 G7 |</pre>
+
+If you want, you can have as many alternative endings as you want:
+
+<pre>|: Cm7  | 1. Gm7 :| 2. Ab7 G7 :| 3. Db7 :| 4. Ebm Dbm |</pre>
+
 
 ### Key/Value Pairs
 
@@ -129,8 +137,13 @@ Here are some examples for each of these:
 
 ### Beat Indicators
 
+You can use <code>/</code> to indicate quarter beats:
+
 <pre>| Cm7 / / F7 | Bbmaj7  |</pre>
-<pre>| Cm7 . . . . . F7 . . |</pre>
+
+Or </code>.</code> to indicate 8th beats:
+
+<pre>| Cm7 . . . . F7 . . |</pre>
 
 ### Coda Signs
 
@@ -201,7 +214,7 @@ Ninth chords:
 
 <pre>E9</pre>
 
-For <code>Eb9</pre> it is not immediately clear if an <code>E</code> major triad with a <code>b9</code> extension is meant or a <code>Eb</code> with a <code>9</code> extension. You can use brackets <code>(</code><code>)</code> on either the extension or the chord symbol:
+For <code>Eb9</code> it is not immediately clear if an <code>E</code> major triad with a <code>b9</code> extension is meant or a <code>Eb</code> with a <code>9</code> extension. You can use brackets <code>(</code><code>)</code> on either the extension or the chord symbol:
 
 <pre>Eb(9)</pre>
 
