@@ -28,7 +28,7 @@ namespace asciichanges
 
     struct extensions
     {
-        bool m_b5;
+        bool m_flat5;
         bool m_6;
         bool m_7;
         bool m_major7;
@@ -41,7 +41,7 @@ namespace asciichanges
         bool m_13;
 
         extensions() :
-            m_b5(false),
+            m_flat5(false),
             m_6(false),
             m_7(false),
             m_major7(false),
@@ -58,7 +58,7 @@ namespace asciichanges
 
         extensions &operator|=(const extensions &other)
         {
-            m_b5 |= other.m_b5;
+            m_flat5 |= other.m_flat5;
             m_6 |= other.m_6;
             m_7 |= other.m_7;
             m_major7 |= other.m_major7;
@@ -76,6 +76,7 @@ namespace asciichanges
 	struct chord
 	{
         note m_note;
+        note m_slash_note;
 		
 		enum type { MAJOR, MINOR, AUGMENTED, DIMINISHED, SUSPENDED2, SUSPENDED4 } m_type;
 
@@ -138,6 +139,30 @@ namespace asciichanges
                 o << "SUSPENDED4";
                 break;
         }
+
+
+        if (the_chord.m_extensions.m_flat5)
+            o << " b5";
+        if (the_chord.m_extensions.m_6)
+            o << " 6";
+        if (the_chord.m_extensions.m_major7)
+            o << " maj7";
+        if (the_chord.m_extensions.m_7)
+            o << " 7";
+        if (the_chord.m_extensions.m_flat9)
+            o << " b9";
+        if (the_chord.m_extensions.m_9)
+            o << " 9";
+        if (the_chord.m_extensions.m_sharp9)
+            o << " #9";
+        if (the_chord.m_extensions.m_11)
+            o << " 11";
+        if (the_chord.m_extensions.m_sharp11)
+            o << " #11";
+        if (the_chord.m_extensions.m_13)
+            o << " 13";
+        if (the_chord.m_extensions.m_flat13)
+            o << " b13";
 
         return o;
     }
@@ -222,46 +247,6 @@ namespace asciichanges
     };
 
     template<typename Iterator>
-    struct minor_ : qi::grammar<Iterator, chord::type()>
-    {
-        minor_() : 
-            minor_::base_type(start)
-        {
-            using qi::eps;
-            using qi::_val;
-
-            start = 
-                (
-                    qi::string("minor") | 
-                    qi::string("min") | 
-                    qi::string("m")
-                ) [_val = chord::type::MINOR ]
-            ;
-        }
-
-        qi::rule<Iterator, chord::type()> start;
-    };
-
-    template<typename Iterator>
-    struct suspended_ : qi::grammar<Iterator, chord::type()>
-    {
-        suspended_() : 
-            suspended_::base_type(start)
-        {
-            using qi::eps;
-            using qi::_val;
-
-            start = 
-                qi::string("sus4") [ _val = chord::type::SUSPENDED4 ] | 
-                qi::string("sus2") [ _val = chord::type::SUSPENDED2 ] | 
-                qi::string("sus")  [ _val = chord::type::SUSPENDED2 ]
-            ;
-        }
-
-        qi::rule<Iterator, chord::type()> start;
-    };
-
-    template<typename Iterator>
     struct extensions_ : qi::grammar<Iterator, extensions()>
     {
         extensions_() : 
@@ -272,36 +257,50 @@ namespace asciichanges
             using qi::_1;
 
             the_extensions = 
-                qi::string("b5") | 
-                qi::string("6") | 
-                qi::string("7") | 
-                qi::string("maj7") | 
-                qi::string("b9") | 
-                qi::string("9") | 
-                qi::string("#9") | 
-                qi::string("#11") | 
-                qi::string("11") | 
-                qi::string("b13") | 
-                qi::string("13")
+                qi::string("b5") [ phoenix::bind(&extensions::m_flat5, qi::_val) = true ] | 
+                qi::string("6") [ phoenix::bind(&extensions::m_6, qi::_val) = true ] | 
+                qi::string("7") [ phoenix::bind(&extensions::m_7, qi::_val) = true ] | 
+                qi::string("maj7") [ phoenix::bind(&extensions::m_major7, qi::_val) = true ] | 
+                qi::string("b9") [ phoenix::bind(&extensions::m_flat9, qi::_val) = true ] | 
+                qi::string("9") [ phoenix::bind(&extensions::m_9, qi::_val) = true ] | 
+                qi::string("#9") [ phoenix::bind(&extensions::m_sharp9, qi::_val) = true ] | 
+                qi::string("#11") [ phoenix::bind(&extensions::m_sharp11, qi::_val) = true ] | 
+                qi::string("11") [ phoenix::bind(&extensions::m_11, qi::_val) = true ] | 
+                qi::string("b13") [ phoenix::bind(&extensions::m_flat13, qi::_val) = true ] | 
+                qi::string("13") [ phoenix::bind(&extensions::m_13, qi::_val) = true ] 
             ;
 		
-			comma_separated = the_extensions >> *(-qi::string(",") >> the_extensions);
+			comma_separated = 
+                the_extensions [ _val |= _1 ]
+                >> 
+                *(
+                    -qi::string(",") 
+                    >> 
+                    the_extensions [ _val |= _1 ]
+                )
+            ;
 
-			bracketed = qi::string("(") >> comma_separated >> qi::string(")");
+			bracketed = 
+                qi::string("(") 
+                >> 
+                comma_separated [ _val |= _1 ]
+                >> 
+                qi::string(")");
 
 			start = 
                 eps [ _val = extensions() ] >> 
                 (
-                    comma_separated 
-                    >> -bracketed
+                    comma_separated [ _val |= _1 ]
+                    >> -bracketed [ _val |= _1 ]
                 ) | 
-                bracketed;
+                bracketed [ _val |= _1 ]
+            ;
         }
 
         qi::rule<Iterator, extensions()> start;
-		qi::rule<Iterator> the_extensions;
-		qi::rule<Iterator> bracketed;
-		qi::rule<Iterator> comma_separated;
+		qi::rule<Iterator, extensions()> the_extensions;
+		qi::rule<Iterator, extensions()> bracketed;
+		qi::rule<Iterator, extensions()> comma_separated;
     };
 
 
@@ -310,8 +309,6 @@ namespace asciichanges
     {
 
         note_<Iterator> note;
-        minor_<Iterator> minor;
-        suspended_<Iterator> suspended;
         extensions_<Iterator> extensions;
 
         chord_() : 
@@ -323,22 +320,37 @@ namespace asciichanges
 
             start =  
 				eps  [ _val = chord() ] >> 
-				note [ phoenix::bind(&chord::m_note, qi::_val) = _1 ] >> 
+				note [ phoenix::bind(&chord::m_note, qi::_val) = _1 ] [ phoenix::bind(&chord::m_slash_note, qi::_val) = _1 ] >> 
 				-(
-                    extensions | 
+                    extensions [ phoenix::bind(&chord::m_extensions, qi::_val) |= _1 ] 
+                    | 
                     (
                         (
-                            minor | 
-                            suspended | 
-                            qi::string("dim") | 
-                            qi::string("aug")
+                            (
+                                qi::string("minor") 
+                                | 
+                                qi::string("min") 
+                                | 
+                                qi::string("m")
+                            ) [ phoenix::bind(&chord::m_type, qi::_val) = chord::type::MINOR ] 
+                            | 
+                            qi::string("sus2") [ phoenix::bind(&chord::m_type, qi::_val) = chord::type::SUSPENDED2 ] 
+                            |
+                            (
+                                qi::string("sus4") | 
+                                qi::string("sus")
+                            ) [ phoenix::bind(&chord::m_type, qi::_val) = chord::type::SUSPENDED4 ] 
+                            | 
+                            qi::string("dim") [ phoenix::bind(&chord::m_type, qi::_val) = chord::type::DIMINISHED ] 
+                            | 
+                            qi::string("aug") [ phoenix::bind(&chord::m_type, qi::_val) = chord::type::AUGMENTED ] 
                         ) >> 
-                        -extensions
+                        -extensions [ phoenix::bind(&chord::m_extensions, qi::_val) |= _1 ]
                     )
                 ) >> 
                 -(
                     '/' >> 
-                    note
+                    note [ phoenix::bind(&chord::m_slash_note, qi::_val) = _1 ]
                 )
             ;
         }
