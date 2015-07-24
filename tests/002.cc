@@ -16,9 +16,9 @@ int main()
         iterator iter = test.begin();
         iterator end = test.end();
 
-        unsigned result = 0;
+        asciichanges::chord result;
 
-        bool r = boost::spirit::qi::phrase_parse(iter, end, parser, boost::spirit::ascii::space);
+        bool r = boost::spirit::qi::phrase_parse(iter, end, parser, boost::spirit::ascii::space, result);
 
         std::cout << r << " " << (end - iter) << " " << (r && (end - iter == 0)) << std::endl;
     }
