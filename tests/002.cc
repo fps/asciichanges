@@ -20,7 +20,7 @@ int main()
 
         bool r = boost::spirit::qi::phrase_parse(iter, end, parser, boost::spirit::ascii::space, result);
 
-        std::cout << r << " " << (end - iter) << " " << (r && (end - iter == 0)) << std::endl;
+        std::cout << r << " " << (end - iter) << " " << (r && (end - iter == 0)) << " result: " << result << std::endl;
     }
     return 0;
 }

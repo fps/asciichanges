@@ -5,6 +5,9 @@
 #include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/phoenix_bind.hpp>
 
+
+#include <ostream>
+
 namespace asciichanges
 {
     namespace qi = boost::spirit::qi;
@@ -52,6 +55,22 @@ namespace asciichanges
         {
 
         }
+
+        extensions &operator|=(const extensions &other)
+        {
+            m_b5 |= other.m_b5;
+            m_6 |= other.m_6;
+            m_7 |= other.m_7;
+            m_major7 |= other.m_major7;
+            m_flat9 |= other.m_flat9;
+            m_9 |= other.m_9;
+            m_sharp9 |= other.m_sharp9;
+            m_11 |= other.m_11;
+            m_sharp11 |= other.m_sharp11;
+            m_flat13 |= other.m_flat13;
+            m_13 |= other.m_13;
+            return *this;
+        }
     };
 
 	struct chord
@@ -61,8 +80,67 @@ namespace asciichanges
 		enum type { MAJOR, MINOR, AUGMENTED, DIMINISHED, SUSPENDED2, SUSPENDED4 } m_type;
 
         extensions m_extensions;
+
+        chord() :
+            m_type(type::MAJOR)
+        {
+
+        }
 	};
 
+    std::ostream& operator<<(std::ostream &o, const chord& the_chord)
+    {
+        switch (the_chord.m_note.m_name)
+        {
+            case note::name::C:
+                o << "C";
+                break;
+            case note::name::D:
+                o << "D";
+                break;
+            case note::name::E:
+                o << "E";
+                break;
+            case note::name::F:
+                o << "F";
+                break;
+            case note::name::G:
+                o << "G";
+                break;
+            case note::name::A:
+                o << "A";
+                break;
+            case note::name::B:
+                o << "B";
+                break;
+        }
+
+        o << " " << the_chord.m_note.m_accidentals << " ";
+
+        switch (the_chord.m_type)
+        {
+            case chord::type::MAJOR:
+                o << "MAJOR";
+                break;
+            case chord::type::MINOR:
+                o << "MINOR";
+                break;
+            case chord::type::DIMINISHED:
+                o << "DIMINISHED";
+                break;
+            case chord::type::AUGMENTED:
+                o << "AUGMENTED";
+                break;
+            case chord::type::SUSPENDED2:
+                o << "SUSPENDED2";
+                break;
+            case chord::type::SUSPENDED4:
+                o << "SUSPENDED4";
+                break;
+        }
+
+        return o;
+    }
 
     struct abcdefg_ : qi::symbols<char, note::name>
     {
@@ -189,6 +267,10 @@ namespace asciichanges
         extensions_() : 
             extensions_::base_type(start)
         {
+            using qi::eps;
+            using qi::_val;
+            using qi::_1;
+
             the_extensions = 
                 qi::string("b5") | 
                 qi::string("6") | 
@@ -207,7 +289,13 @@ namespace asciichanges
 
 			bracketed = qi::string("(") >> comma_separated >> qi::string(")");
 
-			start = (comma_separated >> -bracketed) | bracketed;
+			start = 
+                eps [ _val = extensions() ] >> 
+                (
+                    comma_separated 
+                    >> -bracketed
+                ) | 
+                bracketed;
         }
 
         qi::rule<Iterator, extensions()> start;
@@ -234,9 +322,25 @@ namespace asciichanges
 			using qi::_1;
 
             start =  
-				eps[_val = chord()] >> 
-				note >> 
-				-(extensions | ((minor | suspended | qi::string("dim") | qi::string("aug")) >> -extensions)) >> -('/' >> note);
+				eps  [ _val = chord() ] >> 
+				note [ phoenix::bind(&chord::m_note, qi::_val) = _1 ] >> 
+				-(
+                    extensions | 
+                    (
+                        (
+                            minor | 
+                            suspended | 
+                            qi::string("dim") | 
+                            qi::string("aug")
+                        ) >> 
+                        -extensions
+                    )
+                ) >> 
+                -(
+                    '/' >> 
+                    note
+                )
+            ;
         }
 
         qi::rule<Iterator, chord()> start;
