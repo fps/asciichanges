@@ -2,9 +2,13 @@
 
 #include <boost/spirit/include/qi.hpp>
 
+#include <boost/spirit/include/phoenix_operator.hpp>
+#include <boost/spirit/include/phoenix_bind.hpp>
+
 namespace asciichanges
 {
     namespace qi = boost::spirit::qi;
+	namespace phoenix = boost::phoenix;
 
     struct abcdefg_ : qi::symbols<char, unsigned>
     {
@@ -43,29 +47,53 @@ namespace asciichanges
     } flat;
 
     template<typename Iterator>
-    struct accidentals_ : qi::grammar<Iterator>
+    struct accidentals_ : qi::grammar<Iterator, int()>
     {
         accidentals_() : 
             accidentals_::base_type(start)
         {
-            start =  +flat | +sharp;
+			using qi::_val;
+			using qi::_1;
+
+            start = 
+				qi::eps [_val = 0] >>
+				(
+						  +flat  [_val += _1]
+						| +sharp [_val += _1]
+				)
+			;
         }
 
-        qi::rule<Iterator> start;
+        qi::rule<Iterator, int()> start;
     };
 
+	struct chord
+	{
+		int root;
+		int accidentals;
+		
+		enum type_ { MAJOR, MINOR, AUGMENTED, DIMINISHED, SUS2, SUS4 } type;
+	};
+
     template<typename Iterator>
-    struct note_ : qi::grammar<Iterator>
+    struct note_ : qi::grammar<Iterator, chord()>
     {
         accidentals_<Iterator> accidentals;
 
         note_() : 
             note_::base_type(start)
         {
-            start = abcdefg >> -accidentals;
+			using qi::eps;
+			using qi::_val;
+			using qi::_1;
+
+            start = 
+				eps [_val = chord()] >>
+				abcdefg [phoenix::bind(&chord::root, qi::_val) = _1] >> 
+				-accidentals;
         }
 
-        qi::rule<Iterator> start;
+        qi::rule<Iterator, chord()> start;
     };
 
     template<typename Iterator>
@@ -102,7 +130,9 @@ namespace asciichanges
             //start = +(qi::string("b5") | qi::string("6") | qi::string("7") | qi::string("maj7"));
 		
 			comma_separated = extensions >> *(-qi::string(",") >> extensions);
+
 			bracketed = qi::string("(") >> comma_separated >> qi::string(")");
+
 			start = (comma_separated >> -bracketed) | bracketed;
         }
 
@@ -114,7 +144,7 @@ namespace asciichanges
 
 
     template<typename Iterator>
-    struct chord_ : qi::grammar<Iterator>
+    struct chord_ : qi::grammar<Iterator, chord()>
     {
 
         note_<Iterator> note;
@@ -125,12 +155,17 @@ namespace asciichanges
         chord_() : 
             chord_::base_type(start)
         {
-            start =  note >> -(extensions | ((minor | suspended) >> -extensions)) >> -('/' >> note);
+			using qi::eps;
+			using qi::_val;
+			using qi::_1;
+
+            start =  
+				eps[_val = chord()] >> 
+				note >> 
+				-(extensions | ((minor | suspended | qi::string("dim") | qi::string("aug")) >> -extensions)) >> -('/' >> note);
         }
 
-        qi::rule<Iterator> start;
+        qi::rule<Iterator, chord()> start;
     };
-
-   
 }
 
