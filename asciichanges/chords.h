@@ -10,18 +10,72 @@ namespace asciichanges
     namespace qi = boost::spirit::qi;
 	namespace phoenix = boost::phoenix;
 
-    struct abcdefg_ : qi::symbols<char, unsigned>
+    struct note
+    {
+        enum name { C, D, E, F, G, A, B} m_name;
+        int m_accidentals;
+
+        note() :
+            m_name(name::C),
+            m_accidentals(0)
+        {
+
+        }
+    };
+
+    struct extensions
+    {
+        bool m_b5;
+        bool m_6;
+        bool m_7;
+        bool m_major7;
+        bool m_flat9;
+        bool m_9;
+        bool m_sharp9;
+        bool m_11;
+        bool m_sharp11;
+        bool m_flat13;
+        bool m_13;
+
+        extensions() :
+            m_b5(false),
+            m_6(false),
+            m_7(false),
+            m_major7(false),
+            m_flat9(false),
+            m_9(false),
+            m_sharp9(false),
+            m_11(false),
+            m_sharp11(false),
+            m_flat13(false),
+            m_13(false)
+        {
+
+        }
+    };
+
+	struct chord
+	{
+        note m_note;
+		
+		enum type { MAJOR, MINOR, AUGMENTED, DIMINISHED, SUSPENDED2, SUSPENDED4 } m_type;
+
+        extensions m_extensions;
+	};
+
+
+    struct abcdefg_ : qi::symbols<char, note::name>
     {
         abcdefg_()
         {
             add
-                ("C", 60)
-                ("D", 62)
-                ("E", 64)
-                ("F", 65)
-                ("G", 67)
-                ("A", 69)
-                ("B", 71)
+                ("C", note::name::C)
+                ("D", note::name::D)
+                ("E", note::name::E)
+                ("F", note::name::F)
+                ("G", note::name::G)
+                ("A", note::name::A)
+                ("B", note::name::B)
             ;
         }
     } abcdefg;
@@ -67,16 +121,8 @@ namespace asciichanges
         qi::rule<Iterator, int()> start;
     };
 
-	struct chord
-	{
-		int root;
-		int accidentals;
-		
-		enum type_ { MAJOR, MINOR, AUGMENTED, DIMINISHED, SUS2, SUS4 } type;
-	};
-
     template<typename Iterator>
-    struct note_ : qi::grammar<Iterator, chord()>
+    struct note_ : qi::grammar<Iterator, note()>
     {
         accidentals_<Iterator> accidentals;
 
@@ -88,56 +134,84 @@ namespace asciichanges
 			using qi::_1;
 
             start = 
-				eps [_val = chord()] >>
-				abcdefg [phoenix::bind(&chord::root, qi::_val) = _1] >> 
-				-accidentals;
+				eps [_val = note()] >>
+				abcdefg      [phoenix::bind(&note::m_name, qi::_val) = _1] >> 
+				-accidentals [phoenix::bind(&note::m_accidentals, qi::_val) += _1]
+            ;
         }
 
-        qi::rule<Iterator, chord()> start;
+        qi::rule<Iterator, note()> start;
     };
 
     template<typename Iterator>
-    struct minor_ : qi::grammar<Iterator>
+    struct minor_ : qi::grammar<Iterator, chord::type()>
     {
         minor_() : 
             minor_::base_type(start)
         {
-            start = qi::string("minor") | qi::string("min") | qi::string("m");
+            using qi::eps;
+            using qi::_val;
+
+            start = 
+                (
+                    qi::string("minor") | 
+                    qi::string("min") | 
+                    qi::string("m")
+                ) [_val = chord::type::MINOR ]
+            ;
         }
 
-        qi::rule<Iterator> start;
+        qi::rule<Iterator, chord::type()> start;
     };
 
     template<typename Iterator>
-    struct suspended_ : qi::grammar<Iterator>
+    struct suspended_ : qi::grammar<Iterator, chord::type()>
     {
         suspended_() : 
             suspended_::base_type(start)
         {
-            start = qi::string("sus4") | qi::string("sus2") | qi::string("sus");
+            using qi::eps;
+            using qi::_val;
+
+            start = 
+                qi::string("sus4") [ _val = chord::type::SUSPENDED4 ] | 
+                qi::string("sus2") [ _val = chord::type::SUSPENDED2 ] | 
+                qi::string("sus")  [ _val = chord::type::SUSPENDED2 ]
+            ;
         }
 
-        qi::rule<Iterator> start;
+        qi::rule<Iterator, chord::type()> start;
     };
 
     template<typename Iterator>
-    struct extensions_ : qi::grammar<Iterator>
+    struct extensions_ : qi::grammar<Iterator, extensions()>
     {
         extensions_() : 
             extensions_::base_type(start)
         {
-            extensions = qi::string("b5") | qi::string("6") | qi::string("7") | qi::string("maj7") | qi::string("b9") | qi::string("9") | qi::string("#9") | qi::string("#11") | qi::string("11") | qi::string("b13") | qi::string("13");
-            //start = +(qi::string("b5") | qi::string("6") | qi::string("7") | qi::string("maj7"));
+            the_extensions = 
+                qi::string("b5") | 
+                qi::string("6") | 
+                qi::string("7") | 
+                qi::string("maj7") | 
+                qi::string("b9") | 
+                qi::string("9") | 
+                qi::string("#9") | 
+                qi::string("#11") | 
+                qi::string("11") | 
+                qi::string("b13") | 
+                qi::string("13")
+            ;
 		
-			comma_separated = extensions >> *(-qi::string(",") >> extensions);
+			comma_separated = the_extensions >> *(-qi::string(",") >> the_extensions);
 
 			bracketed = qi::string("(") >> comma_separated >> qi::string(")");
 
 			start = (comma_separated >> -bracketed) | bracketed;
         }
 
-        qi::rule<Iterator> start;
-		qi::rule<Iterator> extensions;
+        qi::rule<Iterator, extensions()> start;
+		qi::rule<Iterator> the_extensions;
 		qi::rule<Iterator> bracketed;
 		qi::rule<Iterator> comma_separated;
     };
