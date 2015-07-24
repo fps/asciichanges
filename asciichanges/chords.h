@@ -26,6 +26,38 @@ namespace asciichanges
         }
     };
 
+    std::ostream &operator<<(std::ostream &o, const note& the_note)
+    {
+        switch (the_note.m_name)
+        {
+            case note::name::C:
+                o << "C";
+                break;
+            case note::name::D:
+                o << "D";
+                break;
+            case note::name::E:
+                o << "E";
+                break;
+            case note::name::F:
+                o << "F";
+                break;
+            case note::name::G:
+                o << "G";
+                break;
+            case note::name::A:
+                o << "A";
+                break;
+            case note::name::B:
+                o << "B";
+                break;
+        }
+
+        o << " " << the_note.m_accidentals << " ";
+        
+        return o;
+    }
+
     struct extensions
     {
         bool m_flat5;
@@ -91,32 +123,7 @@ namespace asciichanges
 
     std::ostream& operator<<(std::ostream &o, const chord& the_chord)
     {
-        switch (the_chord.m_note.m_name)
-        {
-            case note::name::C:
-                o << "C";
-                break;
-            case note::name::D:
-                o << "D";
-                break;
-            case note::name::E:
-                o << "E";
-                break;
-            case note::name::F:
-                o << "F";
-                break;
-            case note::name::G:
-                o << "G";
-                break;
-            case note::name::A:
-                o << "A";
-                break;
-            case note::name::B:
-                o << "B";
-                break;
-        }
-
-        o << " " << the_chord.m_note.m_accidentals << " ";
+        o << the_chord.m_note << " ";
 
         switch (the_chord.m_type)
         {
@@ -164,6 +171,7 @@ namespace asciichanges
         if (the_chord.m_extensions.m_flat13)
             o << " b13";
 
+        o << " / " << the_chord.m_slash_note;
         return o;
     }
 
