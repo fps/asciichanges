@@ -11,7 +11,7 @@
 namespace asciichanges
 {
     namespace qi = boost::spirit::qi;
-	namespace phoenix = boost::phoenix;
+    namespace phoenix = boost::phoenix;
 
     struct note
     {
@@ -105,12 +105,12 @@ namespace asciichanges
         }
     };
 
-	struct chord
-	{
+    struct chord
+    {
         note m_note;
         note m_slash_note;
-		
-		enum type { MAJOR, MINOR, AUGMENTED, DIMINISHED, SUSPENDED2, SUSPENDED4 } m_type;
+        
+        enum type { MAJOR, MINOR, AUGMENTED, DIMINISHED, SUSPENDED2, SUSPENDED4 } m_type;
 
         extensions m_extensions;
 
@@ -119,7 +119,7 @@ namespace asciichanges
         {
 
         }
-	};
+    };
 
     std::ostream& operator<<(std::ostream &o, const chord& the_chord)
     {
@@ -217,16 +217,16 @@ namespace asciichanges
         accidentals_() : 
             accidentals_::base_type(start)
         {
-			using qi::_val;
-			using qi::_1;
+            using qi::_val;
+            using qi::_1;
 
             start = 
-				qi::eps [_val = 0] >>
-				(
-						  +flat  [_val += _1]
-						| +sharp [_val += _1]
-				)
-			;
+                qi::eps [_val = 0] >>
+                (
+                          +flat  [_val += _1]
+                        | +sharp [_val += _1]
+                )
+            ;
         }
 
         qi::rule<Iterator, int()> start;
@@ -240,14 +240,14 @@ namespace asciichanges
         note_() : 
             note_::base_type(start)
         {
-			using qi::eps;
-			using qi::_val;
-			using qi::_1;
+            using qi::eps;
+            using qi::_val;
+            using qi::_1;
 
             start = 
-				eps [_val = note()] >>
-				abcdefg      [phoenix::bind(&note::m_name, qi::_val) = _1] >> 
-				-accidentals [phoenix::bind(&note::m_accidentals, qi::_val) += _1]
+                eps [_val = note()] >>
+                abcdefg      [phoenix::bind(&note::m_name, qi::_val) = _1] >> 
+                -accidentals [phoenix::bind(&note::m_accidentals, qi::_val) += _1]
             ;
         }
 
@@ -277,8 +277,8 @@ namespace asciichanges
                 qi::string("b13") [ phoenix::bind(&extensions::m_flat13, qi::_val) = true ] | 
                 qi::string("13") [ phoenix::bind(&extensions::m_13, qi::_val) = true ] 
             ;
-		
-			comma_separated = 
+        
+            comma_separated = 
                 the_extensions [ _val |= _1 ]
                 >> 
                 *(
@@ -288,14 +288,14 @@ namespace asciichanges
                 )
             ;
 
-			bracketed = 
+            bracketed = 
                 qi::string("(") 
                 >> 
                 comma_separated [ _val |= _1 ]
                 >> 
                 qi::string(")");
 
-			start = 
+            start = 
                 eps [ _val = extensions() ] >> 
                 (
                     comma_separated [ _val |= _1 ]
@@ -306,9 +306,9 @@ namespace asciichanges
         }
 
         qi::rule<Iterator, extensions()> start;
-		qi::rule<Iterator, extensions()> the_extensions;
-		qi::rule<Iterator, extensions()> bracketed;
-		qi::rule<Iterator, extensions()> comma_separated;
+        qi::rule<Iterator, extensions()> the_extensions;
+        qi::rule<Iterator, extensions()> bracketed;
+        qi::rule<Iterator, extensions()> comma_separated;
     };
 
 
@@ -322,14 +322,14 @@ namespace asciichanges
         chord_() : 
             chord_::base_type(start)
         {
-			using qi::eps;
-			using qi::_val;
-			using qi::_1;
+            using qi::eps;
+            using qi::_val;
+            using qi::_1;
 
             start =  
-				eps  [ _val = chord() ] >> 
-				note [ phoenix::bind(&chord::m_note, qi::_val) = _1 ] [ phoenix::bind(&chord::m_slash_note, qi::_val) = _1 ] >> 
-				-(
+                eps  [ _val = chord() ] >> 
+                note [ phoenix::bind(&chord::m_note, qi::_val) = _1 ] [ phoenix::bind(&chord::m_slash_note, qi::_val) = _1 ] >> 
+                -(
                     extensions [ phoenix::bind(&chord::m_extensions, qi::_val) |= _1 ] 
                     | 
                     (
