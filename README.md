@@ -26,6 +26,12 @@ Time: 4/4
 | (+) Gdim | Gmin(maj7,9) |
 </pre>
 
+And here is the super minimal example (which is just the C major triad):
+
+<pre>
+C
+</pre>
+
 # Scope and Motivation
 
 Over the years the author has written several (terrible) ad-hoc parsers in different languages to parse subsets of ASCIIChanges for various experiments in algorithmic composition. He has also corresponded over EMail with other musicians discussing harmonic content of jazz standard tunes. One faithful day he realized that there is an overlap between these two areas of use.
@@ -36,13 +42,35 @@ This package aims to provide a (more or less) formal grammar of ASCIIChanges and
 
 # Structure
 
-A legal song file consists of three types of lines:
+A legal song file consists of these types of lines:
 
+* Chord symbols
 * Bars/Measures
 * Whitespace lines
 * Key/Value pairs
 
 These can be freely intermixed. You're also pretty free to use whitespace to format the text nicely. Additionally comments can be started anywhere on a line with a <code>#</code>. Comments extend to the end of the line.
+
+Instead of a newline you can also use the <code>;</code> character:
+
+<pre>
+| Cm | Fm |
+| Ab | G7 |
+</pre>
+
+is equivalent to
+
+<pre>
+| Cm | Fm | ; | Ab | G7 |
+</pre>
+
+which you could also write much simpler as
+
+<pre>
+| Cm | Fm | Ab | G7 |
+</pre>
+
+but that's not the point here ;)
 
 ## Whitespace
 
@@ -58,7 +86,7 @@ Comments start with a <code>#</code>, can start anywhere on a line and extend to
 
 <pre>    # This, too</pre>
 
-<pre>| Cm7 | # Vamp over this chord to get a feel for it :) </pre>
+<pre>| Cm7 | G7b9b13 | # Vamp over these chords to get a feel for the "odd" extensions :)</pre>
 
 ## Key/Value pairs
 
@@ -66,7 +94,7 @@ Key/Value pairs are used to describe properties of the song like the tempo, or t
 
 </pre>Key: Value</pre>
 
-The following properties can be used:
+The following properties can be used (for example - it is unclear yet, if it is in the scope of the language definition to restrict or control these further):
 
 * <code>Tempo</code>: The tempo of the song in beats per minute (bpm).
 * <code>Time</code>: The time signature.
