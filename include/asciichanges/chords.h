@@ -15,7 +15,9 @@ namespace asciichanges
 
     struct note
     {
-        enum name { C, D, E, F, G, A, B} m_name;
+        enum class name { C, D, E, F, G, A, B};
+        
+        name m_name;
         int m_accidentals;
 
         note() :

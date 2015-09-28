@@ -30,7 +30,8 @@ configure_file(asciichanges.pc.in asciichanges-${PROJECT_VERSION}.pc @ONLY)
 
 add_definitions(-DPROJECT_VERSION=\"${PROJECT_VERSION}\")
 
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi -pedantic -Wconversion -Wall -pthread -fmax-errors=1")
+# set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -ansi -pedantic -Wconversion -Wall -pthread -fmax-errors=1")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pedantic -Wconversion -Wall -pthread -fmax-errors=1")
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0")
