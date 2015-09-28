@@ -83,6 +83,9 @@ target_link_libraries(asciichanges_test_001 ${Boost_LIBRARIES})
 add_executable(asciichanges_test_002 tests/002.cc)
 target_link_libraries(asciichanges_test_002 ${Boost_LIBRARIES})
 
+add_executable(asciichanges_test_003 tests/003.cc)
+target_link_libraries(asciichanges_test_003 ${Boost_LIBRARIES})
+
 # 
 # INSTALLATION
 # 
