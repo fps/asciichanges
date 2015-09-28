@@ -48,8 +48,9 @@ A legal song file consists of these types of lines:
 * Bars/Measures
 * Whitespace lines
 * Key/Value pairs
+* Comments
 
-These can be freely intermixed. You're also pretty free to use whitespace to format the text nicely. Additionally comments can be started anywhere on a line with a <code>#</code>. Comments extend to the end of the line.
+These can be freely intermixed. You're also pretty free to use whitespace to format the text nicely. 
 
 Instead of a newline you can also use the <code>;</code> character:
 
@@ -176,7 +177,7 @@ Or </code>.</code> to indicate 8th beats:
 <pre>
 | Cm7        | (+) F7 |
 
-# Coda:
+-- Coda:
 | (+) Cmmaj7 |
 </pre>
 
