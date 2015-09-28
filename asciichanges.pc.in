@@ -1,0 +1,11 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+includedir=${prefix}/include
+libdir=${exec_prefix}/lib
+
+Name: asciichanges-@PROJECT_VERSION@
+Description: The asciichanges parser and compilers
+Requires: 
+Version: @PROJECT_VERSION@
+Cflags: -I${includedir}/
+Libs: 
