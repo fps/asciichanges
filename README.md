@@ -7,17 +7,17 @@ A simple language describing chord progressions (changes) for tunes in ASCII tex
 This is an introductory example showcasing some of the features:
 
 <pre>
-# Autumn Leaves
+-- Autumn Leaves
 
 Tempo: 120
 Time: 4/4
 
-# A:
+-- A:
 |: Cm7     | F7       |    Bbmaj7     | Ebmaj7        |
 |  Am7b5   | D7b9     | 1. Gm         | G7b9         :|
                       | 2. Gm         |               |
 
-# B:
+-- B:
 | Am7b5    | D7b9     | Gm            | G7b9          |
 | Cm7      | F7       | Bbmaj7        | Ebmaj7        |
 | Am7b5    | D7b9     | Gm / Gm/Gb /  | Gm/F / Gm/E / |
@@ -80,13 +80,11 @@ Lines consisting of just whitespace are ignored:
 
 ## Comments
 
-Comments start with a <code>#</code>, can start anywhere on a line and extend to the end of that line:
+Comments start with a <code>--</code>. They have to start at the beginning of a line and extend to the end of that line.
 
-<pre># This is a comment</pre>
+<pre>-- This is a comment</pre>
 
-<pre>    # This, too</pre>
-
-<pre>| Cm7 | G7b9b13 | # Vamp over these chords to get a feel for the "odd" extensions :)</pre>
+<pre>    -- This is not a comment</pre>
 
 ## Key/Value pairs
 
