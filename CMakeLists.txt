@@ -91,7 +91,7 @@ target_link_libraries(asciichanges2json asciichanges ${Boost_LIBRARIES})
 # TESTS
 # 
 
-foreach(TEST_NAME "songs/autumn_leaves.ac" "songs/stella_by_starlight.ac")
+foreach(TEST_NAME "snippets/bar_with_chord.ac" "snippets/comments_and_keyvalues.ac" "snippets/empty_bars.ac" "snippets/free_chords.ac" "songs/autumn_leaves.ac" "songs/stella_by_starlight.ac")
     add_test(NAME "${TEST_NAME}" COMMAND "${CMAKE_COMMAND}" -DMY_COMMAND=$<TARGET_FILE:asciichanges_parse_song> -DINPUT_FILE=${CMAKE_CURRENT_SOURCE_DIR}/examples/valid/${TEST_NAME} -P ${CMAKE_CURRENT_SOURCE_DIR}/test_parser.cmake)
 endforeach()
 
