@@ -6,12 +6,38 @@ int main()
 {
     std::vector<std::string> tests = 
     { 
-        "Cm7",
+        "",
+
+        " ",
+
+        "   ",
+
+        "  Cm7",
+       
+        "Eb   ",
+
+        "Eb   \n",
+
+        "\nEb   ",
+
+         "Cm7",
         
         "Eb",
         
         "-- This is a comment",
+
+        "\n-- This is a comment",
+
+        "-- This is a comment\n",
         
+        "  \n-- This is a comment\n   ",
+
+        "Tempo: 120",
+
+        "Beat: 7/8",
+     
+        "Beat: 9/5; Style: Swing",
+
         "| Am7 |",
         
         "|   |  |  |",
@@ -40,7 +66,7 @@ int main()
 
     for (const auto &test : tests)
     {
-        std::cout << "\"" << test << "\": ";
+        std::cout << "\"" << test << "\":" << std::endl;
 
         iterator iter = test.begin();
         iterator end = test.end();
@@ -49,7 +75,7 @@ int main()
 
         bool r = boost::spirit::qi::phrase_parse(iter, end, parser, boost::spirit::ascii::space, result);
 
-        std::cout << r << " " << (end - iter) << std::endl << "\t " << "parsed: " << (r && (end - iter == 0)) << " result: " << result << std::endl;
+        std::cout << "\t" << r << " " << (iter - test.begin()) << "/" << (end - test.begin()) << " "  << "parsed: " << (r && (end - iter == 0)) << " result: " << result << std::endl;
     }
     return 0;
 }

@@ -49,23 +49,6 @@ namespace asciichanges
         return o;
     }
 
-    template<typename Iterator>
-    struct comment_ : qi::grammar<Iterator>
-    {
-        comment_() :
-            comment_::base_type(start)
-        {
-            using qi::eps;
-            using qi::_val;
-            using qi::_1;
-            using qi::alnum;
- 
-            start = 
-                "--" >> *alnum >> "\n";
-        }
-
-        qi::rule<Iterator> start;
-    };
  
     template<typename Iterator>
     struct keyvalue_ : qi::grammar<Iterator, keyvalue()>
@@ -80,7 +63,7 @@ namespace asciichanges
  
             start = 
                 qi::eps [ _val = keyvalue() ] >>
-                (+alnum >> ':' >> +alnum);
+                (+alnum >> ": " >> +alnum);
         }
 
         qi::rule<Iterator, keyvalue()> start;
@@ -96,11 +79,13 @@ namespace asciichanges
         {
             using qi::eps;
             using qi::_val;
+            using qi::blank;
             using qi::_1;
+            using qi::lit;
 
             start = 
                 eps [ _val = bars() ] >>
-                "|" >> *(chord) >> "|"
+                +("|" >> -lit(":") >> *blank >> *(chord >> *blank) >> ":") >> "|"
             ;
         }
 
@@ -114,7 +99,6 @@ namespace asciichanges
         chord_<Iterator> chord;
         keyvalue_<Iterator> keyvalue;
         bars_<Iterator> bars;
-        comment_<Iterator> comment;
 
         song_() :
             song_::base_type(start)
@@ -122,23 +106,42 @@ namespace asciichanges
             using qi::eps;
             using qi::_val;
             using qi::_1;
-    
+            using qi::blank;
+            using qi::eol;
+            using qi::alnum;
+
+            endofline =
+                ";"
+                |
+                eol
+            ;
+
+            comment =     
+                "--" >> *(alnum | blank)
+            ;
+
+            line = 
+                comment
+                |
+                (*blank >> chord >> *blank)
+                |
+                (*blank >> keyvalue >> *blank)
+                |
+                (*blank >> bars >> *blank)
+                |
+                *blank
+            ;
+
             start =
                 eps  [ _val = song() ] >>
-                +(
-                    "\n"
-                    |
-                    comment
-                    |
-                    chord
-                    |
-                    keyvalue
-                    |
-                    bars
-                );
+                (line % endofline) >> -endofline
+            ;
         }
 
         qi::rule<Iterator, song()> start;
+        qi::rule<Iterator> comment;
+        qi::rule<Iterator> endofline;
+        qi::rule<Iterator> line;
     };
 }
 
