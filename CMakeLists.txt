@@ -91,6 +91,10 @@ target_link_libraries(asciichanges2json asciichanges ${Boost_LIBRARIES})
 # 
 
 install(DIRECTORY include/asciichanges DESTINATION include FILES_MATCHING PATTERN "*.h")
+
 install(FILES ${PROJECT_BINARY_DIR}/asciichanges-${PROJECT_VERSION}.pc DESTINATION lib/pkgconfig)
-install(TARGETS asciichanges2json RUNTIME DESTINATION bin)
+
+install(TARGETS asciichanges2json asciichanges_parse_song RUNTIME DESTINATION bin)
+
+install(TARGETS asciichanges ARCHIVE DESTINATION lib)
 
