@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <ostream>
 
 namespace asciichanges
 {
@@ -23,5 +24,12 @@ namespace asciichanges
 
         }
     };
+
+    inline std::ostream &operator<<(std::ostream &o, const parse_info &i)
+    {
+        o << "success: " << i.success << " consumed: " << i.consumed << " / total: " << i.total;
+
+        return o;
+    }
 }
 
