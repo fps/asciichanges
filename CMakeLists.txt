@@ -80,17 +80,11 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 add_library(asciichanges src/parser.cc)
 target_link_libraries(asciichanges ${Boost_LIBRARIES})
 
-#add_executable(asciichanges_test_001 tests/001.cc)
-#target_link_libraries(asciichanges_test_001 ${Boost_LIBRARIES})
-#
-#add_executable(asciichanges_test_002 tests/002.cc)
-#target_link_libraries(asciichanges_test_002 ${Boost_LIBRARIES})
-#
-#add_executable(asciichanges_test_003 tests/003.cc)
-#target_link_libraries(asciichanges_test_003 ${Boost_LIBRARIES})
-
 add_executable(asciichanges_parse_song tests/parse_song.cc)
 target_link_libraries(asciichanges_parse_song asciichanges ${Boost_LIBRARIES})
+
+add_executable(asciichanges2json compilers/asciichanges2json)
+target_link_libraries(asciichanges2json asciichanges ${Boost_LIBRARIES})
 
 # 
 # INSTALLATION
@@ -98,4 +92,5 @@ target_link_libraries(asciichanges_parse_song asciichanges ${Boost_LIBRARIES})
 
 install(DIRECTORY include/asciichanges DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(FILES ${PROJECT_BINARY_DIR}/asciichanges-${PROJECT_VERSION}.pc DESTINATION lib/pkgconfig)
+install(TARGETS asciichanges2json RUNTIME DESTINATION bin)
 
