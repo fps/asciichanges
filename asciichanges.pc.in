@@ -8,4 +8,5 @@ Description: The asciichanges parser and compilers
 Requires: 
 Version: @PROJECT_VERSION@
 Cflags: -I${includedir}/
-Libs: 
+Libs: -lasciichanges
+
