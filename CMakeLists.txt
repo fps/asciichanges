@@ -70,13 +70,14 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 # find_package(PkgConfig REQUIRED)
 # pkg_check_modules(LADSPAMM REQUIRED ladspamm-1)
 
-find_package(Boost REQUIRED)
+find_package(Boost COMPONENTS program_options REQUIRED)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 #
 # TARGETS
 # 
+
 add_library(asciichanges src/parser.cc)
 target_link_libraries(asciichanges ${Boost_LIBRARIES})
 
@@ -85,6 +86,15 @@ target_link_libraries(asciichanges_parse_song asciichanges ${Boost_LIBRARIES})
 
 add_executable(asciichanges2json compilers/asciichanges2json)
 target_link_libraries(asciichanges2json asciichanges ${Boost_LIBRARIES})
+
+#
+# TESTS
+# 
+
+add_test(NAME autumn_leaves COMMAND "${CMAKE_COMMAND}" -DMY_COMMAND=$<TARGET_FILE:asciichanges_parse_song> -DINPUT_FILE=${CMAKE_CURRENT_SOURCE_DIR}/examples/valid/songs/autumn_leaves.ac -P ${CMAKE_CURRENT_SOURCE_DIR}/test_parser.cmake)
+
+add_test(NAME invalid_autumn_leaves COMMAND "${CMAKE_COMMAND}" -DMY_COMMAND=$<TARGET_FILE:asciichanges_parse_song> -DINPUT_FILE=${CMAKE_CURRENT_SOURCE_DIR}/examples/invalid/autumn_leaves.ac -P ${CMAKE_CURRENT_SOURCE_DIR}/test_parser.cmake)
+set_tests_properties(invalid_autumn_leaves PROPERTIES WILL_FAIL TRUE)
 
 # 
 # INSTALLATION
