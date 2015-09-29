@@ -95,8 +95,10 @@ foreach(TEST_NAME "songs/autumn_leaves.ac" "songs/stella_by_starlight.ac")
     add_test(NAME "${TEST_NAME}" COMMAND "${CMAKE_COMMAND}" -DMY_COMMAND=$<TARGET_FILE:asciichanges_parse_song> -DINPUT_FILE=${CMAKE_CURRENT_SOURCE_DIR}/examples/valid/${TEST_NAME} -P ${CMAKE_CURRENT_SOURCE_DIR}/test_parser.cmake)
 endforeach()
 
-add_test(NAME invalid_autumn_leaves COMMAND "${CMAKE_COMMAND}" -DMY_COMMAND=$<TARGET_FILE:asciichanges_parse_song> -DINPUT_FILE=${CMAKE_CURRENT_SOURCE_DIR}/examples/invalid/autumn_leaves.ac -P ${CMAKE_CURRENT_SOURCE_DIR}/test_parser.cmake)
-set_tests_properties(invalid_autumn_leaves PROPERTIES WILL_FAIL TRUE)
+foreach(TEST_NAME "autumn_leaves.ac" "stella_by_starlight.ac")
+    add_test(NAME "invalid_${TEST_NAME}" COMMAND "${CMAKE_COMMAND}" -DMY_COMMAND=$<TARGET_FILE:asciichanges_parse_song> -DINPUT_FILE=${CMAKE_CURRENT_SOURCE_DIR}/examples/invalid/${TEST_NAME} -P ${CMAKE_CURRENT_SOURCE_DIR}/test_parser.cmake)
+    set_tests_properties("invalid_${TEST_NAME}" PROPERTIES WILL_FAIL TRUE)
+endforeach()
 
 # 
 # INSTALLATION
