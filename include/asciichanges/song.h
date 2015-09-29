@@ -52,7 +52,11 @@ namespace asciichanges
                 (lit("(") >> chords >> lit(")")) | chords;
 
             bar_with_optional_repetition =
-                -lit(":") >> -(+blank >> qi::int_ >> ".") >> -(+blank >> lit("(+)")) >> ((+blank >> chords >> +blank) | +blank) >> -lit(":");
+                -lit(":") >> 
+                    -(+blank >> qi::int_ >> ".") >> 
+                    -(+blank >> lit("(+)")) >> 
+                    ((+blank >> bracketed_chords >> +blank) | +blank) >> 
+                -lit(":");
 
             start = 
                 eps [ _val = bars() ] >>
