@@ -33,6 +33,7 @@ int main()
         "  \n-- This is a comment\n   ",
 
         "Tempo: 120",
+        "Tempo: 120; Style: Swing",
 
         "Beat: 7/8",
      
@@ -73,7 +74,7 @@ int main()
 
         asciichanges::song result;
 
-        bool r = boost::spirit::qi::phrase_parse(iter, end, parser, boost::spirit::ascii::space, result);
+        bool r = boost::spirit::qi::parse(iter, end, parser, result);
 
         std::cout << "\t" << r << " " << (iter - test.begin()) << "/" << (end - test.begin()) << " "  << "parsed: " << (r && (end - iter == 0)) << " result: " << result << std::endl;
     }

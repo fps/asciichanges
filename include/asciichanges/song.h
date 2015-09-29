@@ -60,10 +60,11 @@ namespace asciichanges
             using qi::_val;
             using qi::_1;
             using qi::alnum;
+            using qi::blank;
  
             start = 
                 qi::eps [ _val = keyvalue() ] >>
-                (+alnum >> ": " >> +alnum);
+                (+alnum >> ":" >> *blank >> +(alnum | "/"));
         }
 
         qi::rule<Iterator, keyvalue()> start;
@@ -123,13 +124,13 @@ namespace asciichanges
             line = 
                 comment
                 |
-                (*blank >> chord >> *blank)
-                |
                 (*blank >> keyvalue >> *blank)
                 |
                 (*blank >> bars >> *blank)
                 |
                 *blank
+                |
+                (*blank >> chord >> *blank)
             ;
 
             start =
