@@ -2,8 +2,6 @@
 #include <string>
 #include <iostream>
 
-#include <boost/spirit/include/support_istream_iterator.hpp>
-
 int main()
 {
     asciichanges::song result;
