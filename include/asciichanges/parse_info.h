@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace asciichanges
 {
     /**
@@ -10,11 +12,13 @@ namespace asciichanges
         size_t consumed;
         size_t total;
         bool success;
+        std::string input;
 
-        parse_info(size_t c, size_t t, bool s) :
+        parse_info(size_t c, size_t t, bool s, std::string i) :
             consumed(c),
             total(t),
-            success(s)
+            success(s),
+            input(i)
         {
 
         }

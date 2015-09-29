@@ -7,8 +7,15 @@ namespace asciichanges
 {
     parse_info parse(const std::string &s, song &result)
     {
-        
-        return parse_info(0, 0, false);
+        typedef std::string::const_iterator iterator;
+        iterator begin = s.begin();
+        iterator iter = begin;
+        iterator end = s.end();
+
+        asciichanges::song_<iterator> parser;
+
+        bool r = boost::spirit::qi::parse(iter, end, parser, result);
+        return parse_info(iter - begin, end - begin, r, s);
     }
 
     parse_info parse(std::istream &i, song &result)
@@ -22,15 +29,7 @@ namespace asciichanges
             input += line + "\n";
         }
 
-        typedef std::string::const_iterator iterator;
-        iterator begin = input.begin();
-        iterator iter = begin;
-        iterator end = input.end();
-
-        asciichanges::song_<iterator> parser;
-
-        bool r = boost::spirit::qi::parse(iter, end, parser, result);
-        return parse_info(iter - begin, end - begin, r);
+        return parse(input, result);
     }
 }
 

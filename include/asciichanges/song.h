@@ -47,7 +47,7 @@ namespace asciichanges
 
             start = 
                 eps [ _val = bars() ] >>
-                +("|" >> -lit(":") >> *blank >> *(chord >> *blank) >> -lit(":")) >> "|"
+                +("|" >> -lit(":") >> +blank >> -lit(":")) >> "|"
             ;
         }
 
