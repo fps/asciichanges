@@ -21,6 +21,7 @@ namespace asciichanges
     using qi::eol;
     using qi::alnum;
     using qi::lit;
+    using qi::int_;
 
     template<typename Iterator>
     struct keyvalue_ : qi::grammar<Iterator, keyvalue()>
@@ -45,10 +46,13 @@ namespace asciichanges
             bars_::base_type(start)
         {
             chords =
-                chord % +blank;
+                (chord | lit("/") | lit(".")) % +blank;
                 
+            bracketed_chords =
+                (lit("(") >> chords >> lit(")")) | chords;
+
             bar_with_optional_repetition =
-                -lit(":") >> (chords | +blank) >> -lit(":");
+                -lit(":") >> -(+blank >> qi::int_ >> ".") >> -(+blank >> lit("(+)")) >> ((+blank >> chords >> +blank) | +blank) >> -lit(":");
 
             start = 
                 eps [ _val = bars() ] >>
@@ -58,6 +62,7 @@ namespace asciichanges
 
         qi::rule<Iterator, bars()> start;
         qi::rule<Iterator> chords;
+        qi::rule<Iterator> bracketed_chords;
         qi::rule<Iterator> bar_with_optional_repetition;
     };
 
@@ -79,7 +84,7 @@ namespace asciichanges
             ;
 
             comment =     
-                "--" >> *(alnum | blank)
+                "--" >> *(alnum | blank | ":")
             ;
 
             line = 
