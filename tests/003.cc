@@ -26,6 +26,12 @@ int main()
         
         "-- This is a comment",
 
+        "  -- This is a comment   \n"
+        "-- This is a comment \n",
+
+        "-- This is a comment\n"
+        "-- This is a comment",
+
         "\n-- This is a comment",
 
         "-- This is a comment\n",

@@ -8,48 +8,12 @@
 #include <ostream>
 
 #include <asciichanges/chords.h>
+#include <asciichanges/results.h>
+
 #include <string>
 
 namespace asciichanges
 {
-    struct event
-    {
-        virtual ~event() 
-        { 
-
-        }
-    };
-
-    struct keyvalue
-    {
-        std::string key;
-        std::string value;
-
-        keyvalue(const std::string k = "", const std::string v = "") :
-            key(k),
-            value(v)
-        {
-
-        }
-    };
-
-    struct bars
-    {
-
-    };
-
-    struct song
-    {
-
-    };
-
-    std::ostream &operator<<(std::ostream &o, const song &s)
-    {
-        o << "song";
-        return o;
-    }
-
- 
     template<typename Iterator>
     struct keyvalue_ : qi::grammar<Iterator, keyvalue()>
     {
@@ -86,7 +50,7 @@ namespace asciichanges
 
             start = 
                 eps [ _val = bars() ] >>
-                +("|" >> -lit(":") >> *blank >> *(chord >> *blank) >> ":") >> "|"
+                +("|" >> -lit(":") >> *blank >> *(chord >> *blank) >> -lit(":")) >> "|"
             ;
         }
 
@@ -128,9 +92,9 @@ namespace asciichanges
                 |
                 (*blank >> bars >> *blank)
                 |
-                *blank
-                |
                 (*blank >> chord >> *blank)
+                |
+                *blank
             ;
 
             start =

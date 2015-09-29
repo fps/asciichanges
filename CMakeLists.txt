@@ -77,14 +77,20 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 #
 # TARGETS
 # 
-add_executable(asciichanges_test_001 tests/001.cc)
-target_link_libraries(asciichanges_test_001 ${Boost_LIBRARIES})
+add_library(asciichanges src/parser.cc)
+target_link_libraries(asciichanges ${Boost_LIBRARIES})
 
-add_executable(asciichanges_test_002 tests/002.cc)
-target_link_libraries(asciichanges_test_002 ${Boost_LIBRARIES})
+#add_executable(asciichanges_test_001 tests/001.cc)
+#target_link_libraries(asciichanges_test_001 ${Boost_LIBRARIES})
+#
+#add_executable(asciichanges_test_002 tests/002.cc)
+#target_link_libraries(asciichanges_test_002 ${Boost_LIBRARIES})
+#
+#add_executable(asciichanges_test_003 tests/003.cc)
+#target_link_libraries(asciichanges_test_003 ${Boost_LIBRARIES})
 
-add_executable(asciichanges_test_003 tests/003.cc)
-target_link_libraries(asciichanges_test_003 ${Boost_LIBRARIES})
+add_executable(asciichanges_parse_song tests/parse_song.cc)
+target_link_libraries(asciichanges_parse_song asciichanges ${Boost_LIBRARIES})
 
 # 
 # INSTALLATION

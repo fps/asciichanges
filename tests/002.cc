@@ -18,7 +18,7 @@ int main()
 
         asciichanges::chord result;
 
-        bool r = boost::spirit::qi::phrase_parse(iter, end, parser, boost::spirit::ascii::space, result);
+        bool r = boost::spirit::qi::parse(iter, end, parser, result);
 
         std::cout << r << " " << (end - iter) << std::endl << "\t " << (r && (end - iter == 0)) << " result: " << result << std::endl;
     }
