@@ -96,6 +96,6 @@ target_link_libraries(asciichanges_parse_song asciichanges ${Boost_LIBRARIES})
 # INSTALLATION
 # 
 
-install(DIRECTORY include/asciichanges  DESTINATION include)
+install(DIRECTORY include/asciichanges DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(FILES ${PROJECT_BINARY_DIR}/asciichanges-${PROJECT_VERSION}.pc DESTINATION lib/pkgconfig)
 
