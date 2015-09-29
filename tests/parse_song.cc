@@ -8,6 +8,14 @@ int main()
     asciichanges::parse_info info = asciichanges::parse(std::cin, result);
 
     std::cout << info << std::endl; 
-    return 0;
+
+    if (info.successfully_parsed())
+    {
+        return EXIT_SUCCESS;
+    }
+    else
+    {
+        return EXIT_FAILURE;
+    }
 }
 
