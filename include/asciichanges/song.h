@@ -14,18 +14,20 @@
 
 namespace asciichanges
 {
+    using qi::eps;
+    using qi::_val;
+    using qi::_1;
+    using qi::blank;
+    using qi::eol;
+    using qi::alnum;
+    using qi::lit;
+
     template<typename Iterator>
     struct keyvalue_ : qi::grammar<Iterator, keyvalue()>
     {
         keyvalue_() :
             keyvalue_::base_type(start)
         {
-            using qi::eps;
-            using qi::_val;
-            using qi::_1;
-            using qi::alnum;
-            using qi::blank;
- 
             start = 
                 qi::eps [ _val = keyvalue() ] >>
                 (+alnum >> ":" >> *blank >> +(alnum | "/"));
@@ -42,11 +44,6 @@ namespace asciichanges
         bars_() : 
             bars_::base_type(start)
         {
-            using qi::eps;
-            using qi::_val;
-            using qi::blank;
-            using qi::_1;
-            using qi::lit;
 
             start = 
                 eps [ _val = bars() ] >>
@@ -68,13 +65,6 @@ namespace asciichanges
         song_() :
             song_::base_type(start)
         {
-            using qi::eps;
-            using qi::_val;
-            using qi::_1;
-            using qi::blank;
-            using qi::eol;
-            using qi::alnum;
-
             endofline =
                 ";"
                 |
