@@ -14,6 +14,10 @@ namespace asciichanges
     namespace qi = boost::spirit::qi;
     namespace phoenix = boost::phoenix;
 
+    using qi::eps;
+    using qi::_val;
+    using qi::_1;
+
     struct abcdefg_ : qi::symbols<char, note::name>
     {
         abcdefg_()
@@ -56,9 +60,6 @@ namespace asciichanges
         accidentals_() : 
             accidentals_::base_type(start)
         {
-            using qi::_val;
-            using qi::_1;
-
             start = 
                 qi::eps [_val = 0] >>
                 (
@@ -79,10 +80,6 @@ namespace asciichanges
         note_() : 
             note_::base_type(start)
         {
-            using qi::eps;
-            using qi::_val;
-            using qi::_1;
-
             start = 
                 eps [_val = note()] >>
                 abcdefg      [phoenix::bind(&note::m_name, qi::_val) = _1] >> 
@@ -99,10 +96,6 @@ namespace asciichanges
         extensions_() : 
             extensions_::base_type(start)
         {
-            using qi::eps;
-            using qi::_val;
-            using qi::_1;
-
             the_extensions = 
                 qi::string("b5") [ phoenix::bind(&extensions::m_flat5, qi::_val) = true ] | 
                 qi::string("6") [ phoenix::bind(&extensions::m_6, qi::_val) = true ] | 
@@ -161,10 +154,6 @@ namespace asciichanges
         chord_() : 
             chord_::base_type(start)
         {
-            using qi::eps;
-            using qi::_val;
-            using qi::_1;
-
             start =  
                 eps  [ _val = chord() ] >> 
                 note [ phoenix::bind(&chord::m_note, qi::_val) = _1 ] [ phoenix::bind(&chord::m_slash_note, qi::_val) = _1 ] >> 
