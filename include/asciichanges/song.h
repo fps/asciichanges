@@ -44,14 +44,21 @@ namespace asciichanges
         bars_() : 
             bars_::base_type(start)
         {
+            chords =
+                chord % +blank;
+                
+            bar_with_optional_repetition =
+                -lit(":") >> (chords | +blank) >> -lit(":");
 
             start = 
                 eps [ _val = bars() ] >>
-                +("|" >> -lit(":") >> +blank >> -lit(":")) >> "|"
+                "|" % bar_with_optional_repetition
             ;
         }
 
         qi::rule<Iterator, bars()> start;
+        qi::rule<Iterator> chords;
+        qi::rule<Iterator> bar_with_optional_repetition;
     };
 
 
