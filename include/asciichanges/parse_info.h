@@ -2,6 +2,9 @@
 
 namespace asciichanges
 {
+    /**
+        A successful parse will have consume == total and success == true.
+    */
     struct parse_info
     {
         size_t consumed;
