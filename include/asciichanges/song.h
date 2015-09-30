@@ -22,6 +22,7 @@ namespace asciichanges
     using qi::alnum;
     using qi::lit;
     using qi::int_;
+    using qi::char_;
 
     template<typename Iterator>
     struct keyvalue_ : qi::grammar<Iterator, keyvalue()>
@@ -31,7 +32,12 @@ namespace asciichanges
         {
             start = 
                 qi::eps [ _val = keyvalue() ] >>
-                (+alnum >> ":" >> *blank >> +(alnum | "/"));
+                (
+                    +alnum [ phoenix::bind(&keyvalue::key, _val) = _1 ]  >> 
+                    ":" >> *blank >> 
+                    +char_("a-zA-Z0-9/") [ phoenix::bind(&keyvalue::value, _val) = _1 ]
+                )
+            ;
         }
 
         qi::rule<Iterator, keyvalue()> start;
