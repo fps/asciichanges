@@ -189,6 +189,27 @@ namespace asciichanges
         }
     };
 
+    inline std::ostream &operator<<(std::ostream &o, const keyvalue &k)
+    {
+        o << "key: " << k.key << " value: " << k.value;
+        return o;
+    }
+
+    struct bar_entry
+    {
+        virtual ~bar_entry()
+        {
+
+        }
+        
+        
+    };
+
+    struct bar
+    {
+        
+    };
+
     struct bars
     {
 
