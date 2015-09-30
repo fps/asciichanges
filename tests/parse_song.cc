@@ -9,12 +9,12 @@ int main()
 
     std::cout << info << std::endl; 
 
-    return 
-        info.successfully_parsed() 
-        ? 
-            EXIT_SUCCESS 
-        : 
-            EXIT_FAILURE
-    ;
+    if (info.successfully_parsed())
+    {
+        std::cout << result << std::endl;
+        return EXIT_SUCCESS;
+    }
+   
+    return EXIT_FAILURE;
 }
 
