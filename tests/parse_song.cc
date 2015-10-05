@@ -3,7 +3,7 @@
 
 int main()
 {
-    asciichanges::song result;
+    asciichanges::results::song result;
 
     asciichanges::parse_info info = asciichanges::parse(std::cin, result);
 
