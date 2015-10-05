@@ -168,15 +168,15 @@ namespace asciichanges
         return o;
     }
 
-    struct event
+    struct line
     {
-        virtual ~event()
+        virtual ~line()
         {
 
         }
     };
 
-    struct keyvalue
+    struct keyvalue : line
     {
         std::string key;
         std::string value;
@@ -210,7 +210,7 @@ namespace asciichanges
         
     };
 
-    struct bars
+    struct bars : line
     {
 
     };
