@@ -5,7 +5,7 @@
 
 namespace asciichanges
 {
-    parse_info parse(const std::string &s, song &result)
+    parse_info parse(const std::string &s, results::song &result)
     {
         typedef std::string::const_iterator iterator;
         iterator begin = s.begin();
@@ -18,7 +18,7 @@ namespace asciichanges
         return parse_info(iter - begin, end - begin, r, s);
     }
 
-    parse_info parse(std::istream &i, song &result)
+    parse_info parse(std::istream &i, results::song &result)
     {
         i.unsetf(std::ios::skipws);
 

@@ -18,18 +18,18 @@ namespace asciichanges
     using qi::_val;
     using qi::_1;
 
-    struct abcdefg_ : qi::symbols<char, note::name>
+    struct abcdefg_ : qi::symbols<char, results::note::name>
     {
         abcdefg_()
         {
             add
-                ("C", note::name::C)
-                ("D", note::name::D)
-                ("E", note::name::E)
-                ("F", note::name::F)
-                ("G", note::name::G)
-                ("A", note::name::A)
-                ("B", note::name::B)
+                ("C", results::note::name::C)
+                ("D", results::note::name::D)
+                ("E", results::note::name::E)
+                ("F", results::note::name::F)
+                ("G", results::note::name::G)
+                ("A", results::note::name::A)
+                ("B", results::note::name::B)
             ;
         }
     } abcdefg;
@@ -73,7 +73,7 @@ namespace asciichanges
     };
 
     template<typename Iterator>
-    struct note_ : qi::grammar<Iterator, note()>
+    struct note_ : qi::grammar<Iterator, results::note()>
     {
         accidentals_<Iterator> accidentals;
 
@@ -81,33 +81,33 @@ namespace asciichanges
             note_::base_type(start)
         {
             start = 
-                eps [_val = note()] >>
-                abcdefg      [phoenix::bind(&note::m_name, qi::_val) = _1] >> 
-                -accidentals [phoenix::bind(&note::m_accidentals, qi::_val) += _1]
+                eps [_val = results::note()] >>
+                abcdefg      [phoenix::bind(&results::note::m_name, qi::_val) = _1] >> 
+                -accidentals [phoenix::bind(&results::note::m_accidentals, qi::_val) += _1]
             ;
         }
 
-        qi::rule<Iterator, note()> start;
+        qi::rule<Iterator, results::note()> start;
     };
 
     template<typename Iterator>
-    struct extensions_ : qi::grammar<Iterator, extensions()>
+    struct extensions_ : qi::grammar<Iterator, results::extensions()>
     {
         extensions_() : 
             extensions_::base_type(start)
         {
             the_extensions = 
-                qi::string("b5") [ phoenix::bind(&extensions::m_flat5, qi::_val) = true ] | 
-                qi::string("6") [ phoenix::bind(&extensions::m_6, qi::_val) = true ] | 
-                qi::string("7") [ phoenix::bind(&extensions::m_7, qi::_val) = true ] | 
-                qi::string("maj7") [ phoenix::bind(&extensions::m_major7, qi::_val) = true ] | 
-                qi::string("b9") [ phoenix::bind(&extensions::m_flat9, qi::_val) = true ] | 
-                qi::string("9") [ phoenix::bind(&extensions::m_9, qi::_val) = true ] | 
-                qi::string("#9") [ phoenix::bind(&extensions::m_sharp9, qi::_val) = true ] | 
-                qi::string("#11") [ phoenix::bind(&extensions::m_sharp11, qi::_val) = true ] | 
-                qi::string("11") [ phoenix::bind(&extensions::m_11, qi::_val) = true ] | 
-                qi::string("b13") [ phoenix::bind(&extensions::m_flat13, qi::_val) = true ] | 
-                qi::string("13") [ phoenix::bind(&extensions::m_13, qi::_val) = true ] 
+                qi::string("b5") [ phoenix::bind(&results::extensions::m_flat5, qi::_val) = true ] | 
+                qi::string("6") [ phoenix::bind(&results::extensions::m_6, qi::_val) = true ] | 
+                qi::string("7") [ phoenix::bind(&results::extensions::m_7, qi::_val) = true ] | 
+                qi::string("maj7") [ phoenix::bind(&results::extensions::m_major7, qi::_val) = true ] | 
+                qi::string("b9") [ phoenix::bind(&results::extensions::m_flat9, qi::_val) = true ] | 
+                qi::string("9") [ phoenix::bind(&results::extensions::m_9, qi::_val) = true ] | 
+                qi::string("#9") [ phoenix::bind(&results::extensions::m_sharp9, qi::_val) = true ] | 
+                qi::string("#11") [ phoenix::bind(&results::extensions::m_sharp11, qi::_val) = true ] | 
+                qi::string("11") [ phoenix::bind(&results::extensions::m_11, qi::_val) = true ] | 
+                qi::string("b13") [ phoenix::bind(&results::extensions::m_flat13, qi::_val) = true ] | 
+                qi::string("13") [ phoenix::bind(&results::extensions::m_13, qi::_val) = true ] 
             ;
         
             comma_separated = 
@@ -128,7 +128,7 @@ namespace asciichanges
                 qi::string(")");
 
             start = 
-                eps [ _val = extensions() ] >> 
+                eps [ _val = results::extensions() ] >> 
                 (
                     comma_separated [ _val |= _1 ]
                     >> -bracketed [ _val |= _1 ]
@@ -137,15 +137,15 @@ namespace asciichanges
             ;
         }
 
-        qi::rule<Iterator, extensions()> start;
-        qi::rule<Iterator, extensions()> the_extensions;
-        qi::rule<Iterator, extensions()> bracketed;
-        qi::rule<Iterator, extensions()> comma_separated;
+        qi::rule<Iterator, results::extensions()> start;
+        qi::rule<Iterator, results::extensions()> the_extensions;
+        qi::rule<Iterator, results::extensions()> bracketed;
+        qi::rule<Iterator, results::extensions()> comma_separated;
     };
 
 
     template<typename Iterator>
-    struct chord_ : qi::grammar<Iterator, chord()>
+    struct chord_ : qi::grammar<Iterator, results::chord()>
     {
 
         note_<Iterator> note;
@@ -155,10 +155,10 @@ namespace asciichanges
             chord_::base_type(start)
         {
             start =  
-                eps  [ _val = chord() ] >> 
-                note [ phoenix::bind(&chord::m_note, qi::_val) = _1 ] [ phoenix::bind(&chord::m_slash_note, qi::_val) = _1 ] >> 
+                eps  [ _val = results::chord() ] >> 
+                note [ phoenix::bind(&results::chord::m_note, qi::_val) = _1 ] [ phoenix::bind(&results::chord::m_slash_note, qi::_val) = _1 ] >> 
                 -(
-                    extensions [ phoenix::bind(&chord::m_extensions, qi::_val) |= _1 ] 
+                    extensions [ phoenix::bind(&results::chord::m_extensions, qi::_val) |= _1 ] 
                     | 
                     (
                         (
@@ -168,30 +168,30 @@ namespace asciichanges
                                 qi::string("min") 
                                 | 
                                 qi::string("m")
-                            ) [ phoenix::bind(&chord::m_type, qi::_val) = chord::type::MINOR ] 
+                            ) [ phoenix::bind(&results::chord::m_type, qi::_val) = results::chord::type::MINOR ] 
                             | 
-                            qi::string("sus2") [ phoenix::bind(&chord::m_type, qi::_val) = chord::type::SUSPENDED2 ] 
+                            qi::string("sus2") [ phoenix::bind(&results::chord::m_type, qi::_val) = results::chord::type::SUSPENDED2 ] 
                             |
                             (
                                 qi::string("sus4") | 
                                 qi::string("sus")
-                            ) [ phoenix::bind(&chord::m_type, qi::_val) = chord::type::SUSPENDED4 ] 
+                            ) [ phoenix::bind(&results::chord::m_type, qi::_val) = results::chord::type::SUSPENDED4 ] 
                             | 
-                            qi::string("dim") [ phoenix::bind(&chord::m_type, qi::_val) = chord::type::DIMINISHED ] 
+                            qi::string("dim") [ phoenix::bind(&results::chord::m_type, qi::_val) = results::chord::type::DIMINISHED ] 
                             | 
-                            qi::string("aug") [ phoenix::bind(&chord::m_type, qi::_val) = chord::type::AUGMENTED ] 
+                            qi::string("aug") [ phoenix::bind(&results::chord::m_type, qi::_val) = results::chord::type::AUGMENTED ] 
                         ) >> 
-                        -extensions [ phoenix::bind(&chord::m_extensions, qi::_val) |= _1 ]
+                        -extensions [ phoenix::bind(&results::chord::m_extensions, qi::_val) |= _1 ]
                     )
                 ) >> 
                 -(
                     '/' >> 
-                    note [ phoenix::bind(&chord::m_slash_note, qi::_val) = _1 ]
+                    note [ phoenix::bind(&results::chord::m_slash_note, qi::_val) = _1 ]
                 )
             ;
         }
 
-        qi::rule<Iterator, chord()> start;
+        qi::rule<Iterator, results::chord()> start;
     };
 }
 

@@ -25,26 +25,26 @@ namespace asciichanges
     using qi::char_;
 
     template<typename Iterator>
-    struct keyvalue_ : qi::grammar<Iterator, keyvalue()>
+    struct keyvalue_ : qi::grammar<Iterator, results::keyvalue()>
     {
         keyvalue_() :
             keyvalue_::base_type(start)
         {
             start = 
-                qi::eps [ _val = keyvalue() ] >>
+                qi::eps [ _val = results::keyvalue() ] >>
                 (
-                    +char_("a-zA-Z0-9") [ phoenix::bind(&keyvalue::key, _val) = _1 ]  >> 
+                    +char_("a-zA-Z0-9") [ phoenix::bind(&results::keyvalue::key, _val) = _1 ]  >> 
                     ":" >> *blank >> 
-                    +char_("a-zA-Z0-9/") [ phoenix::bind(&keyvalue::value, _val) = _1 ]
+                    +char_("a-zA-Z0-9/") [ phoenix::bind(&results::keyvalue::value, _val) = _1 ]
                 )
             ;
         }
 
-        qi::rule<Iterator, keyvalue()> start;
+        qi::rule<Iterator, results::keyvalue()> start;
     };
         
     template<typename Iterator>
-    struct bars_ : qi::grammar<Iterator, bars()>
+    struct bars_ : qi::grammar<Iterator, results::bars()>
     {
         chord_<Iterator> chord;
 
@@ -65,12 +65,12 @@ namespace asciichanges
                 -lit(":");
 
             start = 
-                eps [ _val = bars() ] >>
+                eps [ _val = results::bars() ] >>
                 "|" % bar_with_optional_repetition
             ;
         }
 
-        qi::rule<Iterator, bars()> start;
+        qi::rule<Iterator, results::bars()> start;
         qi::rule<Iterator> chords;
         qi::rule<Iterator> bracketed_chords;
         qi::rule<Iterator> bar_with_optional_repetition;
@@ -78,7 +78,7 @@ namespace asciichanges
 
 
     template<typename Iterator>
-    struct song_ : qi::grammar<Iterator, song()>
+    struct song_ : qi::grammar<Iterator, results::song()>
     {
         chord_<Iterator> chord;
         keyvalue_<Iterator> keyvalue;
@@ -110,12 +110,12 @@ namespace asciichanges
             ;
 
             start =
-                eps  [ _val = song() ] >>
+                eps  [ _val = results::song() ] >>
                 (line % endofline) >> -endofline
             ;
         }
 
-        qi::rule<Iterator, song()> start;
+        qi::rule<Iterator, results::song()> start;
         qi::rule<Iterator> comment;
         qi::rule<Iterator> endofline;
         qi::rule<Iterator> line;

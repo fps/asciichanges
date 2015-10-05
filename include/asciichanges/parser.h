@@ -8,8 +8,8 @@
 
 namespace asciichanges
 {
-    parse_info parse(const std::string &s, song &result);
+    parse_info parse(const std::string &s, results::song &result);
 
-    parse_info parse(std::istream &i, song &result);
+    parse_info parse(std::istream &i, results::song &result);
 }
 
