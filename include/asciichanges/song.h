@@ -4,11 +4,14 @@
 
 #include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/phoenix_bind.hpp>
+#include <boost/spirit/include/phoenix_stl.hpp>
+#include <boost/spirit/include/phoenix_core.hpp>
 
 #include <ostream>
 
 #include <asciichanges/chords.h>
 #include <asciichanges/results.h>
+
 
 #include <string>
 
@@ -100,7 +103,7 @@ namespace asciichanges
             line = 
                 comment
                 |
-                (*blank >> keyvalue >> *blank)
+                (*blank >> keyvalue [ phoenix::push_back(phoenix::at_c<0>(_val), _1) ] >> *blank)
                 |
                 (*blank >> bars >> *blank)
                 |

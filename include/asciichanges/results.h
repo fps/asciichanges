@@ -4,6 +4,10 @@
 #include <memory>
 #include <vector>
 
+#include <boost/variant.hpp>
+#include <boost/spirit/include/phoenix_fusion.hpp>
+#include <boost/fusion/include/adapt_struct.hpp>
+
 namespace asciichanges
 {
     namespace results
@@ -172,15 +176,8 @@ namespace asciichanges
             return o;
         }
     
-        struct line
-        {
-            virtual ~line()
-            {
-    
-            }
-        };
-    
-        struct keyvalue : line
+   
+        struct keyvalue 
         {
             std::string key;
             std::string value;
@@ -191,6 +188,13 @@ namespace asciichanges
             {
     
             }
+
+            keyvalue(const keyvalue &other) :
+                key(other.key),
+                value(other.value)
+            {
+
+            }
         };
     
         inline std::ostream &operator<<(std::ostream &o, const keyvalue &k)
@@ -198,31 +202,37 @@ namespace asciichanges
             o << "key: " << k.key << " value: " << k.value;
             return o;
         }
-    
-        struct bar_entry
-        {
-            virtual ~bar_entry()
-            {
-    
-            }
-            
-            
-        };
+
+        typedef
+            boost::variant<
+                chord,
+                keyvalue
+            >
+        bar_entry;
     
         struct bar
         {
-            std::vector<std::shared_ptr<bar_entry>> entries; 
+            std::vector<bar_entry> entries; 
         };
     
-        struct bars : line
+        struct bars 
         {
     
         };
+
+        typedef
+            boost::variant<
+                keyvalue,
+                bars,
+                chord
+            >
+        line;
     
         struct song
         {
-            std::vector<std::shared_ptr<line>> lines;
+            std::vector<line> lines;
         };
+        
     
         inline std::ostream &operator<<(std::ostream &o, const song &s)
         {
@@ -231,5 +241,10 @@ namespace asciichanges
         }
     }
 }
+
+BOOST_FUSION_ADAPT_STRUCT(
+    asciichanges::results::song,
+    (std::vector<std::shared_ptr<asciichanges::results::line>>, lines)
+)
 
 
