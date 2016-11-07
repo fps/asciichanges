@@ -103,7 +103,7 @@ namespace asciichanges
             line = 
                 comment
                 |
-                (*blank >> keyvalue [ phoenix::push_back(phoenix::at_c<0>(_val), _1) ] >> *blank)
+                (*blank >> keyvalue >> *blank)
                 |
                 (*blank >> bars >> *blank)
                 |
