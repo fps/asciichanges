@@ -83,6 +83,7 @@ C
 D
 Eb
 Dbm79
+|C|
 `;
 
 console.log(JSON.stringify(asciichanges.parse(doc), null, 4));
