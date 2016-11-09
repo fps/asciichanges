@@ -30,11 +30,20 @@ try {
     }
 
     start
-        =   header? (chord / bars)
+        =   empty_line* header:header? empty_line* harmony:harmony? empty_line*
+            {
+                return { header: header, harmony: harmony };
+            }
     
-    start
-        =   eol* lines eol*
-    
+    header
+        =   key_value (empty_line* key_value)*
+
+    harmony
+        =   (__ chord:chord __) / bars:bars
+            {
+                return { chord: chord, bars: bars };
+            }
+
     lines
         =   line (eol+ line)+ 
     
@@ -42,7 +51,7 @@ try {
         =   non_empty_line / empty_line
 
     empty_line
-        =   _+
+        =   __ eol
 
     non_empty_line
         =   _* line:(bars / chord / key_value) _*
@@ -106,39 +115,46 @@ try {
     bar
         =   '|'
     
-    __
+    ___
         =   _+
+    __
+        =   _*
     _
         = ' ' / '\\t'
     
     eol
         =   '\\n'
     
-    `, { trace: true });
+    `, { trace: false });
 
-    doc1 = `
-        Ebmaj7#11
-    `;
+
+    tests = {
+        empty: '',
+        single_chord: 'Ebmaj7#11',
+        single_chord_multiline: `
+            Ebmaj7#11
+        `,
+        single_chord_with_header: ` 
+            title: test
+            tempo: 125.5 bpm
+            time: 3/4
+
+            Cm79
+        `,
+        full_song: `
+            title: The Autumn Leaves
+            tempo: 80 bpm
+            time: 4/4
     
-    doc2 = `
-        title: test
-        tempo: 125.5 bpm
-        time: 3/4
-
-        Cm79
-    `;
-
-    doc3 = `
-        title: The Autumn Leaves
-        tempo: 80 bpm
-        time: 4/4
-
-        | Cm7   | F7   | Bbmaj7 | Ebma7 |
-        | Am7b5 | D7b9 | Gm     | G7    |
-    `;  
-
-    console.log(JSON.stringify(asciichanges.parse(doc1), null, 4));
-    console.log(JSON.stringify(asciichanges.parse(doc2), null, 4));
+            | Cm7   | F7   | Bbmaj7 | Ebma7 |
+            | Am7b5 | D7b9 | Gm     | G7    |
+        `  
+    }
+    
+    for (var key in tests) {
+        console.log('test: ' + key);
+        console.log(JSON.stringify(asciichanges.parse(tests[key]), null, 4));
+    }
 }
 catch (e)
 {
