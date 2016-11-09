@@ -28,6 +28,9 @@ try {
             }
         }
     }
+
+    start
+        =   header? (chord / bars)
     
     start
         =   eol* lines eol*
@@ -103,34 +106,39 @@ try {
     bar
         =   '|'
     
+    __
+        =   _+
     _
-         = ' ' / '\\t'
+        = ' ' / '\\t'
     
     eol
         =   '\\n'
     
     `, { trace: true });
-    
-    doc = `
-    C
-    D
-    E
-    Eb
-    Em
-    Ebm
-    Em7
-    Ebm7
-    Ebm9b13
-    
-    foo: bar
-    
-    D
-    Eb
-    Dbmin79
-    |Cmaj7#9|
+
+    doc1 = `
+        Ebmaj7#11
     `;
     
-    console.log(JSON.stringify(asciichanges.parse(doc), null, 4));
+    doc2 = `
+        title: test
+        tempo: 125.5 bpm
+        time: 3/4
+
+        Cm79
+    `;
+
+    doc3 = `
+        title: The Autumn Leaves
+        tempo: 80 bpm
+        time: 4/4
+
+        | Cm7   | F7   | Bbmaj7 | Ebma7 |
+        | Am7b5 | D7b9 | Gm     | G7    |
+    `;  
+
+    console.log(JSON.stringify(asciichanges.parse(doc1), null, 4));
+    console.log(JSON.stringify(asciichanges.parse(doc2), null, 4));
 }
 catch (e)
 {
