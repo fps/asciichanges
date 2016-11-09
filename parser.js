@@ -130,10 +130,13 @@ try {
 
     tests = {
         empty: '',
+
         single_chord: 'Ebmaj7#11',
+
         single_chord_multiline: `
             Ebmaj7#11
         `,
+
         single_chord_with_header: ` 
             title: test
             tempo: 125.5 bpm
@@ -141,6 +144,7 @@ try {
 
             Cm79
         `,
+
         full_song: `
             title: The Autumn Leaves
             tempo: 80 bpm
