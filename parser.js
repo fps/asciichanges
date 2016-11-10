@@ -39,7 +39,7 @@ try {
         =   key_value (empty_line* key_value)*
 
     harmony
-        =   (__ (chord:chord) __) / bars:bars
+        =   chord:__chord__ / bars:bars
             {
                 return { chord: chord, bars: bars };
             }
@@ -57,8 +57,20 @@ try {
         =   _* line:(bars / chord / key_value) _*
             { return  line; }
     
+    __chord__
+        =   __ chord __
+
     chord
-        =   note type? extension*
+        =   note:note type:type? extensions:extension*
+            {
+                return {
+                    chord: {
+                        root: note,
+                        type: type,
+                        extensions: extensions
+                    }
+                };
+            }
 
     note
         =   left:letter right:sharps_or_flats?
@@ -85,10 +97,10 @@ try {
         =   sharps:('#'+) { return sharps.length; }
     
     type
-        =   'maj' / 'min' / 'm' / 'sus4' / 'sus2' / 'sus' / 'dim' / 'aug'
+        =   '5' / 'major' / 'maj' / 'minor' / 'min' / 'm' / 'sus4' / 'sus2' / 'sus' / 'dim' / 'aug'
     
     extension
-        =   '7' / 'b9' / '9' / '#9' / '11' / '#11' / 'b13' / '13'
+        =   '6' / '7' / 'b9' / '9' / '#9' / '11' / '#11' / 'b13' / '13'
     
     key_value
         =   __ key:key ':' __ value:value __ eol
@@ -105,15 +117,27 @@ try {
 
     string
         =   [a-zA-Z0-9 ]* 
+            {
+                return { string: text() };
+            }
 
     fraction
-        =   integer '/' integer
+        =   first:integer '/' second:integer
+            {
+                return { fraction: { nominator:first, denominator:second } };
+            }
 
     real
-        =   integer '.' integer
+        =   first:integer '.' second:integer
+            {
+                return { real: { integer: first, fraction: second } };
+            }
 
     integer
         =   [0-9]+
+            {
+                return parseInt(text(), 10);
+            }
 
     bars
         =   bar ( (chords / _+) bar )*
