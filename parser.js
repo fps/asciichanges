@@ -180,7 +180,7 @@ try {
 
         full_song: `
             title: The Autumn Leaves
-            tempo: 80 bpm
+            tempo: 80 
             time: 4/4
     
             | Cm7   | F7   | Bbmaj7 | Ebma7 |
