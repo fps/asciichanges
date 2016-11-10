@@ -30,7 +30,7 @@ try {
     }
 
     start
-        =   empty_line* header:header? empty_line* harmony:harmony? empty_line*
+        =   empty_line* header:header? empty_line* harmony:harmony? empty_line* __
             {
                 return { header: header, harmony: harmony };
             }
@@ -39,7 +39,7 @@ try {
         =   key_value (empty_line* key_value)*
 
     harmony
-        =   (__ chord:chord __) / bars:bars
+        =   (__ (chord:chord) __) / bars:bars
             {
                 return { chord: chord, bars: bars };
             }
@@ -58,6 +58,9 @@ try {
             { return  line; }
     
     chord
+        =   note type? extension*
+
+    chord2
         =   chord_with_type / chord_without_type
     
     chord_without_type
@@ -73,39 +76,60 @@ try {
             }
     
     note
-        =   left:letter right:sharps_or_flats 
+        =   left:letter right:sharps_or_flats?
             { 
-                return { root: left, accidental: right }; 
+                return { 
+                    root: left, 
+                    accidental: right
+                }; 
             }
     
     letter
-        =   letter:[CDEFGAB] { return noteLetterToInt(letter); } 
+        =   letter:[CDEFGAB]
+            { 
+                return noteLetterToInt(letter); 
+            } 
     
     sharps_or_flats
-        =   sharps / flats
+        =   flats / sharps
     
     flats
-        =   bees:('b'*) { return -1 * bees.length; }
+        =   bees:('b'+) { return -1 * bees.length; }
     
     sharps
-        =   sharps:('#'*) { return sharps.length; }
+        =   sharps:('#'+) { return sharps.length; }
     
     type
-        =   'maj7' / (('min' / 'm' / 'sus4' / 'sus2' / 'sus' / 'dim' / 'aug')? '7'?)
+        =   'maj7' / 'min' / 'm' / 'sus4' / 'sus2' / 'sus' / 'dim' / 'aug'
     
     extension
-        =   'b9' / '9' / '#9' / '11' / '#11' / 'b13' / '13'
+        =   '7' / 'b9' / '9' / '#9' / '11' / '#11' / 'b13' / '13'
     
     key_value
-        =   key:key ':' _+ value:value
+        =   __ key:key ':' __ value:value __ eol
             { return { key: key, value: value }; }
     
     key
-        =   ([a-z])+
+        =   [a-zA-Z] [a-zA-Z0-9]*
+            {
+                return text();
+            }
     
     value
-        =   ([a-z0-9])+
-    
+        =   fraction / real / integer / string
+
+    string
+        =   [a-zA-Z0-9 ]* 
+
+    fraction
+        =   integer '/' integer
+
+    real
+        =   integer '.' integer
+
+    integer
+        =   [0-9]+
+
     bars
         =   bar ( (chords / _+) bar )*
     
@@ -131,7 +155,16 @@ try {
     tests = {
         empty: '',
 
-        single_chord: 'Ebmaj7#11',
+        c: 'C',
+        csharp: 'C#',
+        cflat: 'Cb',
+        d: 'D',
+        e: 'E',
+        cm: 'Cm',
+        ebm: 'Ebm',
+        csharpm: 'C#m',
+
+        eflatmajorsevensharpeleven: 'Ebmaj7#11',
 
         single_chord_multiline: `
             Ebmaj7#11
@@ -139,10 +172,10 @@ try {
 
         single_chord_with_header: ` 
             title: test
-            tempo: 125.5 bpm
+            tempo: 125.5
             time: 3/4
 
-            Cm79
+            C#m79
         `,
 
         full_song: `
