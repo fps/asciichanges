@@ -60,21 +60,6 @@ try {
     chord
         =   note type? extension*
 
-    chord2
-        =   chord_with_type / chord_without_type
-    
-    chord_without_type
-        =   note:note ext:(extension*) 
-            { 
-                return { chord: { note: note, extensions: ext } }; 
-            }
-    
-    chord_with_type
-        =   note:note type:type ext:(extension*) 
-            { 
-                return { chord: { note: note, type: type, extensions: ext } }; 
-            }
-    
     note
         =   left:letter right:sharps_or_flats?
             { 
@@ -184,7 +169,7 @@ try {
             time: 4/4
     
             | Cm7   | F7   | Bbmaj7 | Ebma7 |
-            | Am7b5 | D7b9 | Gm     | G7    |
+            | Am7b5 | D7b9 | Gsus   | G7    |
         `  
     }
     
