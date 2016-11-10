@@ -85,7 +85,7 @@ try {
         =   sharps:('#'+) { return sharps.length; }
     
     type
-        =   'maj7' / 'min' / 'm' / 'sus4' / 'sus2' / 'sus' / 'dim' / 'aug'
+        =   'maj' / 'min' / 'm' / 'sus4' / 'sus2' / 'sus' / 'dim' / 'aug'
     
     extension
         =   '7' / 'b9' / '9' / '#9' / '11' / '#11' / 'b13' / '13'
