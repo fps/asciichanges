@@ -167,13 +167,19 @@ try {
         =   fraction / real / integer / string
 
     bars
-        =   __ bar bars_content bar __ eol? __?
+        =   __ bar b:bars_content bar __ eol? __?
+        {
+            return b;
+        }
 
     bars_content
         =   several_bars / single_bar
 
     several_bars
-        =   single_bar (inner_bar single_bar)*
+        =   head:single_bar tail:(inner_bar value:single_bar {return value;} )*
+            {
+                return [head].concat(tail);
+            }
 
     single_bar
         =   beats / empty_bar
@@ -182,19 +188,15 @@ try {
         =   ___
 
     beats
-        =   __ beat (__ beat)* __
+        =   __ head:beat tail:(__ value:beat {return value;})* __
+        {
+            return [head].concat(tail);
+        }
 
     beat
         =   chord
 
-    /*
-    bars
-        =   bar ( (chords / _+) bar )*
-    */
-
-    chords
-        =   __ chord ( ___ chord)* __
-    
+   
     `, { trace: false });
 
 
@@ -230,7 +232,9 @@ try {
             time: 4/4
     
             | Cm7   | F7   | Bbmaj7 | Ebmaj7 |
-            | Am7b5 | D7b9 | Gsus   | G7    |
+            | Am7b5 | D7b9 | Gsus   | G7     |
+            | Cm7   | F7   | Bbmaj7 | Ebmaj7 |
+            | Am7b5 | D7b9 | Gm     |        |
         `  
     }
     
