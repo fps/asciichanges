@@ -104,11 +104,12 @@ try {
             }
 
     chord
-        =   note:note type:type? extensions:extension*
+        =   note:note type:type? extensions:extension* slash:('/' s:note {return s;})?
             {
                 return {
                     ttag: 'chord',
                     root: note,
+                    slash_note: slash,
                     type: type,
                     extensions: extensions
                 };
@@ -173,19 +174,22 @@ try {
         }
 
     bars_content
-        =   several_bars / single_bar
+        =   several_measures / single_measure
 
-    several_bars
-        =   head:single_bar tail:(inner_bar value:single_bar {return value;} )*
+    several_measures
+        =   head:single_measure tail:(inner_bar value:single_measure {return value;} )*
             {
                 return [head].concat(tail);
             }
 
-    single_bar
+    single_measure
         =   beats / empty_bar
 
     empty_bar
         =   ___
+        {
+            return [];
+        }
 
     beats
         =   __ head:beat tail:(__ value:beat {return value;})* __
@@ -231,10 +235,14 @@ try {
             tempo: 80 
             time: 4/4
     
-            | Cm7   | F7   | Bbmaj7 | Ebmaj7 |
-            | Am7b5 | D7b9 | Gsus   | G7     |
-            | Cm7   | F7   | Bbmaj7 | Ebmaj7 |
-            | Am7b5 | D7b9 | Gm     |        |
+            | Cm7   | F7   | Bbmaj7   | Ebmaj7     |
+            | Am7b5 | D7b9 | Gsus     | G7         |
+            | Cm7   | F7   | Bbmaj7   | Ebmaj7     |
+            | Am7b5 | D7b9 | Gm       |            |
+            | Am7b5 | D7b9 | Gsus     | G7         |
+            | Cm7   | F7   | Bbmaj7   | Ebmaj7     |
+            | Am7b5 | D7b9 | Gm Gm/Gb | Gm/A Gm/Ab |
+            | Am7b5 | D7b9 | Gm       |            |
         `  
     }
     
