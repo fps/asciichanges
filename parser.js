@@ -37,22 +37,55 @@ try {
 
     bar
         =   '|'
+
+    split_bar
+        =   '|' __ eol __ '|'
     
+    inner_bar
+        =   split_bar / bar
     ___
         =   _+
+
     __
         =   _*
+
     _
         = ' ' / '\\t'
     
     eol
         =   '\\n'
     
+    empty_line
+        =   __ eol
+
+    string
+        =   [a-zA-Z0-9 ]* 
+            {
+                return { ttag: 'string', string: text() };
+            }
+
+    fraction
+        =   first:integer '/' second:integer
+            {
+                return { ttag: 'fraction', nominator:first, denominator:second };
+            }
+
+    real
+        =   first:integer '.' second:integer
+            {
+                return { ttag: 'real', integer: first, fraction: second };
+            }
+
+    integer
+        =   [0-9]+
+            {
+                return parseInt(text(), 10);
+            }
 
     content
         =   header:header? empty_line* harmony:harmony
             {
-                return { ttag: 'asciichanges_song', header: header, harmony: harmony };
+                return { ttag: 'asciichanges_song', header: header, harmony: { ttag: 'harmony', harmony } };
             }
     
     header
@@ -62,24 +95,8 @@ try {
             }
 
     harmony
-        =   chord:__chord__ / bars:bars
-            {
-                return { ttag: 'harmony', chord: chord, bars: bars };
-            }
+        =   __chord__ / bars
 
-    lines
-        =   line (eol+ line)+ 
-    
-    line
-        =   non_empty_line / empty_line
-
-    empty_line
-        =   __ eol
-
-    non_empty_line
-        =   _* line:(bars / chord / key_value) _*
-            { return  line; }
-    
     __chord__
         =   __ c:chord __
             {
@@ -123,10 +140,10 @@ try {
         =   sharps:('#'+) { return sharps.length; }
     
     type
-        =   '5' / 'major' / 'maj' / 'minor' / 'min' / 'm' / 'sus4' / 'sus2' / 'sus' / 'dim' / 'aug'
+        =   '2' / '5' / 'major' / 'maj' / 'minor' / 'min' / 'm' / 'sus4' / 'sus2' / 'sus' / 'dim' / 'aug'
     
     extension
-        =   '6' / '7' / 'b9' / '9' / '#9' / '11' / '#11' / 'b13' / '13'
+        =   '6' / '7' / 'b9' / '9' / '#9' / '11' / '#11' / 'b13' / 'b5' / '13'
 
     __key_value__
             = __ k:key_value __ eol
@@ -149,35 +166,34 @@ try {
     value
         =   fraction / real / integer / string
 
-    string
-        =   [a-zA-Z0-9 ]* 
-            {
-                return { ttag: 'string', string: text() };
-            }
+    bars
+        =   __ bar bars_content bar __ eol? __?
 
-    fraction
-        =   first:integer '/' second:integer
-            {
-                return { ttag: 'fraction', nominator:first, denominator:second };
-            }
+    bars_content
+        =   several_bars / single_bar
 
-    real
-        =   first:integer '.' second:integer
-            {
-                return { ttag: 'real', integer: first, fraction: second };
-            }
+    several_bars
+        =   single_bar (inner_bar single_bar)*
 
-    integer
-        =   [0-9]+
-            {
-                return parseInt(text(), 10);
-            }
+    single_bar
+        =   beats / empty_bar
 
+    empty_bar
+        =   ___
+
+    beats
+        =   __ beat (__ beat)* __
+
+    beat
+        =   chord
+
+    /*
     bars
         =   bar ( (chords / _+) bar )*
-    
+    */
+
     chords
-        =   _* chord ( _+ chord)* _*
+        =   __ chord ( ___ chord)* __
     
     `, { trace: false });
 
@@ -213,7 +229,7 @@ try {
             tempo: 80 
             time: 4/4
     
-            | Cm7   | F7   | Bbmaj7 | Ebma7 |
+            | Cm7   | F7   | Bbmaj7 | Ebmaj7 |
             | Am7b5 | D7b9 | Gsus   | G7    |
         `  
     }
