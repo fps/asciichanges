@@ -30,18 +30,41 @@ try {
     }
 
     start
-        =   empty_line* header:header? empty_line* harmony:harmony? empty_line* __
+        =   empty_line* c:content? empty_line* __
             {
-                return { header: header, harmony: harmony };
+                return c;
+            }
+
+    bar
+        =   '|'
+    
+    ___
+        =   _+
+    __
+        =   _*
+    _
+        = ' ' / '\\t'
+    
+    eol
+        =   '\\n'
+    
+
+    content
+        =   header:header? empty_line* harmony:harmony
+            {
+                return { ttag: 'asciichanges_song', header: header, harmony: harmony };
             }
     
     header
-        =   key_value (empty_line* key_value)*
+        =   head:__key_value__ tail:(empty_line* k:__key_value__ { return k; })*
+            {
+                return [head].concat(tail);
+            }
 
     harmony
         =   chord:__chord__ / bars:bars
             {
-                return { chord: chord, bars: bars };
+                return { ttag: 'harmony', chord: chord, bars: bars };
             }
 
     lines
@@ -58,17 +81,19 @@ try {
             { return  line; }
     
     __chord__
-        =   __ chord __
+        =   __ c:chord __
+            {
+                return c;
+            }
 
     chord
         =   note:note type:type? extensions:extension*
             {
                 return {
-                    chord: {
-                        root: note,
-                        type: type,
-                        extensions: extensions
-                    }
+                    ttag: 'chord',
+                    root: note,
+                    type: type,
+                    extensions: extensions
                 };
             }
 
@@ -76,6 +101,7 @@ try {
         =   left:letter right:sharps_or_flats?
             { 
                 return { 
+                    ttag: 'note',
                     root: left, 
                     accidental: right
                 }; 
@@ -101,10 +127,18 @@ try {
     
     extension
         =   '6' / '7' / 'b9' / '9' / '#9' / '11' / '#11' / 'b13' / '13'
+
+    __key_value__
+            = __ k:key_value __ eol
+            {
+                return k;
+            }
     
     key_value
-        =   __ key:key ':' __ value:value __ eol
-            { return { key: key, value: value }; }
+        =   key:key ':' __ value:value
+            { 
+                return { ttag: 'key_value', key: key, value: value }; 
+            }
     
     key
         =   [a-zA-Z] [a-zA-Z0-9]*
@@ -118,19 +152,19 @@ try {
     string
         =   [a-zA-Z0-9 ]* 
             {
-                return { string: text() };
+                return { ttag: 'string', string: text() };
             }
 
     fraction
         =   first:integer '/' second:integer
             {
-                return { fraction: { nominator:first, denominator:second } };
+                return { ttag: 'fraction', nominator:first, denominator:second };
             }
 
     real
         =   first:integer '.' second:integer
             {
-                return { real: { integer: first, fraction: second } };
+                return { ttag: 'real', integer: first, fraction: second };
             }
 
     integer
@@ -144,19 +178,6 @@ try {
     
     chords
         =   _* chord ( _+ chord)* _*
-    
-    bar
-        =   '|'
-    
-    ___
-        =   _+
-    __
-        =   _*
-    _
-        = ' ' / '\\t'
-    
-    eol
-        =   '\\n'
     
     `, { trace: false });
 
