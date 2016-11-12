@@ -36,10 +36,10 @@ try {
             }
 
     bar
-        =   '|'
+        =   ':'? '|' '|'? ':'?
 
     split_bar
-        =   '|' empty_line+ __ '|'
+        =   bar empty_line+ __ bar
     
     inner_bar
         =   split_bar / bar
@@ -56,7 +56,7 @@ try {
         =   '\\n'
 
     comment
-        =   '--' [^\\n]*
+        =   (';' / '//' / '#' / '--') [^\\n]*
     
     empty_line
         =   __ comment? eol
@@ -207,10 +207,13 @@ try {
         }
 
     beats
-        =   __ head:beat tail:(__ value:beat {return value;})* __
+        =   __ head:first_beat tail:(__ value:beat {return value;})* __
         {
             return [head].concat(tail);
         }
+
+    first_beat
+        =   ([1-9]+ '.') / beat
 
     beat
         =   optional_chord_or_chord
@@ -267,16 +270,15 @@ try {
             time: 4/4
     
             -- A:
-            | Cm7   | F7   | Bbmaj7   | Ebmaj7     |
-            | Am7b5 | D7b9 | Gsus     | G7         |
-            | Cm7   | F7   | Bbmaj7   | Ebmaj7     |
-            | Am7b5 | D7b9 | Gm       |            |
+            |: Cm7   | F7   |    Bbmaj7   | Ebmaj7     |
+            |  Am7b5 | D7b9 | 1. Gsus     | G7         |
+                            | 2. Gm       |           :|
 
             -- B:
-            | Am7b5 | D7b9 | Gsus     | G7         |
-            | Cm7   | F7   | Bbmaj7   | Ebmaj7     |
-            | Am7b5 | D7b9 | Gm Gm/Gb | Gm/A Gm/Ab |
-            | Am7b5 | D7b9 | Gm       | (G7)       |
+            |  Am7b5 | D7b9 | Gsus        | G7         |
+            |  Cm7   | F7   | Bbmaj7      | Ebmaj7     |
+            |  Am7b5 | D7b9 | Gm Gm/Gb    | Gm/A Gm/Ab |
+            |  Am7b5 | D7b9 | Gm          | (G7)       |
         `
     }
     
