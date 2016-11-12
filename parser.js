@@ -106,6 +106,18 @@ try {
                 return c;
             }
 
+    optional_chord_or_chord
+        = optional_chord / chord
+
+    optional_chord
+        =   '(' __ c:chord __ ')'
+        {
+            return { 
+                ttag: 'optional_chord', 
+                chord: c 
+            };
+        }
+
     chord
         =   note:note type:type? extensions:extension* slash:('/' s:note {return s;})?
             {
@@ -201,7 +213,7 @@ try {
         }
 
     beat
-        =   chord
+        =   optional_chord_or_chord
 
    
     `, { trace: false });
@@ -264,7 +276,7 @@ try {
             | Am7b5 | D7b9 | Gsus     | G7         |
             | Cm7   | F7   | Bbmaj7   | Ebmaj7     |
             | Am7b5 | D7b9 | Gm Gm/Gb | Gm/A Gm/Ab |
-            | Am7b5 | D7b9 | Gm       |            |
+            | Am7b5 | D7b9 | Gm       | (G7)       |
         `
     }
     
