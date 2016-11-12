@@ -47,7 +47,7 @@ try {
         =   _+
 
     __
-        =   _*
+        =   (_* '--' !eol*) / _*
 
     _
         = ' ' / '\\t'
@@ -85,7 +85,7 @@ try {
     content
         =   header:header? empty_line* harmony:harmony
             {
-                return { ttag: 'asciichanges_song', header: header, harmony: { ttag: 'harmony', harmony } };
+                return { ttag: 'asciichanges_song', header: header, harmony: harmony };
             }
     
     header
@@ -170,7 +170,7 @@ try {
     bars
         =   __ bar b:bars_content bar __ eol? __?
         {
-            return b;
+            return  { ttag: 'measures', measures: b };
         }
 
     bars_content
@@ -243,7 +243,16 @@ try {
             | Cm7   | F7   | Bbmaj7   | Ebmaj7     |
             | Am7b5 | D7b9 | Gm Gm/Gb | Gm/A Gm/Ab |
             | Am7b5 | D7b9 | Gm       |            |
-        `  
+        `,
+
+        full_song_with_comments: `
+            -- this is a comment
+            title: test song
+
+            -- this is another comment
+
+            | Cm7 |
+        `
     }
     
     for (var key in tests) {
