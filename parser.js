@@ -249,7 +249,7 @@ try {
         `,
 
         full_song_with_comments: `
-            -- this is a complete song
+            -- this is a complete song with comments!
             title: The Autumn Leaves
             tempo: 80 
             time: 4/4
