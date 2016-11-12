@@ -47,16 +47,19 @@ try {
         =   _+
 
     __
-        =   (_* '--' !eol*) / _*
+        =   _*
 
     _
         = ' ' / '\\t'
     
     eol
         =   '\\n'
+
+    comment
+        =   '--' [^\\n]*
     
     empty_line
-        =   __ eol
+        =   __ comment? eol
 
     string
         =   [a-zA-Z0-9 ]* 
