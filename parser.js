@@ -39,7 +39,7 @@ try {
         =   '|'
 
     split_bar
-        =   '|' __ eol __ '|'
+        =   '|' empty_line+ __ '|'
     
     inner_bar
         =   split_bar / bar
@@ -249,12 +249,22 @@ try {
         `,
 
         full_song_with_comments: `
-            -- this is a comment
-            title: test song
+            -- this is a complete song
+            title: The Autumn Leaves
+            tempo: 80 
+            time: 4/4
+    
+            -- A:
+            | Cm7   | F7   | Bbmaj7   | Ebmaj7     |
+            | Am7b5 | D7b9 | Gsus     | G7         |
+            | Cm7   | F7   | Bbmaj7   | Ebmaj7     |
+            | Am7b5 | D7b9 | Gm       |            |
 
-            -- this is another comment
-
-            | Cm7 |
+            -- B:
+            | Am7b5 | D7b9 | Gsus     | G7         |
+            | Cm7   | F7   | Bbmaj7   | Ebmaj7     |
+            | Am7b5 | D7b9 | Gm Gm/Gb | Gm/A Gm/Ab |
+            | Am7b5 | D7b9 | Gm       |            |
         `
     }
     
