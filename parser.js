@@ -56,7 +56,13 @@ try {
         =   '\\n'
 
     comment
-        =   (';' / '//' / '#' / '--') [^\\n]*
+        =   (';' / '//' / '#' / '--') c:[^\\n]*
+        {
+            return {
+                type: 'comment',
+                comment: c
+            };
+        }
     
     empty_line
         =   __ comment? eol
@@ -64,19 +70,19 @@ try {
     string
         =   [a-zA-Z0-9 ]* 
             {
-                return { ttag: 'string', string: text() };
+                return { type: 'string', string: text() };
             }
 
     fraction
         =   first:integer '/' second:integer
             {
-                return { ttag: 'fraction', nominator:first, denominator:second };
+                return { type: 'fraction', nominator:first, denominator:second };
             }
 
     real
         =   first:integer '.' second:integer
             {
-                return { ttag: 'real', integer: first, fraction: second };
+                return { type: 'real', integer: first, fraction: second };
             }
 
     integer
@@ -88,7 +94,7 @@ try {
     content
         =   header:header? empty_line* harmony:harmony
             {
-                return { ttag: 'asciichanges_song', header: header, harmony: harmony };
+                return { type: 'asciichanges_song', header: header, harmony: harmony };
             }
     
     header
@@ -113,20 +119,20 @@ try {
         =   '(' __ c:chord __ ')'
         {
             return { 
-                ttag: 'optional_chord', 
+                type: 'optional_chord', 
                 chord: c 
             };
         }
 
     chord
-        =   note:note type:type? extensions:extension* slash:('/' s:note {return s;})?
+        =   n:note q:quality? e:extension* sn:('/' s:note {return s;})?
             {
                 return {
-                    ttag: 'chord',
-                    root: note,
-                    slash_note: slash,
-                    type: type,
-                    extensions: extensions
+                    type: 'chord',
+                    root: n,
+                    slash_note: sn,
+                    quality: q,
+                    extensions: e
                 };
             }
 
@@ -134,7 +140,7 @@ try {
         =   left:letter right:sharps_or_flats?
             { 
                 return { 
-                    ttag: 'note',
+                    type: 'note',
                     root: left, 
                     accidental: right
                 }; 
@@ -155,7 +161,7 @@ try {
     sharps
         =   sharps:('#'+) { return sharps.length; }
     
-    type
+    quality
         =   '2' / '5' / 'major' / 'maj' / 'minor' / 'min' / 'm' / 'sus4' / 'sus2' / 'sus' / 'dim' / 'aug'
     
     extension
@@ -170,7 +176,7 @@ try {
     key_value
         =   key:key ':' __ value:value
             { 
-                return { ttag: 'key_value', key: key, value: value }; 
+                return { type: 'key_value', key: key, value: value }; 
             }
     
     key
@@ -185,7 +191,7 @@ try {
     bars
         =   __ bar b:bars_content bar __ eol? __?
         {
-            return  { ttag: 'measures', measures: b };
+            return  { type: 'measures', measures: b };
         }
 
     bars_content
