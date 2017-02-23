@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8"> 
+  <head>
+    <title>ASCIIChanges Everything</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="asciichanges-parser.js"></script>
+    <script type="text/javascript" src="sonant.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+  </head>
+  <body>
+    <div id="controls" class="table">
+      <div id="play" class="control">play</div>
+      <div id="stop" class="control">stop</div>
+    </div>
+    <div class="editors">
+      <div class="row">
+        <div id=song_wrapper" class="column">
+          <textarea id="song">
+| Cm     | F7 | 
+| Bbmaj7 | G7 |
+          </textarea>
+        </div>
+        <div id="generator_wrapper" class="column">
+          <textarea id="generator"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <textarea id="log"></textarea>
+    </div>
+  </body>
+</html>

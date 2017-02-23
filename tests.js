@@ -1,10 +1,10 @@
-var peg = require('pegjs');
-var fs = require('fs');
-
-var asciichanges_pegjs = fs.readFileSync('asciichanges.pegjs', 'utf8');
-
 
 try {
+    var peg = require('pegjs');
+    var fs = require('fs');
+
+    var asciichanges_pegjs = fs.readFileSync('asciichanges.pegjs', 'utf8');
+
     var asciichanges = peg.generate(asciichanges_pegjs , { trace: false });
 
     tests = {
