@@ -6,10 +6,12 @@ var music;
 
 var play = function() {
   console.log("play");
+  music = music_init();
 }
 
 var stop = function() {
   console.log("stop");
+  music.audio_context.close();
 }
 
 function el(id) {
@@ -19,8 +21,6 @@ function el(id) {
 window.onload = function() {
   console.log("yeah");
 
-  music = music_init();
-  
   songarea = el("song");
   generatorarea = el("generator");
   logarea = el("log");

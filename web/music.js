@@ -4,6 +4,7 @@ function music_init() {
   ret.audio_context = new AudioContext();
   ret.sample_rate = ret.audio_context.sampleRate;
   ret.script_node = ret.audio_context.createScriptProcessor(4096, 0, 2);
+  ret.state = 'stopped';
   
   ret.script_node.onaudioprocess = function(audio_processing_event) {
     var output_buffer = audio_processing_event.outputBuffer;                                                                

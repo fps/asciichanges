@@ -11,11 +11,17 @@ body {
 
 #controls {
   align: center;
+  padding: 5px;
 }
 
 .control {
   display: inline;
 }
+
+.control_divider {
+  display: inline;
+}
+
 
 .editors {
   display: flex;
@@ -39,10 +45,12 @@ textarea {
   flex:1;
   resize: none;
   display: block;
+  padding: 5px;
 }
 
-.footer {
+#footer {
   flex: 0.3;
   display: flex;
   flex-flow: row;
+  padding: 5px;
 }
