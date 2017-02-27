@@ -188,7 +188,7 @@
         peg$c31 = /^[0-9]/,
         peg$c32 = peg$classExpectation([["0", "9"]], false, false),
         peg$c33 = function() {
-                    return parseInt(text(), 10);
+                    return { type: 'integer', integer: parseInt(text(), 10) };
                 },
         peg$c34 = function(header, harmony) {
                     return { type: 'asciichanges_song', header: header, harmony: harmony };
@@ -1985,7 +1985,7 @@
     }
   }
 
-  root.pegjs = {
+  root.asciichanges = {
     SyntaxError: peg$SyntaxError,
     parse:       peg$parse
   };

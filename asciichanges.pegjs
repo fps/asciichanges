@@ -83,7 +83,7 @@ real
 integer
     =   [0-9]+
         {
-            return parseInt(text(), 10);
+            return { type: 'integer', integer: parseInt(text(), 10) };
         }
 
 content
