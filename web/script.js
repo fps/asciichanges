@@ -1,36 +1,37 @@
-var songarea;
+var editorarea;
 var logarea;
 var generatorarea;
 
 var music;
 
-var play = function() {
-  console.log("play");
-  music = music_init();
-}
-
-var stop = function() {
-  console.log("stop");
-  music.audio_context.close();
-}
-
 function el(id) {
   return document.getElementById(id);
 }
 
-window.onload = function() {
-  console.log("yeah");
+function log(text) {
+  logarea.value = logarea.value + text + '\n';
+  logarea.scrollTop = logarea.scrollHeight;
+}
 
-  songarea = el("song");
-  generatorarea = el("generator");
-  logarea = el("log");
+function play() {
+  log('play');
+  music = music_init();
+}
+
+function stop() {
+  log('stop');
+  music.audio_context.close();
+}
+
+window.onload = function() {
+  console.log("h");
   
-  var song = songarea.value;
-  //console.log(song);
+  editorarea = el('editor');
+  generatorarea = el('generator');
+  logarea = el('log');
   
-  // logarea.value = logarea.value + JSON.stringify(asciichanges.parse(song), null, 2);
-  // console.log(JSON.stringify(pegjs.parse(song), null, 2));
-  
+  log('Everyone wants LOG!');
+
   el('play').onclick = function() {
     play();
   };

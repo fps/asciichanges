@@ -8,35 +8,40 @@
     <script type="text/javascript" src="music.js"></script>
     <script type="text/javascript" src="script.js"></script>
   </head>
-  <body>
+  <body class="padded">
     <div id="controls" class="table">
-      <div id="play_from_top" class="control">play (from top)</div>
+      <div id="play" class="control padded">play</div>
       <div class="control_divider">|</div>
-      <div id="play_from_cursor" class="control">play (from cursor)</div>
+      <div id="pause" class="control padded">pause</div>
       <div class="control_divider">|</div>
-      <div id="play" class="control">play</div>
+      <div id="stop" class="control padded">stop</div>
       <div class="control_divider">|</div>
-      <div id="pause" class="control">pause</div>
-      <div class="control_divider">|</div>
-      <div id="stop" class="control">stop</div>
+      <div id="help" class="control padded">help</div>
     </div>
     <div class="editors">
       <div class="row">
-        <div id=song_wrapper" class="column">
-          <textarea id="song">
+        <div id=editor_wrapper" class="column padded">
+          <textarea id="editor">
+          </textarea>
+        </div>
+        <div id="help_wrapper" class="column padded">
+          <textarea id="help">
+This textarea contains some help:          
+
+var song = `
 Tempo: 200
 Title: Some Chords
 
 | Cm     | F7 | 
 | Bbmaj7 | G7 |
+`;
+
+var parsed = asciichanges.parse(song);
           </textarea>
-        </div>
-        <div id="generator_wrapper" class="column">
-          <textarea id="generator"></textarea>
         </div>
       </div>
     </div>
-    <div id="footer">
+    <div id="footer" class="padded">
       <textarea id="log"></textarea>
     </div>
   </body>

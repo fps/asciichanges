@@ -9,13 +9,17 @@ body {
   flex-flow: column;
 }
 
+.padded {
+  padding: 2px;
+}
+
 #controls {
   align: center;
-  padding: 5px;
 }
 
 .control {
   display: inline;
+  text-decoration: underline;
 }
 
 .control_divider {
@@ -45,12 +49,10 @@ textarea {
   flex:1;
   resize: none;
   display: block;
-  padding: 5px;
 }
 
 #footer {
   flex: 0.3;
   display: flex;
   flex-flow: row;
-  padding: 5px;
 }
