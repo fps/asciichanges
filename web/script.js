@@ -1,6 +1,3 @@
-var editorarea;
-var logarea;
-var generatorarea;
 
 var music;
 
@@ -9,8 +6,9 @@ function el(id) {
 }
 
 function log(text) {
-  logarea.value = logarea.value + text + '\n';
-  logarea.scrollTop = logarea.scrollHeight;
+  var log = el('log');
+  log.value = log.value + text + '\n';
+  log.scrollTop = log.scrollHeight;
 }
 
 function play() {
@@ -26,10 +24,6 @@ function stop() {
 window.onload = function() {
   console.log("h");
   
-  editorarea = el('editor');
-  generatorarea = el('generator');
-  logarea = el('log');
-  
   log('Everyone wants LOG!');
 
   el('play').onclick = function() {
@@ -39,4 +33,14 @@ window.onload = function() {
   el('stop').onclick = function() {
     stop();
   };
+  
+  el('show_help').onclick = function() {
+    var help = el('help_wrapper');
+    if(help.style.display == 'none') {
+      help.style.display = 'flex';
+    }
+    else {
+      help.style.display = 'none';
+    }
+  }
 }
