@@ -21,6 +21,37 @@ function stop() {
   music.audio_context.close();
 }
 
+function getSelectionHtml() {
+  var html = "";
+  if (typeof window.getSelection != "undefined") {
+    var sel = window.getSelection();
+    if (sel.rangeCount) {
+      var container = document.createElement("div");
+      for (var i = 0, len = sel.rangeCount; i < len; ++i) {
+          container.appendChild(sel.getRangeAt(i).cloneContents());
+      }
+      html = container.innerHTML;
+    }
+  } 
+  else if (typeof document.selection != "undefined") {
+    if (document.selection.type == "Text") {
+        html = document.selection.createRange().htmlText;
+    }
+  }
+  return html;
+}
+
+function eval() {
+  log('evaluating');
+  try {
+    selection = getSelectionHtml();
+    log(selection);
+   // eval(selection);
+  } catch(error) {
+    // log(error.message);
+  }
+}
+
 window.onload = function() {
   console.log("h");
   
@@ -32,6 +63,15 @@ window.onload = function() {
   
   el('stop').onclick = function() {
     stop();
+  };
+  
+  
+  document.onkeypress = function(event) {
+    var code = event.which || event.keyCode;
+    
+    if (event.altKey && code == 13) {
+      eval();
+    }
   };
   
   el('show_help').onclick = function() {
