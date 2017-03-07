@@ -41,14 +41,30 @@ function getSelectionHtml() {
   return html;
 }
 
-function eval() {
+function evaluate() {
   log('evaluating');
   try {
-    selection = getSelectionHtml();
-    log(selection);
-   // eval(selection);
+    editor = el('editor');
+    var selection = '';
+    if (editor.selectionStart == editor.selectionEnd) {
+      log('equal ' + editor.selectionStart);
+      var lines = editor.value.split('\n');
+      var line = 0;
+      var character = 0;
+      for (; line < lines.length; ++line) {
+        log('line: ' + lines[line] + ' ' + character);
+        character = character + lines[line].length + 1;
+        if (character > editor.selectionStart) {
+          break;
+        }
+      }
+      log(lines[line]);
+      selection = lines[line]
+    }
+    log('selection: ' + selection);
+    eval(selection);
   } catch(error) {
-    // log(error.message);
+    log(error.message);
   }
 }
 
@@ -70,7 +86,7 @@ window.onload = function() {
     var code = event.which || event.keyCode;
     
     if (event.altKey && code == 13) {
-      eval();
+      evaluate();
     }
   };
   
