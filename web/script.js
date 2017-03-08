@@ -6,9 +6,7 @@ function el(id) {
 }
 
 function log(text) {
-  var log = el('log');
-  log.value = log.value + text + '\n';
-  log.scrollTop = log.scrollHeight;
+  console.log(text);
 }
 
 function play() {
@@ -47,12 +45,12 @@ function evaluate() {
     editor = el('editor');
     var selection = '';
     if (editor.selectionStart == editor.selectionEnd) {
-      log('equal ' + editor.selectionStart);
+      //log('equal ' + editor.selectionStart);
       var lines = editor.value.split('\n');
       var line = 0;
       var character = 0;
       for (; line < lines.length; ++line) {
-        log('line: ' + lines[line] + ' ' + character);
+        // log('line: ' + lines[line] + ' ' + character);
         character = character + lines[line].length + 1;
         if (character > editor.selectionStart) {
           break;
@@ -60,6 +58,9 @@ function evaluate() {
       }
       log(lines[line]);
       selection = lines[line]
+    }
+    else {
+      selection = editor.value.substr(editor.selectionStart, editor.selectionEnd - editor.selectionStart);
     }
     log('selection: ' + selection);
     eval(selection);
@@ -73,10 +74,8 @@ window.onload = function() {
   
   log('Everyone wants LOG!');
 
-  el('play').onclick = function() {
-    play();
-  };
-  
+  music = music_init();
+    
   el('stop').onclick = function() {
     stop();
   };
@@ -89,14 +88,4 @@ window.onload = function() {
       evaluate();
     }
   };
-  
-  el('show_help').onclick = function() {
-    var help = el('help_wrapper');
-    if(help.style.display == 'none') {
-      help.style.display = 'flex';
-    }
-    else {
-      help.style.display = 'none';
-    }
-  }
 }

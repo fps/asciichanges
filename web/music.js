@@ -4,7 +4,15 @@ function music_init() {
   ret.audio_context = new AudioContext();
   ret.sample_rate = ret.audio_context.sampleRate;
   ret.script_node = ret.audio_context.createScriptProcessor(4096, 0, 2);
-  ret.state = 'stopped';
+  ret.seconds = 0;
+  
+  ret.fn = function(number_of_channels, number_of_samples, output_data) {
+    for (var sample = 0; sample < number_of_samples; ++sample) {                                                            
+      for (var channel = 0; channel < number_of_channels; ++channel) {                                                    
+            output_data[channel][sample] = 0;                                                                                                                      
+      }                                                                                                                   
+    }                                                                                                                       
+  };
   
   ret.script_node.onaudioprocess = function(audio_processing_event) {
     var output_buffer = audio_processing_event.outputBuffer;                                                                
@@ -15,12 +23,9 @@ function music_init() {
     for (var channel = 0; channel < number_of_channels; ++channel) {                                                        
         output_data[channel] = output_buffer.getChannelData(channel);                                                       
     }                                                                                                                       
-                                                                                                                            
-    for (var sample = 0; sample < number_of_samples; ++sample) {                                                            
-      for (var channel = 0; channel < number_of_channels; ++channel) {                                                    
-            output_data[channel][sample] = 0;                                                                                                                      
-      }                                                                                                                   
-    }                                                                                                                       
+                                                                                                                        
+    ret.fn(number_of_channels, number_of_samples, output_data);
+    ret.seconds = ret.seconds + 4096 / ret.sample_rate;
   };
   ret.script_node.connect(ret.audio_context.destination);
   
