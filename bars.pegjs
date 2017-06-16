@@ -19,7 +19,7 @@ empty_line_end =
     whitespace* newline
 
 bar =
-    '|' empty_line_end '|' / '|'
+    '|' empty_line_end whitespace* '|' / '|'
 
 content =
     'C' / song

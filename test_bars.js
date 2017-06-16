@@ -18,7 +18,11 @@ try {
 
         two_measures: ' | C  |    C   | ',
 
-        repetition:  ' |   C   |:   C  |  C  :| '
+        repetition:  ' |   C   |:   C  |  C  :| ',
+
+        multiline_bars: '  |    |    |  \n  |    |    |  \n  |    |',
+
+        empty_repetition: '|   |   |:   |    |1.   |    |2.   |   :|'
     }
     
     for (var key in tests) {
