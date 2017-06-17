@@ -3,9 +3,9 @@ try {
     var peg = require('pegjs');
     var fs = require('fs');
 
-    var simple_pegjs = fs.readFileSync('simple.pegjs', 'utf8');
+    var asciichanges_pegjs = fs.readFileSync('asciichanges.pegjs', 'utf8');
     
-    var asciichanges = peg.generate(simple_pegjs, { trace: false });
+    var asciichanges = peg.generate(asciichanges_pegjs, { trace: false });
 
     tests = {
         C: '| C |',
