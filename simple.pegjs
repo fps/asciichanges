@@ -238,7 +238,7 @@ flats
     =   bees:(flat+) { return -1 * bees.length; }
 
 sharps
-    =   sharps:(sharp+) { return sharps.length; }
+    =   sharpies:(sharp+) { return sharpies.length; }
 
 quality
     =   '2' / '5' / 'major' / 'maj' / 'minor' / 'min' / 'm' / 'sus4' / 'sus2' / 'sus' / 'dim' / 'aug'
