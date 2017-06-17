@@ -228,15 +228,21 @@ letter
 sharps_or_flats
     =   flats / sharps
 
+flat =
+    '♭' / 'b'
+    
+sharp =
+    '♯' / '#'
+    
 flats
-    =   bees:(('b' / '♭')+) { return -1 * bees.length; }
+    =   bees:(flat+) { return -1 * bees.length; }
 
 sharps
-    =   sharps:(('#' / '♯')+) { return sharps.length; }
+    =   sharps:(sharp+) { return sharps.length; }
 
 quality
     =   '2' / '5' / 'major' / 'maj' / 'minor' / 'min' / 'm' / 'sus4' / 'sus2' / 'sus' / 'dim' / 'aug'
 
 extension
-    =   '6' / '7' / 'maj7' / 'b9' / '9' / '#9' / '11' / '#11' / 'b13' / 'b5' / '13'
+    =   '6' / '7' / 'maj7' / (flat '9') / '9' / (sharp '9') / '11' / (sharp '11') / (flat '13') / (flat '5') / '13'
     
