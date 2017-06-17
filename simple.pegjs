@@ -20,7 +20,7 @@ comment
         return {
             type: 'comment',
             comment: c,
-            location: location
+            location: location()
         };
     }
 
@@ -31,7 +31,7 @@ key_value
                 type: 'key_value', 
                 key: key, 
                 value: value,
-                location: location
+                location: location()
             }; 
         }
 
@@ -73,7 +73,7 @@ bar =
     {
         return {
             type: 'bar',
-            location: location
+            location: location()
         };
     }
 
@@ -94,7 +94,8 @@ measure =
             loop_start: l1 != null,
             loop_end: l2 != null,
             loop_number: ln,
-            stuff: s
+            stuff: s,
+            location: location()
         }
     }
 
@@ -127,7 +128,7 @@ coda =
     {
         return {
             type: 'coda',
-            location: location
+            location: location()
         };
     }
     
