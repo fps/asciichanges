@@ -3,11 +3,11 @@ try {
     var peg = require('pegjs');
     var fs = require('fs');
 
-    var note_pegjs = fs.readFileSync('note.pegjs', 'utf8');
+    //var note_pegjs = fs.readFileSync('note.pegjs', 'utf8');
     var bars_pegjs = fs.readFileSync('bars.pegjs', 'utf8');
     var chord_pegjs = fs.readFileSync('chord.pegjs', 'utf8');
     
-    var asciichanges = peg.generate(note_pegjs + bars_pegjs + chord_pegjs, { trace: false });
+    var asciichanges = peg.generate(bars_pegjs + chord_pegjs, { trace: false });
 
     tests = {
         empty: '',

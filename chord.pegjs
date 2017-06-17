@@ -24,7 +24,27 @@ note
 letter
     =   letter:[CDEFGAB]
         { 
-            return noteLetterToInt(letter); 
+            if (letter === 'C') { 
+                return 0;
+            }
+            if (letter === 'D') { 
+                return 2;
+            }
+            if (letter === 'E') { 
+                return 4;
+            }
+            if (letter === 'F') { 
+                return 5;
+            }
+            if (letter === 'G') { 
+                return 7;
+            }
+            if (letter === 'A') { 
+                return 9;
+            }
+            if (letter === 'B') { 
+                return 11;
+            }
         } 
 
 sharps_or_flats
