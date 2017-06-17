@@ -3,68 +3,55 @@ try {
     var peg = require('pegjs');
     var fs = require('fs');
 
-    var asciichanges_pegjs = fs.readFileSync('asciichanges.pegjs', 'utf8');
-
-    var asciichanges = peg.generate(asciichanges_pegjs , { trace: false });
+    var simple_pegjs = fs.readFileSync('simple.pegjs', 'utf8');
+    
+    var asciichanges = peg.generate(simple_pegjs, { trace: false });
 
     tests = {
-        empty: '',
+        C: '| C |',
 
-        c: 'C',
-        csharp: 'C#',
-        cflat: 'Cb',
-        d: 'D',
-        e: 'E',
-        cm: 'Cm',
-        ebm: 'Ebm',
-        csharpm: 'C#m',
+        empty_measure: '| |',
 
-        eflatmajorsevensharpeleven: 'Ebmaj7#11',
+        one_measure: '  | C  | ',
 
-        single_chord_multiline: `
-            Ebmaj7#11
+        two_measures: ' | C♭  |    C#   | ',
+
+        repetition:  ' |   C   |:   C♯  |  C  :| ',
+
+        multiline_bars: `
+            |    |    |  
+            |       |    |  
+            | Am7b5    |
         `,
 
-        single_chord_with_header: ` 
-            title: test
-            tempo: 125.5
-            time: 3/4
+        empty_repetition:  `
+            |     |     |     |     |
+            |:    |     |1.   |    :|
+                        |2.   |     |
 
-            C#m79
-        `,
+            |:    |     |     |       :|
+            |:    |1.  :|2.  :|3.    |
+            | %   |     | @   | D.S. |
+            | @   |     |
+            `,
+        autumn_leaves: `
+-- Autumn Leaves
 
-        full_song: `
-            title: The Autumn Leaves
-            tempo: 80 
-            time: 4/4
-    
-            | Cm7   | F7   | Bbmaj7   | Ebmaj7     |
-            | Am7b5 | D7b9 | Gsus     | G7         |
-            | Cm7   | F7   | Bbmaj7   | Ebmaj7     |
-            | Am7b5 | D7b9 | Gm       |            |
-            | Am7b5 | D7b9 | Gsus     | G7         |
-            | Cm7   | F7   | Bbmaj7   | Ebmaj7     |
-            | Am7b5 | D7b9 | Gm Gm/Gb | Gm/A Gm/Ab |
-            | Am7b5 | D7b9 | Gm       |            |
-        `,
+Tempo: 120
+Time: 4/4
 
-        full_song_with_comments: `
-            -- this is a complete song with comments!
-            title: The Autumn Leaves
-            tempo: 80 
-            time: 4/4
-    
-            -- A:
-            |: Cm7   | F7   |    Bbmaj7   | Ebmaj7     |
-            |  Am7b5 | D7b9 | 1. Gsus     | G7         |
-                            | 2. Gm       |           :|
+-- A:
+|: Cm7     | F7       |   Bbmaj7     | Ebmaj7        |
+  |  Am7b5   | D7b9     |1. Gm         | G7b9         :|
+                      |2. Gm         |               |
 
-            -- B:
-            |  Am7b5 | D7b9 | Gsus        | G7         |
-            |  Cm7   | F7   | Bbmaj7      | Ebmaj7     |
-            |  Am7b5 | D7b9 | Gm Gm/Gb    | Gm/A Gm/Ab |
-            |  Am7b5 | D7b9 | Gm          | (G7)       |
-        `
+-- B:
+| Am7b5    | D7b9     | Gm           | G7b9          |
+| Cm7      | F7       | Bbmaj7       | Ebmaj7        |
+| Am7b5    | D7♭9     | Gm / Gm/Gb / | Gm/F / Gm/E / |
+| Ebmaj7   | D7b9     | 𝄌 Gm       | (G7b9)    D.C.  |
+
+| 𝄌 Gdim | Gminmaj79 |`
     }
     
     for (var key in tests) {

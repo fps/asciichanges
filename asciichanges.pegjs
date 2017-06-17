@@ -1,66 +1,59 @@
-{
-    function noteLetterToInt(c) {
-        if (c === 'C') { 
-            return 0;
-        }
-        if (c === 'D') { 
-            return 2;
-        }
-        if (c === 'E') { 
-            return 4;
-        }
-        if (c === 'F') { 
-            return 5;
-        }
-        if (c === 'G') { 
-            return 7;
-        }
-        if (c === 'A') { 
-            return 9;
-        }
-        if (c === 'B') { 
-            return 11;
-        }
+ 
+start = 
+    h:(l:line newline {return l;})* l:line newline?
+    {
+        return h.concat(l);
     }
-}
-
-start
-    =   empty_line* c:content? empty_line* __
-        {
-            return c;
-        }
-
-bar
-    =   ':'? '|' '|'? ':'?
-
-split_bar
-    =   bar empty_line+ __ bar
-
-inner_bar
-    =   split_bar / bar
-___
-    =   _+
-
-__
-    =   _*
-
-_
-    = ' ' / '\t'
-
-eol
-    =   '\n'
-
-comment
-    =   (';' / '//' / '#' / '--') c:[^\n]*
+    
+line =
+    comment / key_value / harmony / whitespaces
+    
+whitespaces =
+    whitespace*
     {
         return {
-            type: 'comment',
-            comment: c
+            type: 'whitespace'
         };
     }
 
-empty_line
-    =   __ comment? eol
+whitespace = 
+    ' ' / '\t'
+
+newline =
+    '\n'
+
+empty_line =
+    whitespace* newline
+
+comment
+    =   (';' / '//' / '#' / '--') c:([^\n]* {return text();})
+    {
+        return {
+            type: 'comment',
+            comment: c,
+            location: location()
+        };
+    }
+
+key_value
+    =   key:key ':' whitespace value:value
+        { 
+            return { 
+                type: 'key_value', 
+                key: key, 
+                value: value,
+                location: location()
+            }; 
+        }
+
+key
+    =   [a-zA-Z] [a-zA-Z0-9]*
+        {
+            return text();
+        }
+
+value
+    =   fraction / real / integer / string
 
 string
     =   [a-zA-Z0-9 ]* 
@@ -86,39 +79,104 @@ integer
             return { type: 'integer', integer: parseInt(text(), 10) };
         }
 
-content
-    =   header:header? empty_line* harmony:harmony
-        {
-            return { type: 'asciichanges_song', header: header, harmony: harmony };
-        }
-
-header
-    =   head:__key_value__ tail:(empty_line* k:__key_value__ { return k; })*
-        {
-            return [head].concat(tail);
-        }
-
-harmony
-    =   __chord__ / bars
-
-__chord__
-    =   __ c:chord __
-        {
-            return c;
-        }
-
-optional_chord_or_chord
-    = optional_chord / chord
-
-optional_chord
-    =   '(' __ c:chord __ ')'
+bar =
+    '|'
     {
-        return { 
-            type: 'optional_chord', 
-            chord: c 
+        return {
+            type: 'bar',
+            location: location()
         };
     }
 
+harmony =
+    whitespace* bar h:(m:measure bar { return m;})+ whitespace*
+    {
+        return {
+            type: 'harmony',
+            harmony: h
+        };
+    }
+    
+measure =
+    l1:loop_mark? ln:loop_number? whitespace+ s:(s:stuff whitespace+ {return s;})* l2:loop_mark?
+    {
+        return {
+            type: 'measure',
+            loop_start: l1 != null,
+            loop_end: l2 != null,
+            loop_number: ln,
+            stuff: s,
+            location: location()
+        }
+    }
+
+loop_mark =
+    ':'
+    
+loop_number =
+    i:integer '.'
+    {
+        return {
+            type: 'loop_number',
+            number: i.integer
+        };
+    }
+
+stuff =
+    dal_segno / da_capo / chord / coda / segno / optional_chord / beat
+    
+beat =
+    '/'
+    {
+        return {
+            type: 'beat'
+        };
+    }
+
+dal_segno =
+    ('D.S.' / '𝄉')
+    {
+        return {
+            type: 'dal_segno',
+            location: location()
+        };
+    }
+    
+    
+da_capo =
+    ('D.C.' / '𝄊')
+    {
+        return {
+            type: 'da_capo',
+            location: location()
+        };
+    }
+
+coda =
+    ('𝄌' / '@')
+    {
+        return {
+            type: 'coda',
+            location: location()
+        };
+    }
+
+segno =
+    ('𝄋' / '%')
+    {
+        return {
+            type: 'segno',
+            location: location()
+        };
+    }
+    
+optional_chord =
+    '(' c:chord ')'
+    {
+        c.optional = true;
+        return c;
+    }
+    
 chord
     =   n:note q:quality? e:extension* sn:('/' s:note {return s;})?
         {
@@ -144,78 +202,47 @@ note
 letter
     =   letter:[CDEFGAB]
         { 
-            return noteLetterToInt(letter); 
+            if (letter === 'C') { 
+                return 0;
+            }
+            if (letter === 'D') { 
+                return 2;
+            }
+            if (letter === 'E') { 
+                return 4;
+            }
+            if (letter === 'F') { 
+                return 5;
+            }
+            if (letter === 'G') { 
+                return 7;
+            }
+            if (letter === 'A') { 
+                return 9;
+            }
+            if (letter === 'B') { 
+                return 11;
+            }
         } 
 
 sharps_or_flats
     =   flats / sharps
 
+flat =
+    '♭' / 'b'
+    
+sharp =
+    '♯' / '#'
+    
 flats
-    =   bees:('b'+) { return -1 * bees.length; }
+    =   bees:(flat+) { return -1 * bees.length; }
 
 sharps
-    =   sharps:('#'+) { return sharps.length; }
+    =   sharpies:(sharp+) { return sharpies.length; }
 
 quality
     =   '2' / '5' / 'major' / 'maj' / 'minor' / 'min' / 'm' / 'sus4' / 'sus2' / 'sus' / 'dim' / 'aug'
 
 extension
-    =   '6' / '7' / 'b9' / '9' / '#9' / '11' / '#11' / 'b13' / 'b5' / '13'
-
-__key_value__
-        = __ k:key_value __ eol
-        {
-            return k;
-        }
-
-key_value
-    =   key:key ':' __ value:value
-        { 
-            return { type: 'key_value', key: key, value: value }; 
-        }
-
-key
-    =   [a-zA-Z] [a-zA-Z0-9]*
-        {
-            return text();
-        }
-
-value
-    =   fraction / real / integer / string
-
-bars
-    =   __ bar b:bars_content bar __ eol? __?
-    {
-        return  { type: 'measures', measures: b };
-    }
-
-bars_content
-    =   several_measures / single_measure
-
-several_measures
-    =   head:single_measure tail:(inner_bar value:single_measure {return value;} )*
-        {
-            return [head].concat(tail);
-        }
-
-single_measure
-    =   beats / empty_bar
-
-empty_bar
-    =   ___
-    {
-        return [];
-    }
-
-beats
-    =   __ head:first_beat tail:(__ value:beat {return value;})* __
-    {
-        return [head].concat(tail);
-    }
-
-first_beat
-    =   ([1-9]+ '.') / beat
-
-beat
-    =   optional_chord_or_chord
-
+    =   '6' / '7' / 'maj7' / (flat '9') / '9' / (sharp '9') / '11' / (sharp '11') / (flat '13') / (flat '5') / '13'
+    
