@@ -72,7 +72,7 @@ Key/Value pairs are used to describe properties of the song like the tempo, or t
 
 </pre>Key: Value</pre>
 
-The following properties can be used (for example - it is unclear yet, if it is in the scope of the language definition to restrict or control these further):
+What key/value pairs mean is implementation dependent.
 
 Key/value pairs can appear on individual lines:
 
@@ -157,8 +157,10 @@ A Db minor triad
 
 Alternative notation for minor triads:
 
-<pre>Dbmin</pre>
-<pre>Dbminor</pre>
+<pre>
+Dbmin
+Dbminor
+</pre>
 
 Diminished triads:
 
@@ -174,9 +176,10 @@ Alternative roots ("slash" chords):
 
 Suspended triads:
 
-<pre>Csus2</pre>
-
-<pre>Bsus4</pre>
+<pre>
+Csus2
+Bsus4
+</pre>
 
 <code>sus</code> is shorthand for <code>sus4</code>:
 
@@ -188,12 +191,14 @@ Praise this chord! ;)
 
 Seventh chords:
 
-<pre>Eb7</pre>
-<pre>Gmaj7</pre>
-<pre>Ebmajor7</pre>
-<pre>Gbmmaj7</pre>
-<pre>Dminmaj7</pre>
-<pre>Emin7</pre>
+<pre>
+Eb7
+Gmaj7
+Ebmajor7
+Gbmmaj7
+Dminmaj7
+Emin7
+</pre>
 
 #### Higher Extensions
 
@@ -215,9 +220,10 @@ But the rule is that a b (#) directly following a root note letter are interpret
 
 Extensions can be one of the set <code>9</code>, <code>11</code>, <code>13</code>, and their sharp and flat variants (except for the <code>b11</code> and <code>#13</code>):
 
-<pre>Eb7#11</pre>
-
-<pre>A7b9#9</pre>
+<pre>
+Eb7#11
+A7b9#9
+</pre>
 
 
 Note that between extensions no extra whitespace is allowed. This is illegal:

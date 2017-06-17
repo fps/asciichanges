@@ -51,7 +51,8 @@ Time: 4/4
 | Am7b5    | D7♭9     | Gm / Gm/Gb / | Gm/F / Gm/E / |
 | Ebmaj7   | D7b9     | 𝄌 Gm       | (G7b9)    D.C.  |
 
-| 𝄌 Gdim | Gminmaj79 |`
+| 𝄌 Gdim | Gminmaj79 |`,
+        eb9: '| Eb9 |'
     }
     
     for (var key in tests) {
