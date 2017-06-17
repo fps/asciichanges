@@ -153,7 +153,7 @@ da_capo =
     }
 
 coda =
-    ('𝄌' / '@')
+    ('𝄌' / '@' / '(+)')
     {
         return {
             type: 'coda',
@@ -162,7 +162,7 @@ coda =
     }
 
 segno =
-    ('𝄋' / '%')
+    ('𝄋' / '%' / '(S)')
     {
         return {
             type: 'segno',

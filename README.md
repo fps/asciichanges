@@ -13,23 +13,23 @@ Tempo: 120
 Time: 4/4
 
 -- A:
-|: Cm7     | F7       |    Bbmaj7     | Ebmaj7        |
-|  Am7b5   | D7b9     | 1. Gm         | G7b9         :|
-                      | 2. Gm         |               |
+|: Cm7     | F7       |   Bbmaj7     | Ebmaj7        |
+|  Am7b5   | D7b9     |1. Gm         | G7b9         :|
+                      |2. Gm         |               |
 
 -- B:
-| Am7b5    | D7b9     | Gm            | G7b9          |
-| Cm7      | F7       | Bbmaj7        | Ebmaj7        |
-| Am7b5    | D7b9     | Gm / Gm/Gb /  | Gm/F / Gm/E / |
-| Ebmaj7   | D7b9     | (+) Gm        | (G7b9)        |
+| Am7b5    | D7b9     | Gm           | G7b9          |
+| Cm7      | F7       | Bbmaj7       | Ebmaj7        |
+| Am7b5    | D7b9     | Gm / Gm/Gb / | Gm/F / Gm/E / |
+| Ebmaj7   | D7b9     | (+) Gm       | (G7b9)        |
 
-| (+) Gdim | Gmin(maj7,9) |
+| (+) Gdim | Gminmaj79 |
 </pre>
 
 And here is the super minimal example (which is just the C major triad):
 
 <pre>
-C
+| C |
 </pre>
 
 # Scope and Motivation
@@ -38,7 +38,7 @@ Over the years the author has written several (terrible) ad-hoc parsers in diffe
 
 Formalizing this language might facilitate his own and others' future experiments in algorithmic compositions. Automatic backing track generation for practice and playing is a subset of algorithmic composition. ASCIIChanges might serve as a standardized interchange format for different backing track generators.
 
-This package aims to provide a (more or less) formal grammar of ASCIIChanges and a C++ library implemented using Boost-Spirit that creates a hopefully useful data structure representing the song from parsing valid ASCIIChanges files.
+This package aims to provide a (more or less) formal grammar of ASCIIChanges and a C++ library implemented using [pegjs](https://pegjs.org/) that creates a hopefully useful data structure representing the song from parsing valid ASCIIChanges files.
 
 # Structure
 
@@ -51,27 +51,6 @@ A legal song file consists of these types of lines:
 * Comments
 
 These can be freely intermixed. You're also pretty free to use whitespace to format the text nicely. 
-
-Instead of a newline you can also use the <code>;</code> character:
-
-<pre>
-| Cm | Fm |
-| Ab | G7 |
-</pre>
-
-is equivalent to
-
-<pre>
-| Cm | Fm | ; | Ab | G7 |
-</pre>
-
-which you could also write much simpler as
-
-<pre>
-| Cm | Fm | Ab | G7 |
-</pre>
-
-but that's not the point here ;)
 
 ## Whitespace
 
@@ -95,19 +74,12 @@ Key/Value pairs are used to describe properties of the song like the tempo, or t
 
 The following properties can be used (for example - it is unclear yet, if it is in the scope of the language definition to restrict or control these further):
 
-* <code>Tempo</code>: The tempo of the song in beats per minute (bpm).
-* <code>Time</code>: The time signature.
-* <code>Style</code>: A style hint. This is a free form text property (example: <code>Style: "Latin"</code>
+Key/value pairs can appear on individual lines:
 
-Keys are case insensitive. So an author is free to write <code>tempo</code> or <code>tEmPo</code>. 
-
-Key/value pairs can appear on lines (even several on a single line - whitespace separated):
-
-<pre>Tempo: 120 Time: 4/4</pre>
-
-Key/value pairs can also appear in bars/measures. There they must precede any other measure content:
-
-<pre>| Tempo: 110 Time: 4/4  Cm7 / / F7 | Time: 3/4 Bbmaj7 |</pre>
+<pre>
+Tempo: 120 
+Time: 4/4
+</pre>
 
 ## Bars/Measures
 
@@ -115,9 +87,7 @@ The simplest line consisting of measures/bars is
 
 <pre>| |</pre>
 
-That is an empty bar. A bar must contain at least one character that's not a <code>|</code>. The following is not an empty bar, but rather a section start (or end) indicator:
-
-<pre>||</pre>
+That is an empty bar.
 
 A line can consist of more than one measure:
 
@@ -158,19 +128,11 @@ If you want, you can have as many alternative endings as you want:
 <pre>|: Cm7  | 1. Gm7 :| 2. Ab7 G7 :| 3. Db7 :| 4. Ebm Dbm |</pre>
 
 
-### Key/Value Pairs
-
-<pre>| Tempo: 120 Cm7  | Tempo: 130 Gm7 |</pre>
-
 ### Beat Indicators
 
 You can use <code>/</code> to indicate quarter beats:
 
 <pre>| Cm7 / / F7 | Bbmaj7  |</pre>
-
-Or </code>.</code> to indicate 8th beats:
-
-<pre>| Cm7 . . . . F7 . . |</pre>
 
 ### Coda Signs
 
@@ -182,8 +144,6 @@ Or </code>.</code> to indicate 8th beats:
 </pre>
 
 ### Chords
-
-Chord symbols form an independent language themself (independent in the sense that you can use the library to parse chord symbols without having to parse a complete song).
 
 #### Triads
 
@@ -259,17 +219,6 @@ Extensions can be one of the set <code>9</code>, <code>11</code>, <code>13</code
 
 <pre>A7b9#9</pre>
 
-If that is too cluttered for your taste you can use commata:
-
-<pre>D7,9,#11</pre>
-
-Or brackets:
-
-<pre>C7(b9#9)</pre>
-
-Or both:
-
-<pre>Eb7(9,#11)</pre>
 
 Note that between extensions no extra whitespace is allowed. This is illegal:
 
