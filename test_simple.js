@@ -30,7 +30,7 @@ try {
                         |2.   |     |
 
             |:    |     |     |       :|
-            |:    |1.  :|2.  :|3. (+)  |
+            |:    |1.  :|2.  :|3. 𝄌  |
             `,
         autumn_leaves: `
 -- Autumn Leaves
@@ -47,9 +47,9 @@ Time: 4/4
 | Am7b5    | D7b9     | Gm           | G7b9          |
 | Cm7      | F7       | Bbmaj7       | Ebmaj7        |
 | Am7b5    | D7b9     | Gm / Gm/Gb / | Gm/F / Gm/E / |
-| Ebmaj7   | D7b9     | (+) Gm       | (G7b9)        |
+| Ebmaj7   | D7b9     | 𝄌 Gm       | (G7b9)        |
 
-| (+) Gdim | Gminmaj79 |`
+| 𝄌 Gdim | Gminmaj79 |`
     }
     
     for (var key in tests) {

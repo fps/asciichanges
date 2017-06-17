@@ -122,12 +122,39 @@ beat =
         };
     }
 
+dal_segno =
+    'D.S.' / '𝄉'
+    {
+        return {
+            type: 'dal_segno',
+            location: location()
+        };
+    }
     
+    
+dal_capo =
+    'D.C' / '𝄊'
+    {
+        return {
+            type: 'dal_capo',
+            location: location()
+        };
+    }
+
 coda =
-    '(+)'
+    '𝄌' / '(+)'
     {
         return {
             type: 'coda',
+            location: location()
+        };
+    }
+
+segno =
+    '𝄋' / '(S)'
+    {
+        return {
+            type: 'segno',
             location: location()
         };
     }
