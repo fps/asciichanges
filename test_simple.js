@@ -47,7 +47,7 @@ Time: 4/4
 | Am7b5    | D7b9     | Gm           | G7b9          |
 | Cm7      | F7       | Bbmaj7       | Ebmaj7        |
 | Am7b5    | D7b9     | Gm / Gm/Gb / | Gm/F / Gm/E / |
-| Ebmaj7   | D7b9     | 𝄌 Gm       | (G7b9)        |
+| Ebmaj7   | D7b9     | 𝄌 Gm       | (G7b9)    D.C.  |
 
 | 𝄌 Gdim | Gminmaj79 |`
     }

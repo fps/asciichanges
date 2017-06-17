@@ -123,7 +123,7 @@ loop_number =
     }
 
 stuff =
-    chord / coda / optional_chord / beat
+    dal_segno / da_capo / chord / coda / segno / optional_chord / beat
     
 beat =
     '/'
@@ -134,7 +134,7 @@ beat =
     }
 
 dal_segno =
-    'D.S.' / '𝄉'
+    ('D.S.' / '𝄉')
     {
         return {
             type: 'dal_segno',
@@ -143,17 +143,17 @@ dal_segno =
     }
     
     
-dal_capo =
-    'D.C' / '𝄊'
+da_capo =
+    ('D.C.' / '𝄊')
     {
         return {
-            type: 'dal_capo',
+            type: 'da_capo',
             location: location()
         };
     }
 
 coda =
-    '𝄌' / '(+)'
+    ('𝄌' / '(+)')
     {
         return {
             type: 'coda',
@@ -162,7 +162,7 @@ coda =
     }
 
 segno =
-    '𝄋' / '(S)'
+    ('𝄋' / '(S)')
     {
         return {
             type: 'segno',
