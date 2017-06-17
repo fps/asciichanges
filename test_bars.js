@@ -3,9 +3,11 @@ try {
     var peg = require('pegjs');
     var fs = require('fs');
 
-    var asciichanges_pegjs = fs.readFileSync('bars.pegjs', 'utf8');
-
-    var asciichanges = peg.generate(asciichanges_pegjs , { trace: false });
+    var note_pegjs = fs.readFileSync('note.pegjs', 'utf8');
+    var bars_pegjs = fs.readFileSync('bars.pegjs', 'utf8');
+    var chord_pegjs = fs.readFileSync('chord.pegjs', 'utf8');
+    
+    var asciichanges = peg.generate(note_pegjs + bars_pegjs + chord_pegjs, { trace: false });
 
     tests = {
         empty: '',
@@ -20,9 +22,20 @@ try {
 
         repetition:  ' |   C   |:   C  |  C  :| ',
 
-        multiline_bars: '  |    |    |  \n  |    |    |  \n  |    |',
+        multiline_bars: `
+            |    |    |  
+            |       |    |  
+            | Am7b5    |
+        `,
 
-        empty_repetition: '|   |   |:   |    |1.   |    |2.   |   :|'
+        empty_repetition:  `
+            |     |     |     |     |
+            |:    |     |1.   |    :|
+                        |2.   |     |
+
+            |:    |     |     |    :|
+            |:    |1.  :|2.  :|3.   |
+            `
     }
     
     for (var key in tests) {

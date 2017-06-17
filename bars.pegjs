@@ -1,5 +1,8 @@
 start = 
-    prespace content postspace / ''
+    prespace c:content? postspace
+    {
+        return c;
+    }
 
 prespace =
     empty_line_end*
@@ -19,10 +22,10 @@ empty_line_end =
     whitespace* newline
 
 bar =
-    '|' empty_line_end whitespace* '|' / '|'
+    '|' empty_line_end+ whitespace* '|' / '|'
 
 content =
-    'C' / song
+    harmony / song
 
 song = 
     '|' measure+
@@ -37,8 +40,11 @@ simple_measure =
     measure_content bar
 
 repetition = 
-    ':' simple_measure* (simple_repetition_end / numbered_repetition_end)
+    ':' simple_measure* (simple_repetition_end / numbered_repetition_ends)
 
+numbered_repetition_ends =
+    ([0-9]+ '.' simple_measure* simple_repetition_end)+ [0-9]+ '.'
+    
 simple_repetition_end = 
     measure_content ':' bar
 
@@ -46,5 +52,5 @@ numbered_repetition_end =
     [0-9]+ '.' measure_content ':' bar
 
 harmony =
-    'C'
+    ((chord whitespace+)+ chord) / chord
 
