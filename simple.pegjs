@@ -229,10 +229,10 @@ sharps_or_flats
     =   flats / sharps
 
 flats
-    =   bees:('b'+) { return -1 * bees.length; }
+    =   bees:(('b' / '♭')+) { return -1 * bees.length; }
 
 sharps
-    =   sharps:('#'+) { return sharps.length; }
+    =   sharps:(('#' / '♯')+) { return sharps.length; }
 
 quality
     =   '2' / '5' / 'major' / 'maj' / 'minor' / 'min' / 'm' / 'sus4' / 'sus2' / 'sus' / 'dim' / 'aug'

@@ -14,9 +14,9 @@ try {
 
         one_measure: '  | C  | ',
 
-        two_measures: ' | C  |    C   | ',
+        two_measures: ' | C♭  |    C#   | ',
 
-        repetition:  ' |   C   |:   C  |  C  :| ',
+        repetition:  ' |   C   |:   C♯  |  C  :| ',
 
         multiline_bars: `
             |    |    |  
