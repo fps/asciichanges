@@ -1,9 +1,20 @@
  
 start = 
-    (line newline)* line newline?
+    h:(l:line newline {return l;})* l:line newline?
+    {
+        return h.concat(l);
+    }
     
 line =
-    comment / key_value / harmony / whitespace*
+    comment / key_value / harmony / whitespaces
+    
+whitespaces =
+    whitespace*
+    {
+        return {
+            type: 'whitespace'
+        };
+    }
 
 whitespace = 
     ' ' / '\t'
@@ -15,7 +26,7 @@ empty_line =
     whitespace* newline
 
 comment
-    =   (';' / '//' / '#' / '--') c:[^\n]*
+    =   (';' / '//' / '#' / '--') c:([^\n]* {return text();})
     {
         return {
             type: 'comment',
