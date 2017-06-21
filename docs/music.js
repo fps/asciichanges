@@ -3,7 +3,8 @@ function music_init() {
   
   ret.audio_context = new AudioContext();
   ret.sample_rate = ret.audio_context.sampleRate;
-  ret.script_node = ret.audio_context.createScriptProcessor(4096, 0, 2);
+  ret.buffer_size = 4096;
+  ret.script_node = ret.audio_context.createScriptProcessor(ret.buffer_size, 0, 2);
   ret.seconds = 0;
   
   ret.fn = function(number_of_channels, number_of_samples, output_data) {
@@ -25,7 +26,7 @@ function music_init() {
     }                                                                                                                       
                                                                                                                         
     ret.fn(number_of_channels, number_of_samples, output_data);
-    ret.seconds = ret.seconds + 4096 / ret.sample_rate;
+    ret.seconds = ret.seconds + ret.buffer_size / ret.sample_rate;
   };
   ret.script_node.connect(ret.audio_context.destination);
   

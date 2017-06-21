@@ -46,7 +46,7 @@ body {
 }
 
 textarea {
-  flex:1;
+  flex: 1;
   resize: none;
   display: block;
 }
