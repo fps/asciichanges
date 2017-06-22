@@ -14,6 +14,10 @@ function play() {
   music = music_init();
 }
 
+function pause() {
+  log('pause');
+}
+
 function stop() {
   log('stop');
   music.audio_context.close();
@@ -76,6 +80,14 @@ window.onload = function() {
 
   music = music_init();
     
+  el('play').onclick = function() {
+    play();
+  };
+
+  el('pause').onclick = function() {
+    pause();
+  };
+
   el('stop').onclick = function() {
     stop();
   };
