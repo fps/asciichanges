@@ -133,7 +133,7 @@ beat =
         };
     }
 
-dal_segno =
+dal_segno "dal segno" =
     ('D.S.' / '𝄉')
     {
         return {
@@ -143,7 +143,7 @@ dal_segno =
     }
     
     
-da_capo =
+da_capo "da capo" =
     ('D.C.' / '𝄊')
     {
         return {
@@ -152,7 +152,7 @@ da_capo =
         };
     }
 
-coda =
+coda "coda" =
     ('𝄌' / '@' / '(+)')
     {
         return {
@@ -161,7 +161,7 @@ coda =
         };
     }
 
-segno =
+segno "segno" =
     ('𝄋' / '%' / '(S)')
     {
         return {
@@ -177,7 +177,7 @@ optional_chord =
         return c;
     }
     
-chord
+chord "chord"
     =   n:note q:quality? e:extension* sn:('/' s:note {return s;})?
         {
             return {
@@ -189,7 +189,7 @@ chord
             };
         }
 
-note
+note "note"
     =   left:letter right:sharps_or_flats?
         { 
             return { 
@@ -244,5 +244,5 @@ quality
     =   '2' / '5' / 'major' / 'maj' / 'minor' / 'min' / 'm' / 'sus4' / 'sus2' / 'sus' / 'dim' / 'aug'
 
 extension
-    =   '6' / '7' / 'maj7' / (flat '9') / '9' / (sharp '9') / '11' / (sharp '11') / (flat '13') / (flat '5') / '13'
+    =   '6' / '7' / 'alt' / 'maj7' / (flat '9') / '9' / (sharp '9') / '11' / (sharp '11') / (flat '13') / (flat '5') / '13'
     
