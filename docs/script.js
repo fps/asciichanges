@@ -78,7 +78,7 @@ window.onload = function() {
   
   log('Everyone wants LOG!');
 
-  music = music_init();
+  music = music_init(10);
     
   el('play').onclick = function() {
     play();

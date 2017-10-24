@@ -1,4 +1,4 @@
-function music_init() {
+function music_init(number_of_voices) {
   ret = {};
   
   ret.audio_context = new AudioContext();
@@ -6,6 +6,20 @@ function music_init() {
   ret.buffer_size = 4096;
   ret.script_node = ret.audio_context.createScriptProcessor(ret.buffer_size, 0, 2);
   ret.seconds = 0;
+  
+  ret.voices = [];
+  for (index = 0; index < number_of_voices; ++index)
+  {
+      console.log('creating voice ' + index);
+      voice = {};
+      // off = 0, on = 1
+      voice.state = 0;
+      voice.frequency = 440.0;
+      voice.start_time = 0;
+      voice.time_constant = 1.0;
+      
+      ret.voices.push(voice);
+  }
   
   ret.fn = function(number_of_channels, number_of_samples, output_data) {
     for (var sample = 0; sample < number_of_samples; ++sample) {                                                            
