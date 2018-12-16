@@ -1,0 +1,34 @@
+{
+  "name": "asciichanges",
+  "version": "0.0.1",
+  "description": "A simple language to describe harmony in ASCII format",
+  "main": "tests.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fps/asciichanges.git"
+  },
+  "keywords": [
+    "ASCII",
+    "harmony",
+    "music",
+    "jazz",
+    "changes",
+    "chords"
+  ],
+  "author": "Florian Paul Schmidt (mista.tapas@gmx.net)",
+  "license": "LGPL-2.0",
+  "bugs": {
+    "url": "https://github.com/fps/asciichanges/issues"
+  },
+  "homepage": "https://github.com/fps/asciichanges#readme",
+  "dependencies": {
+    "pegjs": "^0.10.0"
+  }
+}
