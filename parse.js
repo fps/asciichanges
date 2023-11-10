@@ -44,9 +44,26 @@ function parseKeyValuePair(line, n)
   return { parsed: true, type: "keyValue", key: splitLine[0], value: splitLine[1].trim() };
 }
 
+function parseEmptyLine(line, n)
+{
+  var exp = /^ *$/;
+  if (line.match(exp))
+  {
+    return { parsed: true, type: "whitespace" };
+  }
+
+  return { parsed: false, line: n };
+}
+
 function parseTrimmedLine(line, n)
 {
   var result;
+
+  result = parseEmptyLine(line, n)
+  if (result.parsed)
+  {
+    return result;
+  }
 
   result = parseKeyValuePair(line, n);
   if (result.parsed)
@@ -66,7 +83,7 @@ function parseTrimmedLine(line, n)
     return result;
   }
 
-  return { parsed: false };
+  return { parsed: false, reason: "Expected one of: empty line, key-value pair, comment, chord, bars" };
 }
 
 function parseLine(line, n)
@@ -77,7 +94,6 @@ function parseLine(line, n)
   trimmedline = line.trimStart();
   position += line.length - trimmedline.length;
   trimmedLine = line.trimEnd();
-  console.log("position: " + position);
 
   return parseTrimmedLine(trimmedLine, n);
 }
@@ -87,14 +103,16 @@ function parse(text)
   song = []
   lines = text.split("\n");
 
+  console.log(lines);
+
   lines.forEach((line, n) =>
   {
     var result = parseLine(line, n);
     if (!result.parsed)
     {
-      console.log("Failed to parse line: " + n);
+      throw new Error("Failed to parse line: " + n + ". Reason: " + result.reason);
     }
-    song.push(parseLine(line, n));
+    song.push(result);
   })
 
   return song;
