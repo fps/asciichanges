@@ -11,7 +11,7 @@ function log(text) {
 
 function play() {
   log('play');
-  music = music_init();
+  music = music_init(10);
 }
 
 function pause() {
@@ -67,7 +67,7 @@ function evaluate() {
       selection = editor.value.substr(editor.selectionStart, editor.selectionEnd - editor.selectionStart);
     }
     log('selection: ' + selection);
-    eval(selection);
+    console.log(asciichanges.parse(selection));
   } catch(error) {
     log(error.message);
   }
