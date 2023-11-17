@@ -22,7 +22,7 @@ function parseChord(line, n)
     return { parsed: false, line: n };
   }
 
-  return {parsed: false, line: n };
+  return {parsed: true, type: "chord", root: line[0] };
 }
 
 function parseKeyValuePair(line, n)
@@ -57,6 +57,7 @@ function parseEmptyLine(line, n)
 
 function parseTrimmedLine(line, n)
 {
+  console.log("trimmedLine: " + line);
   var result;
 
   result = parseEmptyLine(line, n)
@@ -91,10 +92,11 @@ function parseLine(line, n)
   console.log("line " + n + ": \"" + line + "\"")
   var position = 0;
 
-  trimmedline = line.trimStart();
-  position += line.length - trimmedline.length;
-  trimmedLine = line.trimEnd();
+  var trimmedLine = line.trimStart();
+  console.log(trimmedLine);
+  position += line.length - trimmedLine.length;
 
+  trimmedLine = trimmedLine.trimEnd();
   return parseTrimmedLine(trimmedLine, n);
 }
 
@@ -112,6 +114,7 @@ function parse(text)
     {
       throw new Error("Failed to parse line: " + n + ". Reason: " + result.reason);
     }
+    console.log(result);
     song.push(result);
   })
 
