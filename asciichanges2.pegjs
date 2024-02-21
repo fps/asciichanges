@@ -1,9 +1,13 @@
+/*
 document =
 	head:line tail:(newline line:line { return line; })* newline?
-    { return { type: 'lines', value: [head].concat(tail).filter(e => e)}; }
+    { return  head.concat(tail).filter(e => e); }
+*/
+
+document = lines:line* { return lines.flat(); }
 
 line =
-	whitespace* t:content? whitespace* { return t; }
+	whitespace* content:content whitespace* newline? { return content; } / newline
 
 whitespace =
 	(' ' / '\t')
@@ -17,15 +21,15 @@ content =
 // BARS
 
 bars =
-	'|' bars:(bar)+   { return { type: 'bars', value: bars }; }
+	'|' bars:(bar)+   { return bars; }
 
 bar =
 	whitespace* chords:chords? whitespace* '|'
-    { return { type: 'bar', value: chords }; }
+    { return chords; }
 
 chords =
 	head:chordlike tail:(whitespace+ chord:chordlike { return chord; })*
-    { return { type: 'chords', value: [head].concat(tail) }; }
+    { return [head].concat(tail); }
 
 // CHORDS
 
@@ -33,7 +37,7 @@ chordlike =
 	chord / beat
 
 beat =
-    '/'   { return { type: 'chord', value: null }; }
+    '/'   { return { type: 'beat' }; }
 
 
 chord =
@@ -43,9 +47,9 @@ chord =
         	type: 'chord',
             text: text(),
         	root: root,
+        	quality: quality ? quality : { third: 4, fifth: 7 },
             additions: additions,
             slash: slash,
-        	quality: quality ? quality : { third: 4, fifth: 7 }
         };
 
         if (suspended) {
@@ -178,5 +182,6 @@ diminished =
 
 half_diminished =
 	'0' / 'ø'
+
 
 
