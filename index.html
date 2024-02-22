@@ -2,8 +2,10 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCIIChanges simple demo</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css">
     <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
+    <script src="cancelandholdattime-polyfill.min.js"></script>
     <script src="asciichanges2.js"></script>
     <script>
       var e = (id) => {
@@ -26,9 +28,72 @@
         }
       };
 
+      var note_frequency = (note) => {
+        var relative_to_a3 = note - 57;
+        return Math.pow(2, relative_to_a3/12) * 440;
+      };
+
       var play = () => {
         log("Starting playback.");
         document.audioContext = new AudioContext();
+        ctx = document.audioContext;
+        p = document.parsed;
+
+        var start_time = ctx.currentTime + 0.5;
+
+        var number_of_voices = 32;
+        oscillators = [];
+        gains = [];
+        panners = [];
+        for (var voice = 0; voice < number_of_voices; ++voice) {
+          oscillators[voice] = new OscillatorNode(ctx);
+          gains[voice] = new GainNode(ctx);
+          panners[voice] = new PannerNode(ctx);
+          gains[voice].gain.value = 0;
+          oscillators[voice].connect(gains[voice]);
+          gains[voice].connect(panners[voice]);
+          panners[voice].connect(ctx.destination);
+          oscillators[voice].start();
+        }
+
+        for (var bar = 0; bar < p.length; ++bar) {
+          var bar_time = start_time + 2 * bar;
+          log(bar_time);
+
+          if (!p[bar]) {
+            continue;
+          }
+
+          if (p[bar].length == 0) {
+            continue;
+          }
+
+          var chord = p[bar][0];
+          log(chord.text);
+          var root = chord.slash ? chord.slash : chord.root;
+          log(root);
+          var notes = [root];
+          if (chord.quality.third) { notes.push((chord.quality.third + root) % 12); }
+          if (chord.quality.fifth) { notes = notes.concat(chord.quality.fifth.map((x) => (x + root) % 12)); }
+          if (chord.quality.seventh) { notes.push((chord.quality.seventh + root) % 12); }
+          if (chord.quality.extensions) { notes = notes.concat(chord.quality.extensions.map((x) => (x + root) % 12)); }
+          if (chord.quality.additions) { notes = notes.concat(chord.quality.additions.map((x) => (x + root) % 12)); }
+          log(notes);
+
+          for (var note = 0; note < number_of_voices; ++note) {
+            if (note < notes.length) {
+              panners[note].positionX.setValueAtTime(2 * Math.random() - 1, bar_time);
+              gains[note].gain.cancelAndHoldAtTime(bar_time);
+              gains[note].gain.setValueAtTime(0, bar_time);
+              gains[note].gain.exponentialRampToValueAtTime(0.4, bar_time+0.05);
+              gains[note].gain.exponentialRampToValueAtTime(0.00001, bar_time + 5);
+              oscillators[note].frequency.setValueAtTime(note_frequency(48+notes[note]), bar_time);
+            } else {
+              // gains[note].gain.cancelScheduledValues(bar+start_time);
+              // gains[note].gain.setValueAtTime(0, bar + start_time);
+            }
+          }
+        }
       };
 
       stop = () => {
@@ -51,9 +116,9 @@
     </script>
   </head>
   <body>
-    <h1>ASCIIChanges simple demo</h1>
-    <h2>Song entry:</h2>
-    <textarea id="song_entry" rows=10 cols=80>| Em7b5    | A7b9     | Csus4   | F7       |
+    <header>ASCIIChanges simple demo</header>
+    <h3>Song entry:</h3>
+    <textarea id="song_entry" rows=10 cols=80>| Em7b5    | A7b9     | Cm9sus4 | F13      |
 | Fm7      | Bb7      | Ebmaj7  | Ab7#11   |
 | Bbmaj7   | Em7b5 A7 | Dm7     | Bbm7 Eb7 |
 | Fmaj7    | Em7b5 A7 | Am7b5   | D7b9     |
@@ -61,19 +126,28 @@
 | Ab7#11   |          | Bbmaj7  |          |
 | Em7b5    | A7       | Dm7b5   | G7       |
 | Cm7b5    | F7       | Bbmaj7  |          |</textarea>
-    <h2>Log:</h2>
-    <textarea id="log" rows=10 cols=80 readonly></textarea>
     <form>
-      <h2>Playback controls:</h2>
+      <h3>Playback controls:</h3>
       <p>
-      Repetitions: <input id="repetitions" type="number" value="1" min="1" max="9999"/>
-      Tempo: <input id="tempo" type="number" value="120" min="1" max="9999"/>
+      <table>
+        <tr>
+          <td>Repetitions:</td><td><input id="repetitions" type="number" value="1" min="1" max="9999"/></td>
+        </tr>
+        <tr>
+          <td>Beats per minute:</td> <td><input id="bpm" type="number" value="120" min="1" max="9999"/></td>
+        </tr>
+        <tr>
+          <td>Beats per Bar:</td> <td><input id="beats_per_bar" type="number" value="4" min="1" max="9999"/></td>
+        </tr>
+      </table>
       </p>
       <p>
       <input id="play" type="button" value="Play" />
       <input id="stop" type="button" value="Stop" />
       </p>
     </form>
+    <h3>Log:</h3>
+    <textarea id="log" rows=10 cols=80 readonly></textarea>
   </body>
 </html>
 
