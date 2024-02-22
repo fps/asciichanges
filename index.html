@@ -5,6 +5,7 @@
     <title>ASCIIChanges simple demo</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css">
     <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
+    <script src="http://unpkg.com/tone"></script>
     <script src="asciichanges2.js"></script>
     <script>
       var e = (id) => {
@@ -34,6 +35,7 @@
 
       var play = () => {
         log("Starting playback.");
+        Tone.start();
         document.audioContext = new AudioContext();
         ctx = document.audioContext;
         p = document.parsed;
