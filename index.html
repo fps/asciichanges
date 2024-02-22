@@ -1,10 +1,79 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css">
+    <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
     <script src="asciichanges2.js"></script>
+    <script>
+      var e = (id) => {
+        return document.getElementById(id);
+      };
+
+      var log = (msg) => {
+        var log = e("log");
+        log.value += msg + "\n";
+        log.scrollTop = log.scrollHeight;
+      };
+
+      var parse = () => {
+        try {
+          document.parsed = pegjs.parse(e("song_entry").value);
+          log("Parsed successfully.");
+        } catch (error) {
+          log("Error: Line " + error.location.start.line + ", column " + error.location.start.column + ": " + error);
+          document.error = error;
+        }
+      };
+
+      var play = () => {
+        log("Starting playback.");
+        document.audioContext = new AudioContext();
+      };
+
+      stop = () => {
+        log("Stopping playback.");
+        document.audioContext.close();
+      };
+
+      window.onload = (event) => {
+        console.log("loaded");
+        var log_area = e("log");
+        var song_entry_area = e("song_entry");
+        song_entry_area.onkeyup = (event) => {
+            parse();
+        };
+
+        e("play").onclick = play;
+        e("stop").onclick = stop;
+        parse();
+      };
+    </script>
   </head>
   <body>
-    <textarea id="song_entry" rows=10 cols=80>| Cm7 F7 | Bbmaj9 |</textarea>
+    <h1>ASCIIChanges simple demo</h1>
+    <h2>Song entry:</h2>
+    <textarea id="song_entry" rows=10 cols=80>| Em7b5    | A7b9     | Csus4   | F7       |
+| Fm7      | Bb7      | Ebmaj7  | Ab7#11   |
+| Bbmaj7   | Em7b5 A7 | Dm7     | Bbm7 Eb7 |
+| Fmaj7    | Em7b5 A7 | Am7b5   | D7b9     |
+| G7b9     |          | Cm7     |          |
+| Ab7#11   |          | Bbmaj7  |          |
+| Em7b5    | A7       | Dm7b5   | G7       |
+| Cm7b5    | F7       | Bbmaj7  |          |</textarea>
+    <h2>Log:</h2>
+    <textarea id="log" rows=10 cols=80 readonly></textarea>
+    <form>
+      <h2>Playback controls:</h2>
+      <p>
+      Repetitions: <input id="repetitions" type="number" value="1" min="1" max="9999"/>
+      Tempo: <input id="tempo" type="number" value="120" min="1" max="9999"/>
+      </p>
+      <p>
+      <input id="play" type="button" value="Play" />
+      <input id="stop" type="button" value="Stop" />
+      </p>
+    </form>
   </body>
 </html>
 
