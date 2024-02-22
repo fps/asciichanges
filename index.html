@@ -5,7 +5,6 @@
     <title>ASCIIChanges simple demo</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css">
     <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
-    <script src="cancelandholdattime-polyfill.min.js"></script>
     <script src="asciichanges2.js"></script>
     <script>
       var e = (id) => {
@@ -83,10 +82,10 @@
           for (var note = 0; note < number_of_voices; ++note) {
             if (note < notes.length) {
               panners[note].positionX.setValueAtTime(2 * Math.random() - 1, bar_time);
-              gains[note].gain.cancelAndHoldAtTime(bar_time);
+              gains[note].gain.cancelScheduledValues(bar_time);
               gains[note].gain.setValueAtTime(0, bar_time);
               gains[note].gain.exponentialRampToValueAtTime(0.4, bar_time+0.05);
-              gains[note].gain.exponentialRampToValueAtTime(0.00001, bar_time + 5);
+              gains[note].gain.exponentialRampToValueAtTime(0.00001, bar_time + 1.9);
               oscillators[note].frequency.setValueAtTime(note_frequency(48+notes[note]), bar_time);
             } else {
               // gains[note].gain.cancelScheduledValues(bar+start_time);
