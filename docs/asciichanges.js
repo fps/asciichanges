@@ -178,7 +178,7 @@
             },
         peg$c20 = function(seventh, fifth, extensions) { return { third: 4, fifth: fifth ? fifth : [7], seventh: seventh, extensions: extensions }; },
         peg$c21 = function(seventh, fifth, extensions) { return { third: 3, fifth: fifth ? fifth : [7], seventh: seventh ? seventh : extensions ? 10 : null, extensions: extensions }; },
-        peg$c22 = function(seventh, extensions) { return { third: 3, fifth: [8], seventh: seventh ? seventh : extensions ? 10 : null, extensions: extensions }; },
+        peg$c22 = function(seventh, extensions) { return { third: 4, fifth: [8], seventh: seventh ? seventh : extensions ? 10 : null, extensions: extensions }; },
         peg$c23 = function(fifth, extensions) { return { third: 4, fifth: fifth ? fifth : [7], seventh: 10, extensions: extensions }; },
         peg$c24 = function(fifth) { return { third: 4, fifth: fifth ? fifth : [7], seventh: null, extensions: null }; },
         peg$c25 = "sus4",

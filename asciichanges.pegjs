@@ -67,7 +67,7 @@ quality =
         { return { third: 3, fifth: fifth ? fifth : [7], seventh: seventh ? seventh : extensions ? 10 : null, extensions: extensions }; }
 
 	  / augmented seventh:sixth_or_seventh? extensions:extensions?
-        { return { third: 3, fifth: [8], seventh: seventh ? seventh : extensions ? 10 : null, extensions: extensions }; }
+        { return { third: 4, fifth: [8], seventh: seventh ? seventh : extensions ? 10 : null, extensions: extensions }; }
 
 	  / fifth:bracketed_fifth? extensions:extensions
         { return { third: 4, fifth: fifth ? fifth : [7], seventh: 10, extensions: extensions }; }
