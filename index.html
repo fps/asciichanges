@@ -28,7 +28,7 @@
       };
 
       var note_frequency = (note) => {
-        var relative_to_a3 = note - 57;
+        var relative_to_a3 = (0.2 * Math.random() - 0.1) + note - 57;
         return Math.pow(2, relative_to_a3/12) * 440;
       };
 
@@ -101,8 +101,8 @@
                 console.log("beat == 0; root: " + root_note);
                 panners[current_voice].positionX.setValueAtTime(2 * Math.random() - 1, beat_time);
                 gains[current_voice].gain.setValueAtTime(0, beat_time);
-                gains[current_voice].gain.exponentialRampToValueAtTime(0.4 + 0.2 * Math.random(), beat_time+0.05);
-                gains[current_voice].gain.exponentialRampToValueAtTime(0.00001, beat_time + 10);
+                gains[current_voice].gain.exponentialRampToValueAtTime(0.3 + 0.1 * Math.random(), beat_time+0.5);
+                gains[current_voice].gain.exponentialRampToValueAtTime(0.00001, beat_time + 8);
                 oscillators[current_voice].frequency.setValueAtTime(note_frequency(36 + root_note), beat_time);
 
                 ++current_voice;
@@ -123,7 +123,7 @@
               console.log("note: " + note);
               panners[current_voice].positionX.setValueAtTime(2 * Math.random() - 1, beat_time);
               gains[current_voice].gain.setValueAtTime(0, beat_time);
-              gains[current_voice].gain.exponentialRampToValueAtTime(0.4 + 0.2 * Math.random(), beat_time+0.05);
+              gains[current_voice].gain.exponentialRampToValueAtTime(0.2 + 0.1 * Math.random(), beat_time+0.5);
               gains[current_voice].gain.exponentialRampToValueAtTime(0.00001, beat_time + 8);
               oscillators[current_voice].frequency.setValueAtTime(note_frequency(48 + note), beat_time);
 
