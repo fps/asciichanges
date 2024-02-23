@@ -78,8 +78,8 @@
             oscillators[current_voice].frequency.setValueAtTime(frequency, t);
             panners[current_voice].positionX.setValueAtTime(2 * Math.random() - 1, t);
             gains[current_voice].gain.exponentialRampToValueAtTime(0.3 + 0.1 * Math.random(), t + 0.01);
-            gains[current_voice].gain.exponentialRampToValueAtTime(0.001, t + note_length - 0.01);
-            //gains[current_voice].gain.setValueAtTime(0, t + note_length-0.001);
+            gains[current_voice].gain.exponentialRampToValueAtTime(0.05, t + note_length - 0.01);
+            gains[current_voice].gain.setValueAtTime(0, t + note_length-0.001);
 
             current_voice += 1;
             current_voice %= number_of_voices;
