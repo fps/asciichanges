@@ -5,7 +5,6 @@
     <title>ASCIIChanges simple demo</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css">
     <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
-    <script src="http://unpkg.com/tone"></script>
     <script src="asciichanges2.js"></script>
     <script>
       var e = (id) => {
@@ -33,19 +32,33 @@
         return Math.pow(2, relative_to_a3/12) * 440;
       };
 
+      var chord_tones = (chord) => {
+        var root = chord.slash ? chord.slash : chord.root;
+        // log(root);
+        var notes = [root];
+        if (chord.quality.third) { notes.push((chord.quality.third + root) % 12); }
+        if (chord.quality.fifth) { notes = notes.concat(chord.quality.fifth.map((x) => (x + root) % 12)); }
+        if (chord.quality.seventh) { notes.push((chord.quality.seventh + root) % 12); }
+        if (chord.quality.extensions) { notes = notes.concat(chord.quality.extensions.map((x) => (x + root) % 12)); }
+        if (chord.quality.additions) { notes = notes.concat(chord.quality.additions.map((x) => (x + root) % 12)); }
+        // log(notes);
+
+        return notes;
+      };
+
       var play = () => {
         log("Starting playback.");
-        Tone.start();
         document.audioContext = new AudioContext();
         ctx = document.audioContext;
-        p = document.parsed;
+        song = document.parsed;
 
         var start_time = ctx.currentTime + 0.5;
 
-        var number_of_voices = 32;
+        var number_of_voices = 64;
         oscillators = [];
         gains = [];
         panners = [];
+
         for (var voice = 0; voice < number_of_voices; ++voice) {
           oscillators[voice] = new OscillatorNode(ctx);
           gains[voice] = new GainNode(ctx);
@@ -57,41 +70,80 @@
           oscillators[voice].start();
         }
 
-        for (var bar = 0; bar < p.length; ++bar) {
-          var bar_time = start_time + 2 * bar;
-          log(bar_time);
+        current_voice = 0;
 
-          if (!p[bar]) {
-            continue;
-          }
+        var bpm = e("beats_per_minute").value;
+        var reps = e("repetitions").value;
+        var bpb = e("beats_per_bar").value;
+        var beat_duration = 60 / bpm;
+        console.log("beat_duration: " + beat_duration);
+        chord = null;
+        last_note = null;
+        for (var rep = 0; rep < reps; ++rep) {
+          for (var bar = 0; bar < song.length; ++bar) {
+            if (song[bar] && song[bar].length > 0) {
+              chord = song[bar][0];
+              console.log("Got a chord: " + chord.text);
+            }
 
-          if (p[bar].length == 0) {
-            continue;
-          }
+            for (var beat = 0; beat < bpb; ++beat) {
+              var beat_time = start_time + beat_duration * (beat + bpb * bar + song.length * bpb * rep);
+              // log(bar_time);
 
-          var chord = p[bar][0];
-          log(chord.text);
-          var root = chord.slash ? chord.slash : chord.root;
-          log(root);
-          var notes = [root];
-          if (chord.quality.third) { notes.push((chord.quality.third + root) % 12); }
-          if (chord.quality.fifth) { notes = notes.concat(chord.quality.fifth.map((x) => (x + root) % 12)); }
-          if (chord.quality.seventh) { notes.push((chord.quality.seventh + root) % 12); }
-          if (chord.quality.extensions) { notes = notes.concat(chord.quality.extensions.map((x) => (x + root) % 12)); }
-          if (chord.quality.additions) { notes = notes.concat(chord.quality.additions.map((x) => (x + root) % 12)); }
-          log(notes);
+              console.log("beat_time: " + beat_time);
+              var root_note = chord.slash ? chord.slash : chord.root;
+              // log(root);
+              notes = chord_tones(chord);
+              console.log("notes: " + notes);
 
-          for (var note = 0; note < number_of_voices; ++note) {
-            if (note < notes.length) {
-              panners[note].positionX.setValueAtTime(2 * Math.random() - 1, bar_time);
-              gains[note].gain.cancelScheduledValues(bar_time);
-              gains[note].gain.setValueAtTime(0, bar_time);
-              gains[note].gain.exponentialRampToValueAtTime(0.4, bar_time+0.05);
-              gains[note].gain.exponentialRampToValueAtTime(0.00001, bar_time + 1.9);
-              oscillators[note].frequency.setValueAtTime(note_frequency(48+notes[note]), bar_time);
-            } else {
-              // gains[note].gain.cancelScheduledValues(bar+start_time);
-              // gains[note].gain.setValueAtTime(0, bar + start_time);
+              // bass note
+              if (beat == 0) {
+                console.log("beat == 0; root: " + root_note);
+                panners[current_voice].positionX.setValueAtTime(2 * Math.random() - 1, beat_time);
+                gains[current_voice].gain.setValueAtTime(0, beat_time);
+                gains[current_voice].gain.exponentialRampToValueAtTime(0.4 + 0.2 * Math.random(), beat_time+0.05);
+                gains[current_voice].gain.exponentialRampToValueAtTime(0.00001, beat_time + 10);
+                oscillators[current_voice].frequency.setValueAtTime(note_frequency(36 + root_note), beat_time);
+
+                ++current_voice;
+                current_voice = current_voice % number_of_voices;
+              }
+
+              note = notes[Math.floor(Math.random() * notes.length)];
+              if (note == last_note) {
+                note = notes[Math.floor(Math.random() * notes.length)];
+              }
+              /*
+              if (Math.random() > 0.5) {
+                note += 12;
+              }
+              */
+
+              last_note = note;
+              console.log("note: " + note);
+              panners[current_voice].positionX.setValueAtTime(2 * Math.random() - 1, beat_time);
+              gains[current_voice].gain.setValueAtTime(0, beat_time);
+              gains[current_voice].gain.exponentialRampToValueAtTime(0.4 + 0.2 * Math.random(), beat_time+0.05);
+              gains[current_voice].gain.exponentialRampToValueAtTime(0.00001, beat_time + 8);
+              oscillators[current_voice].frequency.setValueAtTime(note_frequency(48 + note), beat_time);
+
+              ++current_voice;
+              current_voice = current_voice % number_of_voices;
+
+              /*
+                // chord
+                for (var note = 0; note < notes.length; ++note) {
+                  panners[current_voice].positionX.setValueAtTime(2 * Math.random() - 1, beat_time);
+                  // gains[note].gain.cancelScheduledValues(beat_time);
+                  gains[current_voice].gain.setValueAtTime(0, beat_time);
+                  gains[current_voice].gain.exponentialRampToValueAtTime(0.2, beat_time+0.05);
+                  gains[current_voice].gain.exponentialRampToValueAtTime(0.00001, beat_time + 5);
+                  oscillators[current_voice].frequency.setValueAtTime(note_frequency(48+notes[note]), beat_time);
+
+                  ++current_voice;
+                  current_voice = current_voice % number_of_voices;
+                }
+              */
             }
           }
         }
@@ -117,16 +169,16 @@
     </script>
   </head>
   <body>
-    <header>ASCIIChanges simple demo</header>
+    <h2>ASCIIChanges simple demo</h2>
     <h3>Song entry:</h3>
-    <textarea id="song_entry" rows=10 cols=80>| Em7b5    | A7b9     | Cm9sus4 | F13      |
-| Fm7      | Bb7      | Ebmaj7  | Ab7#11   |
-| Bbmaj7   | Em7b5 A7 | Dm7     | Bbm7 Eb7 |
-| Fmaj7    | Em7b5 A7 | Am7b5   | D7b9     |
-| G7b9     |          | Cm7     |          |
-| Ab7#11   |          | Bbmaj7  |          |
-| Em7b5    | A7       | Dm7b5   | G7       |
-| Cm7b5    | F7       | Bbmaj7  |          |</textarea>
+    <textarea id="song_entry" rows=10 cols=80>| Em7b5    | A7b9         | Cm9sus4 | F13          |
+| Fm7      | Bb7          | Ebmaj7  | Ab7#11       |
+| Bbmaj7   | Em7b5 / A7 / | Dm7     | Bbm7 / Eb7 / |
+| Fmaj7    | Em7b5 / A7 / | Am7b5   | D7b9         |
+| G7b9     |              | Cm7     |              |
+| Ab9#11   |              | Bbmaj9  |              |
+| Em7b5    | A7b9#9       | Dm7b5   | G7b9#9       |
+| Cm7b5    | F7           | Bbmaj9  |              |</textarea>
     <form>
       <h3>Playback controls:</h3>
       <p>
@@ -135,7 +187,7 @@
           <td>Repetitions:</td><td><input id="repetitions" type="number" value="1" min="1" max="9999"/></td>
         </tr>
         <tr>
-          <td>Beats per minute:</td> <td><input id="bpm" type="number" value="120" min="1" max="9999"/></td>
+          <td>Beats per minute:</td> <td><input id="beats_per_minute" type="number" value="120" min="1" max="9999"/></td>
         </tr>
         <tr>
           <td>Beats per Bar:</td> <td><input id="beats_per_bar" type="number" value="4" min="1" max="9999"/></td>
