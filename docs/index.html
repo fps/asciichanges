@@ -115,7 +115,7 @@
                 panners[current_voice].positionX.setValueAtTime(2 * Math.random() - 1, beat_time);
                 gains[current_voice].gain.setValueAtTime(0, beat_time);
                 gains[current_voice].gain.exponentialRampToValueAtTime(0.3 + 0.1 * Math.random(), beat_time+0.5);
-                gains[current_voice].gain.exponentialRampToValueAtTime(0.00001, beat_time + note_length);
+                gains[current_voice].gain.exponentialRampToValueAtTime(0.00001, beat_time + note_length - 0.01);
                 oscillators[current_voice].frequency.setValueAtTime(note_frequency(36 + root_note), beat_time);
 
                 ++current_voice;
@@ -126,7 +126,7 @@
                 panners[current_voice].positionX.setValueAtTime(2 * Math.random() - 1, beat_time);
                 gains[current_voice].gain.setValueAtTime(0, beat_time);
                 gains[current_voice].gain.exponentialRampToValueAtTime(0.3 + 0.1 * Math.random(), beat_time+0.5);
-                gains[current_voice].gain.exponentialRampToValueAtTime(0.00001, beat_time + note_length);
+                gains[current_voice].gain.exponentialRampToValueAtTime(0.00001, beat_time + note_length - 0.01);
                 oscillators[current_voice].frequency.setValueAtTime(note_frequency(36 + fifth_note), beat_time);
 
                 ++current_voice;
@@ -148,7 +148,7 @@
               panners[current_voice].positionX.setValueAtTime(2 * Math.random() - 1, beat_time);
               gains[current_voice].gain.setValueAtTime(0, beat_time);
               gains[current_voice].gain.exponentialRampToValueAtTime(0.2 + 0.1 * Math.random(), beat_time+0.5);
-              gains[current_voice].gain.exponentialRampToValueAtTime(0.01, beat_time + note_length);
+              gains[current_voice].gain.exponentialRampToValueAtTime(0.00001, beat_time + note_length - 0.01);
               oscillators[current_voice].frequency.setValueAtTime(note_frequency(48 + note), beat_time);
 
               ++current_voice;
