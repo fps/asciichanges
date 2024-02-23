@@ -46,8 +46,13 @@
         return notes;
       };
 
-      var play_note = (oscillator, gain, panner, time, frequency) => {
-
+      var play_note = (oscillator, gain, panner, time, note_length, frequency) => {
+          gain.gain.setValueAtTime(0, time);
+          oscillator.frequency.setValueAtTime(frequency, time);
+          panner.positionX.setValueAtTime(2 * Math.random() - 1, time);
+          gain.gain.exponentialRampToValueAtTime(0.3 + 0.1 * Math.random(), time + 0.01);
+          gain.gain.exponentialRampToValueAtTime(0.001, time + note_length - 0.01);
+          gain.gain.setValueAtTime(0, time + note_length-0.001);
       };
 
       var play = () => {
@@ -109,26 +114,46 @@
               console.log("notes: " + notes);
               console.log("fifth: " + fifth_note);
 
-              note_length = beat_duration * 4;
+              note_length = beat_duration * 2;
               // bass note
               if (beat == 0 || has_new_chord) {
+                play_note(
+                  oscillators[current_voice],
+                  gains[current_voice],
+                  panners[current_voice],
+                  beat_time,
+                  note_length,
+                  note_frequency(note_frequency(36 + root_note))
+                );
+
+                /*
                 panners[current_voice].positionX.setValueAtTime(2 * Math.random() - 1, beat_time);
                 gains[current_voice].gain.setValueAtTime(0, beat_time);
-                gains[current_voice].gain.exponentialRampToValueAtTime(0.3 + 0.1 * Math.random(), beat_time+0.5);
-                gains[current_voice].gain.exponentialRampToValueAtTime(0.00001, beat_time + note_length - 0.01);
+                gains[current_voice].gain.exponentialRampToValueAtTime(0.3 + 0.1 * Math.random(), beat_time+0.1);
+                gains[current_voice].gain.exponentialRampToValueAtTime(0.01, beat_time + note_length - 0.01);
                 oscillators[current_voice].frequency.setValueAtTime(note_frequency(36 + root_note), beat_time);
+                */
 
                 ++current_voice;
                 current_voice = current_voice % number_of_voices;
               }
 
               if (beat == 2 && !has_new_chord) {
+                play_note(
+                  oscillators[current_voice],
+                  gains[current_voice],
+                  panners[current_voice],
+                  beat_time,
+                  note_length,
+                  note_frequency(note_frequency(36 + fifth_note))
+                );
+                /*
                 panners[current_voice].positionX.setValueAtTime(2 * Math.random() - 1, beat_time);
                 gains[current_voice].gain.setValueAtTime(0, beat_time);
-                gains[current_voice].gain.exponentialRampToValueAtTime(0.3 + 0.1 * Math.random(), beat_time+0.5);
-                gains[current_voice].gain.exponentialRampToValueAtTime(0.00001, beat_time + note_length - 0.01);
+                gains[current_voice].gain.exponentialRampToValueAtTime(0.3 + 0.1 * Math.random(), beat_time+0.1);
+                gains[current_voice].gain.exponentialRampToValueAtTime(0.01, beat_time + note_length - 0.01);
                 oscillators[current_voice].frequency.setValueAtTime(note_frequency(36 + fifth_note), beat_time);
-
+                */
                 ++current_voice;
                 current_voice = current_voice % number_of_voices;
               }
@@ -145,12 +170,22 @@
 
               last_note = note;
               console.log("note: " + note);
+              play_note(
+                oscillators[current_voice],
+                gains[current_voice],
+                panners[current_voice],
+                beat_time,
+                note_length,
+                note_frequency(48 + note)
+              );
+
+              /*
               panners[current_voice].positionX.setValueAtTime(2 * Math.random() - 1, beat_time);
               gains[current_voice].gain.setValueAtTime(0, beat_time);
               gains[current_voice].gain.exponentialRampToValueAtTime(0.2 + 0.1 * Math.random(), beat_time+0.5);
               gains[current_voice].gain.exponentialRampToValueAtTime(0.00001, beat_time + note_length - 0.01);
               oscillators[current_voice].frequency.setValueAtTime(note_frequency(48 + note), beat_time);
-
+              */
               ++current_voice;
               current_voice = current_voice % number_of_voices;
             }
