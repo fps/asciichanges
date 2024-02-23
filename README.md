@@ -4,7 +4,7 @@ A simple language for writing chord progressions using just ASCII text.
 
 # Introductory Examples
 
-This is an introductory example showcasing some of the features:
+Stella by Starlight:
 
 <pre>
 | Em7b5    | A7b9         | Cm9sus4    | F13          |
