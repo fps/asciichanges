@@ -1,248 +1,187 @@
- 
-start = 
-    h:(l:line newline {return l;})* l:line newline?
-    {
-        return h.concat(l);
-    }
-    
-line =
-    comment / key_value / harmony / whitespaces
-    
-whitespaces =
-    whitespace*
-    {
-        return {
-            type: 'whitespace'
-        };
-    }
+/*
+document =
+	head:line tail:(newline line:line { return line; })* newline?
+    { return  head.concat(tail).filter(e => e); }
+*/
 
-whitespace = 
-    ' ' / '\t'
+document = lines:line* { return lines.flat(); }
+
+line =
+	whitespace* content:content whitespace* newline? { return content; } / newline
+
+whitespace =
+	(' ' / '\t')
 
 newline =
-    '\n'
+	'\n'
 
-empty_line =
-    whitespace* newline
+content =
+	c:chords { return [c]; } / bars
 
-comment
-    =   (';' / '//' / '#' / '--') c:([^\n]* {return text();})
-    {
-        return {
-            type: 'comment',
-            comment: c,
-            location: location()
-        };
-    }
+// BARS
 
-key_value
-    =   key:key ':' whitespace value:value
-        { 
-            return { 
-                type: 'key_value', 
-                key: key, 
-                value: value,
-                location: location()
-            }; 
-        }
-
-key
-    =   [a-zA-Z] [a-zA-Z0-9]*
-        {
-            return text();
-        }
-
-value
-    =   fraction / real / integer / string
-
-string
-    =   [a-zA-Z0-9 ]* 
-        {
-            return { type: 'string', string: text() };
-        }
-
-fraction
-    =   first:integer '/' second:integer
-        {
-            return { type: 'fraction', nominator:first, denominator:second };
-        }
-
-real
-    =   first:integer '.' second:integer
-        {
-            return { type: 'real', integer: first, fraction: second };
-        }
-
-integer
-    =   [0-9]+
-        {
-            return { type: 'integer', integer: parseInt(text(), 10) };
-        }
+bars =
+	'|' bars:(bar)+   { return bars; }
 
 bar =
-    '|'
-    {
-        return {
-            type: 'bar',
-            location: location()
-        };
-    }
+	whitespace* chords:chords? whitespace* '|'
+    { return chords; }
 
-harmony =
-    whitespace* bar h:(m:measure bar { return m;})+ whitespace*
-    {
-        return {
-            type: 'harmony',
-            harmony: h
-        };
-    }
-    
-measure =
-    l1:loop_mark? ln:loop_number? whitespace+ s:(s:stuff whitespace+ {return s;})* l2:loop_mark?
-    {
-        return {
-            type: 'measure',
-            loop_start: l1 != null,
-            loop_end: l2 != null,
-            loop_number: ln,
-            stuff: s,
-            location: location()
-        }
-    }
+chords =
+	head:chordlike tail:(whitespace+ chord:chordlike { return chord; })*
+    { return [head].concat(tail); }
 
-loop_mark =
-    ':'
-    
-loop_number =
-    i:integer '.'
-    {
-        return {
-            type: 'loop_number',
-            number: i.integer
-        };
-    }
+// CHORDS
 
-stuff =
-    dal_segno / da_capo / chord / coda / segno / optional_chord / beat
-    
+chordlike =
+	chord / beat
+
 beat =
-    '/'
-    {
-        return {
-            type: 'beat'
-        };
-    }
+    '/'   { return { type: 'beat' }; }
 
-dal_segno "dal segno" =
-    ('D.S.' / '𝄉')
-    {
-        return {
-            type: 'dal_segno',
-            location: location()
-        };
-    }
-    
-    
-da_capo "da capo" =
-    ('D.C.' / '𝄊')
-    {
-        return {
-            type: 'da_capo',
-            location: location()
-        };
-    }
 
-coda "coda" =
-    ('𝄌' / '@' / '(+)')
+chord =
+	root:note quality:quality? additions:addition* suspended:suspended? slash:('/' note:note { return note; })?
     {
-        return {
-            type: 'coda',
-            location: location()
+    	var ret = {
+        	type: 'chord',
+            text: text(),
+        	root: root,
+        	quality: quality ? quality : { third: 4, fifth: 7 },
+            additions: additions,
+            slash: slash,
         };
-    }
 
-segno "segno" =
-    ('𝄋' / '%' / '(S)')
-    {
-        return {
-            type: 'segno',
-            location: location()
-        };
-    }
-    
-optional_chord =
-    '(' c:chord ')'
-    {
-        c.optional = true;
-        return c;
-    }
-    
-chord "chord"
-    =   n:note q:quality? e:extension* sn:('/' s:note {return s;})?
-        {
-            return {
-                type: 'chord',
-                root: n,
-                slash_note: sn,
-                quality: q,
-                extensions: e
-            };
+        if (suspended) {
+        	ret.third = suspended;
         }
 
-note "note"
-    =   left:letter right:sharps_or_flats?
-        { 
-            return { 
-                type: 'note',
-                root: left, 
-                accidental: right
-            }; 
-        }
+        return ret;
+    }
 
-letter
-    =   letter:[CDEFGAB]
-        { 
-            if (letter === 'C') { 
-                return 0;
-            }
-            if (letter === 'D') { 
-                return 2;
-            }
-            if (letter === 'E') { 
-                return 4;
-            }
-            if (letter === 'F') { 
-                return 5;
-            }
-            if (letter === 'G') { 
-                return 7;
-            }
-            if (letter === 'A') { 
-                return 9;
-            }
-            if (letter === 'B') { 
-                return 11;
-            }
-        } 
+quality =
+        seventh:sixth_or_seventh fifth:fifth? extensions:extensions?
+        { return { third: 4, fifth: fifth ? fifth : [7], seventh: seventh, extensions: extensions }; }
 
-sharps_or_flats
-    =   flats / sharps
+	  / minor seventh:sixth_or_seventh? fifth:fifth? extensions:extensions?
+        { return { third: 3, fifth: fifth ? fifth : [7], seventh: seventh ? seventh : extensions ? 10 : null, extensions: extensions }; }
+
+	  / augmented seventh:sixth_or_seventh? extensions:extensions?
+        { return { third: 3, fifth: [8], seventh: seventh ? seventh : extensions ? 10 : null, extensions: extensions }; }
+
+	  / fifth:bracketed_fifth? extensions:extensions
+        { return { third: 4, fifth: fifth ? fifth : [7], seventh: 10, extensions: extensions }; }
+
+	  / fifth:bracketed_fifth
+        { return { third: 4, fifth: fifth ? fifth : [7], seventh: null, extensions: null }; }
+
+suspended =
+	'sus4' { return 5; } / 'sus2' { return 2; } / 'sus' { return 5; }
+
+bracketed_fifth =
+	'(' fifth:fifth ')' { return fifth; } / fifth
+
+fifth =
+	flat '5' sharp '5' { return [6, 8]; } / flat '5' { return [6]; } / sharp '5' { return [8]; }
+
+sixth_or_seventh =
+	'6' { return 9; } / seventh
+
+seventh =
+	('M7' / 'M' / major '7' / major) { return 11; } / '7' { return 10; }
+
+extensions =
+	  n:nineth? t:tenth? e:eleventh? th:thirteenth
+      { return th.concat(e).concat(t).concat(n).filter(x => x); }
+    / n:nineth? t:tenth? e:eleventh
+      { return e.concat(t).concat(n).filter(x => x); }
+    / n:nineth? t:tenth
+      { return t.concat(n).filter(x => x); }
+    / nineth
+
+nineth =
+	  flat '9' sharp '9' { return [13, 15]; }
+    / flat '9' { return [13]; }
+    / sharp '9' { return [15]; }
+    / '9' { return [14]; }
+
+tenth =
+	flat '10' { return [15]; }  / '10' { return [16]; }
+
+eleventh =
+	sharp '11' { return [18]; } / '11' { return [17]; }
+
+thirteenth =
+	flat '13' { return [20]; } / '13' { return [21]; }
+
+addition =
+	'add'
+	note:(
+    	  flat '2' { return 1; }
+        / sharp '2' { return 3; }
+        / '2' { return 2; }
+        / flat '3' { return 3; }
+        / '3' { return 4; }
+        / '4' { return 5; }
+        / sharp '4' { return 6; }
+        / flat '5' { return 6; }
+        / sharp '5' { return 8; }
+        / '5' { return 7; }
+        / flat '6' { return 8; }
+        / '6' { return 9; }
+    	/ '9' { return 14; }
+        / flat '9' { return 13; }
+        / sharp '9' { return 15; }
+        / flat '10' { return 15; }
+        / '10' { return 16; }
+        / '11' { return 17; }
+        / sharp '11' { return 18; }
+        / '12' { return 19; }
+        / flat '13' { return 20; }
+        / '13' { return 21; }
+    )
+    { return note; }
+
+note =
+    letter:note_letter accidentals:accidentals?
+    {
+    	return (letter + accidentals + 12) % 12;
+    }
+
+note_letter =
+	  ('C' / 'c') { return 0; }
+	/ ('D' / 'd') { return 2; }
+	/ ('E' / 'e') { return 4; }
+	/ ('F' / 'f') { return 5; }
+	/ ('G' / 'g') { return 7; }
+	/ ('A' / 'a') { return 9; }
+	/ ('B' / 'b') { return 11; }
+
+accidentals
+    =   flats:(flat+) { return -1 * flats.length; }
+    	/
+        sharps:(sharp+) { return sharps.length; }
 
 flat =
     '♭' / 'b'
-    
+
 sharp =
     '♯' / '#'
-    
-flats
-    =   bees:(flat+) { return -1 * bees.length; }
 
-sharps
-    =   sharpies:(sharp+) { return sharpies.length; }
+major =
+	'major' / 'maj'
 
-quality
-    =   '2' / '5' / 'major' / 'maj' / 'minor' / 'min' / 'm' / 'sus4' / 'sus2' / 'sus' / 'dim' / 'aug'
+minor =
+	'minor' / 'min' / 'm' / '-'
 
-extension
-    =   '6' / '7' / 'alt' / 'maj7' / (flat '9') / '9' / (sharp '9') / '11' / (sharp '11') / (flat '13') / (flat '5') / '13'
-    
+augmented =
+	'aug' / '+'
+
+diminished =
+	'dim' / 'o'
+
+half_diminished =
+	'0' / 'ø'
+
+
+
