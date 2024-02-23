@@ -28,7 +28,7 @@
       };
 
       var note_frequency = (note) => {
-        var relative_to_a3 = (0.2 * Math.random() - 0.1) + note - 57;
+        var relative_to_a3 = (0.1 * Math.random() - 0.05) + note - 57;
         return Math.pow(2, relative_to_a3/12) * 440;
       };
 
