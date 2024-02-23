@@ -69,7 +69,10 @@ quality =
 	  / augmented seventh:sixth_or_seventh? extensions:extensions?
         { return { third: 4, fifth: [8], seventh: seventh ? seventh : extensions ? 10 : null, extensions: extensions }; }
 
-	  / fifth:bracketed_fifth? extensions:extensions
+	  / diminished seventh:'7'? extensions:extensions?
+        { return { third: 3, fifth: [6], seventh: seventh ? 9 : extensions ? 9 : null, extensions: extensions }; }
+
+        / fifth:bracketed_fifth? extensions:extensions
         { return { third: 4, fifth: fifth ? fifth : [7], seventh: 10, extensions: extensions }; }
 
 	  / fifth:bracketed_fifth
