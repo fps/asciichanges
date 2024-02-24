@@ -47,7 +47,7 @@ chord =
         	type: 'chord',
             text: text(),
         	root: root,
-        	quality: quality ? quality : { third: 4, fifth: 7 },
+        	quality: quality ? quality : { third: 4, fifth: [7] },
             additions: additions,
             slash: slash,
         };
